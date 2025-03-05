@@ -12,8 +12,8 @@
 
 <div class="container-fluid">
   <h1>My First Bootstrap Page</h1>
-  <p>This part is inside a .container class.</p>
-  <p>The .container class provides a responsive fixed width container.</p>
+  <p>This part is inside a .container-fluid class.</p>
+  <p>The .container class provides a responsive full width container.</p>
 </div>
 
 </body>
