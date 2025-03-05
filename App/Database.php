@@ -1,4 +1,5 @@
 <?php
+namespace App;
 Class Database
 {
     private $host = "";

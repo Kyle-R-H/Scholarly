@@ -1,4 +1,8 @@
 <?php
+namespace App\Controller;
+
+use App\Model\UserModel;
+
 class LoginController extends UserModel
 {
     
