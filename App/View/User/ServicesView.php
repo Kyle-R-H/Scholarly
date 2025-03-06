@@ -17,10 +17,10 @@
             <div class="d-flex flex-wrap align-items-center justify-content-center">
                 <img class="pt-1 px-3" src="https://github.com/kylehellstrom-22343261/Scholarly/blob/main/App/scholarly%20logo.png?raw=true" alt="Scholarly Logo" height="40" width="auto">
                 <ul class="nav col-12 col-lg-auto me-lg-auto justify-content-center mb-md-0">
-                    <li><a href="#" class="nav-link px-2 link-secondary">Restaurants</a></li>
-                    <li><a href="#" class="nav-link px-2 link-body-emphasis">Services</a></li>
-                    <li><a href="#" class="nav-link px-2 link-body-emphasis">Events</a></li>
-                    <li><a href="#" class="nav-link px-2 link-body-emphasis">Activities</a></li>
+                    <li><a href="http://localhost/Scholarly/App/View/User/RestaurantView.php" class="nav-link px-2 link-body-emphasis">Restaurants</a></li>
+                    <li><a href="http://localhost/Scholarly/App/View/User/ServicesView.php" class="nav-link px-2 link-secondary">Services</a></li>
+                    <li><a href="http://localhost/Scholarly/App/View/User/EventsView.php" class="nav-link px-2 link-body-emphasis">Events</a></li>
+                    <li><a href="http://localhost/Scholarly/App/View/User/ActivitiesView.php" class="nav-link px-2 link-body-emphasis">Activities</a></li>
                 </ul>
 
                 <!-- Messages and Reviews Section -->
@@ -65,13 +65,13 @@
         <div class="border-end d-flex flex-column p-3" style="width: 280px;">
             <ul class="nav nav-pills flex-column mb-auto">
                 <li class="nav-item">
-                    <a href="#" class="nav-link active" aria-current="page">Restaurants</a>
+                    <a href="#" class="nav-link active" aria-current="page">Services</a>
                 </li>
                 <li class="nav-item">
-                    <a href="#" class="nav-link link-body-emphasis">Active Orders</a>
+                    <a href="#" class="nav-link link-body-emphasis">Active Bookings</a>
                 </li>
                 <li>
-                    <a href="#" class="nav-link link-body-emphasis">Past Orders</a>
+                    <a href="#" class="nav-link link-body-emphasis">Past Bookings</a>
                 </li>
             </ul>
         </div>
@@ -81,14 +81,14 @@
             <!-- TODO: Create Services Info -->
             <div class="row px-4 pe-lg-0 align-items-center rounded-3 border shadow-lg">
                 <div class="col-lg-7 p-5 p-lg-5">
-                    <h1 class="display-5 fw-bold lh-1 text-body-emphasis">The Pavilion</h1>
-                    <p class="lead">The Pavilion is across the living bridge near the UL student accomodation Cappavilla and Quigley.</p>
+                    <h1 class="display-5 fw-bold lh-1 text-body-emphasis">House Cleaning</h1>
+                    <p class="lead">UL House Cleaning allows the quick booking of a range of cleaning services to make the predrinks look like they never happened.</p>
                     <div class="d-grid gap-2 d-md-flex justify-content-md-start mb-4 mb-lg-3">
-                        <button type="button" class="btn btn-outline-secondary btn-lg px-4">Menu</button>
+                        <button type="button" class="btn btn-outline-secondary btn-lg px-4">Book</button>
                     </div>
                 </div>
                 <div class="col-lg-4 offset-lg-1 p-0 overflow-hidden shadow-lg">
-                    <img class="rounded-lg-3" src="https://images.squarespace-cdn.com/content/v1/61796275318d4c3e85af1070/23f92d71-4877-4d00-a860-2b7f1d36388c/External_home_paviliom.jpg" 
+                    <img class="rounded-lg-3" src="https://studyireland.ie/wp-content/uploads/2024/04/living-room-thomond-2.jpg" 
                     alt="" height="320" width="auto" >
                 </div>
             </div>
@@ -96,15 +96,15 @@
             <hr>
             <div class="row px-4 pe-lg-0 align-items-center rounded-3 border shadow-lg">
                 <div class="col-lg-7 p-5 p-lg-5">
-                    <h1 class="display-5 fw-bold lh-1 text-body-emphasis">Stables</h1>
-                    <p class="lead">Stables is the go to student restaurant to get a meal and a drink in the center of campus.</p>
+                    <h1 class="display-5 fw-bold lh-1 text-body-emphasis">Bike Hire</h1>
+                    <p class="lead">Places to go? Get there with UL Bike Hire. Book a bike and explore.</p>
                     <div class="d-grid gap-2 d-md-flex justify-content-md-start mb-4 mb-lg-3">
-                        <button type="button" class="btn btn-outline-secondary btn-lg px-4">Menu</button>
+                        <button type="button" class="btn btn-outline-secondary btn-lg px-4">Book</button>
                     </div>
                 </div>
                 <div class="col-lg-4 offset-lg-1 p-0 overflow-hidden shadow-lg" >
-                    <img class="rounded-lg-3 flex" src="https://lh4.googleusercontent.com/proxy/Jm2z6NXrTk3UcFlLCXk7FmrwfX8pEg1LYeEny4uj8P37FL2RwbRSOZiIGDQUTn03f-ucxfmuXxRxEfeKcfx6q7wBKnLNsFU" 
-                    alt="" style="justify-content: center; align-items: center;" >
+                    <img class="rounded-lg-3 flex" src="https://assets-eu-01.kc-usercontent.com/aa24ba70-9a12-01ae-259b-7ef588a0b2ef/1083fb38-ecbb-4411-8ad3-8eff07c2ffa8/carlingford-greenway-bicycle-hire-shop-front.jpg?w=1332&q=66&h=750&fit=crop&fm=jpg" 
+                    alt="" height="320" >
                 </div>
             </div>
         </div>

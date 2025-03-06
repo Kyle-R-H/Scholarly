@@ -17,10 +17,10 @@
             <div class="d-flex flex-wrap align-items-center justify-content-center">
                 <img class="pt-1 px-3" src="https://github.com/kylehellstrom-22343261/Scholarly/blob/main/App/scholarly%20logo.png?raw=true" alt="Scholarly Logo" height="40" width="auto">
                 <ul class="nav col-12 col-lg-auto me-lg-auto justify-content-center mb-md-0">
-                    <li><a href="#" class="nav-link px-2 link-secondary">Restaurants</a></li>
-                    <li><a href="#" class="nav-link px-2 link-body-emphasis">Services</a></li>
-                    <li><a href="#" class="nav-link px-2 link-body-emphasis">Events</a></li>
-                    <li><a href="#" class="nav-link px-2 link-body-emphasis">Activities</a></li>
+                    <li><a href="http://localhost/Scholarly/App/View/User/RestaurantView.php" class="nav-link px-2 link-secondary">Restaurants</a></li>
+                    <li><a href="http://localhost/Scholarly/App/View/User/ServicesView.php" class="nav-link px-2 link-body-emphasis">Services</a></li>
+                    <li><a href="http://localhost/Scholarly/App/View/User/EventsView.php" class="nav-link px-2 link-body-emphasis">Events</a></li>
+                    <li><a href="http://localhost/Scholarly/App/View/User/ActivitiesView.php" class="nav-link px-2 link-body-emphasis">Activities</a></li>
                 </ul>
 
                 <!-- Messages and Reviews Section -->
@@ -88,7 +88,7 @@
                 </div>
                 <div class="col-lg-4 offset-lg-1 p-0 overflow-hidden shadow-lg">
                     <img class="rounded-lg-3" src="https://images.squarespace-cdn.com/content/v1/61796275318d4c3e85af1070/23f92d71-4877-4d00-a860-2b7f1d36388c/External_home_paviliom.jpg" 
-                    alt="" height="320" width="auto" >
+                    alt="" height="320">
                 </div>
             </div>
 
@@ -103,7 +103,7 @@
                 </div>
                 <div class="col-lg-4 offset-lg-1 p-0 overflow-hidden shadow-lg" >
                     <img class="rounded-lg-3 flex" src="https://lh4.googleusercontent.com/proxy/Jm2z6NXrTk3UcFlLCXk7FmrwfX8pEg1LYeEny4uj8P37FL2RwbRSOZiIGDQUTn03f-ucxfmuXxRxEfeKcfx6q7wBKnLNsFU" 
-                    alt="" style="justify-content: center; align-items: center;" >
+                    alt="" height="320">
                 </div>
             </div>
 
