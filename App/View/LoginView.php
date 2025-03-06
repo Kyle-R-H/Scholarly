@@ -7,11 +7,11 @@
         <link href="custom.css" rel="stylesheet">
     </head>
 
-    <body style="background-image:url(https://external-preview.redd.it/MP9utSRDTJDOyq77VarXx3fQiEok_fx1pZ_D0ikX_a4.png?format=pjpg&auto=webp&s=465237a4c41c6cba0f22fffeca32ea6471f066b0);">
+    <body style="background-image:url(https://i.ytimg.com/vi/NVg0GfEtGQA/maxresdefault.jpg);">
         <div style="margin-top:30vh;"  class="d-flex justify-content-center">
-            <div class="form-signin">
-                <h1>Log in</h1>
-                <div class="form-floating mb-3" style="background-size: auto,25px";>
+            <div class="form-signin pt-3 pb-4 px-5" style="background-color:lightgrey; border-radius:5%;">
+                <h1 class="pb-3">Log in</h1>
+                <div class="form-floating mb-3">
                     <input id="emailInput" type="email" class="form-control" placeholder="name@ul.ie">
                     <label for="emailInput">UL email address</label>
                 </div>
@@ -20,7 +20,10 @@
                     <label for="passwordInput">Password</label>
                 </div>
                 <div class="pt-3">
-                    <button class="position-absolute start-50 translate-middle button" type="submit">Log in</button>
+                    <button class="position-relative start-50 translate-middle button" type="submit">Log in</button>
+                </div>
+                <div class="pt-2">
+                    Register a new account <a href="placeholder.php">here</a>
                 </div>
             </div>
         </div>
