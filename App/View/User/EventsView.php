@@ -78,6 +78,7 @@
 
         <!-- Main Content -->
         <div class="px-5 py-3" style="width: 100%;">
+            <!-- TODO: Create Events Info -->
             <div class="row p-4 pb-0 pe-lg-0 pt-lg-0 align-items-center rounded-3 border shadow-lg">
                 <div class="col-lg-7 p-3 p-lg-5 pt-lg-3">
                     <h1 class=" fw-bold lh-1 text-body-emphasis">Pavilion</h1>
