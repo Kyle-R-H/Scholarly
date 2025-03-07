@@ -1,3 +1,19 @@
 .nav-pills .nav-link.active {
-    background-color: green !important;
+    background-color: #00A750 !important;
+}
+
+.nav-pills .nav-link.delete-account {
+    color: red !important;
+}
+
+.btn{
+    background-color: #00A750;
+    color: white;
+    border-radius: 1vh;
+}
+
+.btn:hover{
+    background-color: #47FF9F;
+    color: black;
+    border-radius: 1vh;
 }

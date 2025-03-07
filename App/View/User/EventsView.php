@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 
 <head>
-    <title>View Example</title>
+    <title>Events</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -17,10 +17,10 @@
             <div class="d-flex flex-wrap align-items-center justify-content-center">
                 <img class="pt-1 px-3" src="https://github.com/kylehellstrom-22343261/Scholarly/blob/main/App/scholarly%20logo.png?raw=true" alt="Scholarly Logo" height="40" width="auto">
                 <ul class="nav col-12 col-lg-auto me-lg-auto justify-content-center mb-md-0">
-                    <li><a href="http://localhost/Scholarly/App/View/User/RestaurantView.php" class="nav-link px-2 link-body-emphasis">Restaurants</a></li>
-                    <li><a href="http://localhost/Scholarly/App/View/User/ServicesView.php" class="nav-link px-2 link-body-emphasis">Services</a></li>
-                    <li><a href="http://localhost/Scholarly/App/View/User/EventsView.php" class="nav-link px-2 link-secondary">Events</a></li>
-                    <li><a href="http://localhost/Scholarly/App/View/User/ActivitiesView.php" class="nav-link px-2 link-body-emphasis">Activities</a></li>
+                    <li><a href="RestaurantView.php" class="nav-link px-2 link-body-emphasis">Restaurants</a></li>
+                    <li><a href="ServicesView.php" class="nav-link px-2 link-body-emphasis">Services</a></li>
+                    <li><a href="EventsView.php" class="nav-link px-2 link-secondary">Events</a></li>
+                    <li><a href="ActivitiesView.php" class="nav-link px-2 link-body-emphasis">Activities</a></li>
                 </ul>
 
                 <!-- Messages and Reviews Section -->
@@ -48,7 +48,7 @@
                     </a>
                     <ul class="dropdown-menu text-small">
                         <li><a class="dropdown-item" href="#">Profile</a></li>
-                        <li><a class="dropdown-item" href="#">Settings</a></li>
+                        <li><a class="dropdown-item" href="UserSettingsView.php">Settings</a></li>
                         <li>
                             <hr class="dropdown-divider">
                         </li>
