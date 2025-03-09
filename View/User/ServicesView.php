@@ -1,11 +1,11 @@
 <!DOCTYPE html>
 
 <head>
-    <title>Events</title>
+    <title>Services</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="..\..\..\public\css\Styles.css">
+    <link rel="stylesheet" href="..\..\public\css\Styles.css">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </head>
 
@@ -18,8 +18,8 @@
                 <img class="pt-1 px-3" src="https://github.com/kylehellstrom-22343261/Scholarly/blob/main/App/scholarly%20logo.png?raw=true" alt="Scholarly Logo" height="40" width="auto">
                 <ul class="nav col-12 col-lg-auto me-lg-auto justify-content-center mb-md-0">
                     <li><a href="RestaurantView.php" class="nav-link px-2 link-body-emphasis">Restaurants</a></li>
-                    <li><a href="ServicesView.php" class="nav-link px-2 link-body-emphasis">Services</a></li>
-                    <li><a href="EventsView.php" class="nav-link px-2 link-secondary">Events</a></li>
+                    <li><a href="ServicesView.php" class="nav-link px-2 link-secondary">Services</a></li>
+                    <li><a href="EventsView.php" class="nav-link px-2 link-body-emphasis">Events</a></li>
                     <li><a href="ActivitiesView.php" class="nav-link px-2 link-body-emphasis">Activities</a></li>
                 </ul>
 
@@ -44,7 +44,7 @@
                 <!-- Profile and Dropdown Section -->
                 <div class="dropdown text-end">
                     <a href="#" class="d-block link-body-emphasis text-decoration-none dropdown-toggle p-2 ms-1" data-bs-toggle="dropdown" aria-expanded="false">
-                        <img src="..\..\default_pfp_128.png" class="border" height="34" width="34" alt="pfp" style="border-radius: 50%;">
+                    <img src="..\..\Public\Images\default_pfp_128.png" class="border" height="34" width="34" alt="pfp" style="border-radius: 50%;">
                     </a>
                     <ul class="dropdown-menu text-small">
                         <li><a class="dropdown-item" href="#">Profile</a></li>
@@ -65,7 +65,7 @@
         <div class="border-end d-flex flex-column p-3" style="width: 280px;">
             <ul class="nav nav-pills flex-column mb-auto">
                 <li class="nav-item">
-                    <a href="#" class="nav-link active" aria-current="page">Events</a>
+                    <a href="#" class="nav-link active" aria-current="page">Services</a>
                 </li>
                 <li class="nav-item">
                     <a href="#" class="nav-link link-body-emphasis">Active Bookings</a>
@@ -78,17 +78,17 @@
 
         <!-- Main Content -->
         <div class="px-5 py-3" style="width: 100%;">
-            <!-- TODO: Create Events Info -->
+            <!-- TODO: Create Services Info -->
             <div class="row px-4 pe-lg-0 align-items-center rounded-3 border shadow-lg">
                 <div class="col-lg-7 p-5 p-lg-5">
-                    <h1 class="display-5 fw-bold lh-1 text-body-emphasis">Quiz Night</h1>
-                    <p class="lead">Book now to join our weekly quiz night at Stables.</p>
+                    <h1 class="display-5 fw-bold lh-1 text-body-emphasis">House Cleaning</h1>
+                    <p class="lead">UL House Cleaning allows the quick booking of a range of cleaning services to make the predrinks look like they never happened.</p>
                     <div class="d-grid gap-2 d-md-flex justify-content-md-start mb-4 mb-lg-3">
                         <button type="button" class="btn btn-outline-secondary btn-lg px-4">Book</button>
                     </div>
                 </div>
                 <div class="col-lg-4 offset-lg-1 p-0 overflow-hidden shadow-lg">
-                    <img class="rounded-lg-3" src="https://lh3.googleusercontent.com/proxy/k-PWh0hYZIH-omBFh5sWiUfjIuOJP9oSDI-BfrZd75L3RE_Elldq56Lc4rc5CZskkMiLeVCD8TlZ4ppk9LQCkZp7e81P7yPZvknomcQ" 
+                    <img class="rounded-lg-3" src="https://studyireland.ie/wp-content/uploads/2024/04/living-room-thomond-2.jpg" 
                     alt="" height="320" width="auto" >
                 </div>
             </div>
@@ -96,14 +96,14 @@
             <hr>
             <div class="row px-4 pe-lg-0 align-items-center rounded-3 border shadow-lg">
                 <div class="col-lg-7 p-5 p-lg-5">
-                    <h1 class="display-5 fw-bold lh-1 text-body-emphasis">Pool Tournament</h1>
-                    <p class="lead">Friends to make, balls to hit, tournaments to win. Join us at the Student Hub on campus and book now.</p>
+                    <h1 class="display-5 fw-bold lh-1 text-body-emphasis">Bike Hire</h1>
+                    <p class="lead">Places to go? Get there with UL Bike Hire. Book a bike and explore.</p>
                     <div class="d-grid gap-2 d-md-flex justify-content-md-start mb-4 mb-lg-3">
                         <button type="button" class="btn btn-outline-secondary btn-lg px-4">Book</button>
                     </div>
                 </div>
                 <div class="col-lg-4 offset-lg-1 p-0 overflow-hidden shadow-lg" >
-                    <img class="rounded-lg-3 flex" src="https://ulstudentlife.ie/pageassets/info/UL-Student-Life-Pool-Room-800x450.jpg" 
+                    <img class="rounded-lg-3 flex" src="https://assets-eu-01.kc-usercontent.com/aa24ba70-9a12-01ae-259b-7ef588a0b2ef/1083fb38-ecbb-4411-8ad3-8eff07c2ffa8/carlingford-greenway-bicycle-hire-shop-front.jpg?w=1332&q=66&h=750&fit=crop&fm=jpg" 
                     alt="" height="320" >
                 </div>
             </div>
