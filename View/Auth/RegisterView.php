@@ -30,7 +30,7 @@
                         <button class="position-relative start-50 translate-middle btn" type="submit">Submit</button>
                     </div>
                     <div class="pt-2">
-                        Already have an account? Click <a href="LoginView.php">here</a>
+                        Already have an account? Click <a href="?controller=auth&action=login">here</a>
                     </div>
                 </div>
             </div>

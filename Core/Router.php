@@ -13,10 +13,10 @@ $controllerName = ucfirst(strtolower($controller)) . 'Controller';
 // Define path to controller
 $controllerPath = 'Controller/' . $controllerName . '.php';
 
-ob_start();
-echo "Looking for: " . $controllerPath;
-// echo $controllerName . "<br>" . $controllerPath . "<br>";
-ob_end_clean();
+// ob_start();
+// echo "Looking for: " . $controllerPath;
+// // echo $controllerName . "<br>" . $controllerPath . "<br>";
+// ob_end_clean();
 
 if (file_exists($controllerPath)) {
     require_once $controllerPath;

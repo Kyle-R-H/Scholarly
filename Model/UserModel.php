@@ -13,8 +13,8 @@ class UserModel {
     }
 
     // Fetch user by ID
-    public function getUserById($id) {
-    return $this->db->query("SELECT * FROM users WHERE id = ?", [$id])->fetch(PDO::FETCH_ASSOC);
+    public function getUserById($userId) {
+        return $this->db->query("SELECT * FROM users WHERE userid = ?", [$userId])->fetch(PDO::FETCH_ASSOC);
     }
 
     public function registerUser($name, $email, $password) {

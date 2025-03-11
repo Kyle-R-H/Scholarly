@@ -17,10 +17,10 @@
             <div class="d-flex flex-wrap align-items-center justify-content-center">
                 <img class="pt-1 px-3" src="https://github.com/kylehellstrom-22343261/Scholarly/blob/main/App/scholarly%20logo.png?raw=true" alt="Scholarly Logo" height="40" width="auto">
                 <ul class="nav col-12 col-lg-auto me-lg-auto justify-content-center mb-md-0">
-                    <li><a href="RestaurantView.php" class="nav-link px-2 link-body-emphasis">Restaurants</a></li>
-                    <li><a href="ServicesView.php" class="nav-link px-2 link-body-emphasis">Services</a></li>
-                    <li><a href="EventsView.php" class="nav-link px-2 link-secondary">Events</a></li>
-                    <li><a href="ActivitiesView.php" class="nav-link px-2 link-body-emphasis">Activities</a></li>
+                    <li><a href="?controller=user&action=restaurantView" class="nav-link px-2 link-body-emphasis">Restaurants</a></li>
+                    <li><a href="?controller=user&action=servicesView" class="nav-link px-2 link-body-emphasis">Services</a></li>
+                    <li><a href="?controller=user&action=eventsView" class="nav-link px-2 link-secondary">Events</a></li>
+                    <li><a href="?controller=user&action=activitiesView" class="nav-link px-2 link-body-emphasis">Activities</a></li>
                 </ul>
 
                 <!-- Messages and Reviews Section -->
@@ -47,12 +47,12 @@
                     <img src="..\..\Public\Images\default_pfp_128.png" class="border" height="34" width="34" alt="pfp" style="border-radius: 50%;">
                     </a>
                     <ul class="dropdown-menu text-small">
-                        <li><a class="dropdown-item" href="#">Profile</a></li>
-                        <li><a class="dropdown-item" href="UserSettingsView.php">Settings</a></li>
+                        <li><a class="dropdown-item" href="?controller=user&action=profile" >Profile</a></li>
+                        <li><a class="dropdown-item" href="?controller=user&action=settings" >Settings</a></li>
                         <li>
                             <hr class="dropdown-divider">
                         </li>
-                        <li><a class="dropdown-item" href="#">Sign out</a></li>
+                        <li><a class="dropdown-item" href="?controller=auth&action=logout">Sign out</a></li>
                     </ul>
                 </div>
             </div>

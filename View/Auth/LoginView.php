@@ -17,11 +17,11 @@
                 <h1 class="py-3">Log in</h1>
                 <form method="POST" action="?Controller=Auth&action=login">
                     <div class="form-floating mb-3">
-                        <input name="email" id="emailInput" type="email" class="form-control" placeholder="name@ul.ie" required>
+                        <input name="Email" id="emailInput" type="email" class="form-control" placeholder="name@ul.ie" required>
                         <label for="emailInput">UL email address</label>
                     </div>
                     <div class="form-floating mb-3">
-                        <input name="password" id="passwordInput" type="password" class="form-control" placeholder="Password" required>
+                        <input name="Password" id="passwordInput" type="password" class="form-control" placeholder="Password" required>
                         <label for="passwordInput">Password</label>
                     </div>
                     <div class="pt-3">
@@ -29,7 +29,7 @@
                     </div>
                 </form>
                 <div class="pt-2">
-                    Register a new account <a href="RegisterView.php">here</a>
+                    Register a new account <a href="?controller=Auth&action=register">here</a>
                 </div>
             </div>
         </div>

@@ -8,19 +8,19 @@ class AuthController extends Controller {
         $this->userModel = $this->model('UserModel');
 
         // To hash passwords, use inspect element to get hashed password
-        // $hashedPassword = password_hash('enter_password', PASSWORD_DEFAULT);
-        // echo $hashedPassword;
+        $hashedPassword = password_hash('c', PASSWORD_DEFAULT);
+        echo $hashedPassword;
     }
 
     public function login() {
         if ($_SERVER["REQUEST_METHOD"] == "POST") {
-            $email = $_POST['email'];
-            $password = $_POST['password'];
+            $email = $_POST['Email'];
+            $password = $_POST['Password'];
     
             // Get user data from database
             $user = $this->userModel->getUserByEmail($email);
     
-            if ($user && password_verify($password, $user['password'])) {
+            if ($user && password_verify($password, $user['Password'])) {
                 // Store user info in session
                 $_SESSION['user_id'] = $user['id'];
                 $_SESSION['username'] = $user['name'];
@@ -36,6 +36,11 @@ class AuthController extends Controller {
         // Show login view (for both GET requests and failed login attempts)
         $this->view('Auth/loginView', isset($error) ? ['error' => $error] : []);
     }
+
+    public function register(){
+        require_once 'View\Auth\RegisterView.php';
+    }
+
 
     public function logout() {
         session_destroy();
