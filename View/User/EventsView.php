@@ -1,11 +1,11 @@
 <!DOCTYPE html>
 
 <head>
-    <title>Activities</title>
+    <title>Events</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="..\..\..\public\css\Styles.css">
+    <link rel="stylesheet" href="..\..\public\css\Styles.css">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </head>
 
@@ -17,10 +17,10 @@
             <div class="d-flex flex-wrap align-items-center justify-content-center">
                 <img class="pt-1 px-3" src="https://github.com/kylehellstrom-22343261/Scholarly/blob/main/App/scholarly%20logo.png?raw=true" alt="Scholarly Logo" height="40" width="auto">
                 <ul class="nav col-12 col-lg-auto me-lg-auto justify-content-center mb-md-0">
-                    <li><a href="RestaurantView.php" class="nav-link px-2 link-body-emphasis">Restaurants</a></li>
-                    <li><a href="ServicesView.php" class="nav-link px-2 link-body-emphasis">Services</a></li>
-                    <li><a href="EventsView.php" class="nav-link px-2 link-body-emphasis">Events</a></li>
-                    <li><a href="ActivitiesView.php" class="nav-link px-2 link-secondary">Activities</a></li>
+                    <li><a href="?controller=user&action=restaurantView" class="nav-link px-2 link-body-emphasis">Restaurants</a></li>
+                    <li><a href="?controller=user&action=servicesView" class="nav-link px-2 link-body-emphasis">Services</a></li>
+                    <li><a href="?controller=user&action=eventsView" class="nav-link px-2 link-secondary">Events</a></li>
+                    <li><a href="?controller=user&action=activitiesView" class="nav-link px-2 link-body-emphasis">Activities</a></li>
                 </ul>
 
                 <!-- Messages and Reviews Section -->
@@ -44,15 +44,15 @@
                 <!-- Profile and Dropdown Section -->
                 <div class="dropdown text-end">
                     <a href="#" class="d-block link-body-emphasis text-decoration-none dropdown-toggle p-2 ms-1" data-bs-toggle="dropdown" aria-expanded="false">
-                        <img src="..\..\default_pfp_128.png" class="border" height="34" width="34" alt="pfp" style="border-radius: 50%;">
+                    <img src="..\..\Public\Images\default_pfp_128.png" class="border" height="34" width="34" alt="pfp" style="border-radius: 50%;">
                     </a>
                     <ul class="dropdown-menu text-small">
-                        <li><a class="dropdown-item" href="#">Profile</a></li>
-                        <li><a class="dropdown-item" href="UserSettingsView.php">Settings</a></li>
+                        <li><a class="dropdown-item" href="?controller=user&action=profile" >Profile</a></li>
+                        <li><a class="dropdown-item" href="?controller=user&action=settings" >Settings</a></li>
                         <li>
                             <hr class="dropdown-divider">
                         </li>
-                        <li><a class="dropdown-item" href="#">Sign out</a></li>
+                        <li><a class="dropdown-item" href="?controller=auth&action=logout">Sign out</a></li>
                     </ul>
                 </div>
             </div>
@@ -65,7 +65,7 @@
         <div class="border-end d-flex flex-column p-3" style="width: 280px;">
             <ul class="nav nav-pills flex-column mb-auto">
                 <li class="nav-item">
-                    <a href="#" class="nav-link active" aria-current="page">Activities</a>
+                    <a href="#" class="nav-link active" aria-current="page">Events</a>
                 </li>
                 <li class="nav-item">
                     <a href="#" class="nav-link link-body-emphasis">Active Bookings</a>
@@ -78,33 +78,33 @@
 
         <!-- Main Content -->
         <div class="px-5 py-3" style="width: 100%;">
-            <!-- TODO: Create Activities Info -->
+            <!-- TODO: Create Events Info -->
             <div class="row px-4 pe-lg-0 align-items-center rounded-3 border shadow-lg">
                 <div class="col-lg-7 p-5 p-lg-5">
-                    <h1 class="display-5 fw-bold lh-1 text-body-emphasis">Campus Run</h1>
-                    <p class="lead">Forget the weather, put your running shoes on and join us for a run, job or sprint at your pace. Book now!</p>
+                    <h1 class="display-5 fw-bold lh-1 text-body-emphasis">Quiz Night</h1>
+                    <p class="lead">Book now to join our weekly quiz night at Stables.</p>
                     <div class="d-grid gap-2 d-md-flex justify-content-md-start mb-4 mb-lg-3">
                         <button type="button" class="btn btn-outline-secondary btn-lg px-4">Book</button>
                     </div>
                 </div>
                 <div class="col-lg-4 offset-lg-1 p-0 overflow-hidden shadow-lg">
-                    <img class="rounded-lg-3" src="https://plus.unsplash.com/premium_photo-1669021454145-49146869b916?fm=jpg&q=60&w=3000&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8bWFuJTIwcnVubmluZ3xlbnwwfHwwfHx8MA%3D%3D" 
-                    alt="" height="320">
+                    <img class="rounded-lg-3" src="https://lh3.googleusercontent.com/proxy/k-PWh0hYZIH-omBFh5sWiUfjIuOJP9oSDI-BfrZd75L3RE_Elldq56Lc4rc5CZskkMiLeVCD8TlZ4ppk9LQCkZp7e81P7yPZvknomcQ" 
+                    alt="" height="320" width="auto" >
                 </div>
             </div>
 
             <hr>
             <div class="row px-4 pe-lg-0 align-items-center rounded-3 border shadow-lg">
                 <div class="col-lg-7 p-5 p-lg-5">
-                    <h1 class="display-5 fw-bold lh-1 text-body-emphasis">Social Walk</h1>
-                    <p class="lead">Running is too mcuh effort? No worries, a nice walk is the next best thing. Book now to see places around campus you haven't (that we know of) seen before.</p>
+                    <h1 class="display-5 fw-bold lh-1 text-body-emphasis">Pool Tournament</h1>
+                    <p class="lead">Friends to make, balls to hit, tournaments to win. Join us at the Student Hub on campus and book now.</p>
                     <div class="d-grid gap-2 d-md-flex justify-content-md-start mb-4 mb-lg-3">
                         <button type="button" class="btn btn-outline-secondary btn-lg px-4">Book</button>
                     </div>
                 </div>
                 <div class="col-lg-4 offset-lg-1 p-0 overflow-hidden shadow-lg" >
-                    <img class="rounded-lg-3 flex" src="https://hundeschule-landog.de/wp-content/uploads/2018/10/hsl-portfolio_social-walk.jpg" 
-                    alt="" height="320">
+                    <img class="rounded-lg-3 flex" src="https://ulstudentlife.ie/pageassets/info/UL-Student-Life-Pool-Room-800x450.jpg" 
+                    alt="" height="320" >
                 </div>
             </div>
         </div>
