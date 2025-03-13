@@ -1,5 +1,5 @@
 <?php
-require_once 'core/Database.php';
+require_once 'Core/Database.php';
 
 class Model {
     protected $db;
