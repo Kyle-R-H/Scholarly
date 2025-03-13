@@ -1,6 +1,6 @@
 <?php
-require_once __DIR__ . '/../Model/UserModel.php';
-require_once __DIR__ . '/../Core/Database.php'; // If Database.php is used
+require_once 'Model/UserModel.php';
+require_once 'Core/Database.php'; // If Database.php is used
 
 class UserController {
     private $userModel;
@@ -33,5 +33,6 @@ class UserController {
     public function activitiesView(){
         require_once 'View/User/ActivitiesView.php';    
     }
+
 }
 ?>
