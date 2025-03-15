@@ -65,7 +65,7 @@ public function login() {
             $_SESSION['FirstName'] = $user['FirstName'];
 
             echo "Redirecting to restaurantView...<br>";
-            // header("Location: ?controller=user&action=restaurantView");
+            header("Location: ?controller=user&action=restaurantView");
             exit();
         } else {
             echo "Invalid credentials, displaying error.<br>";
