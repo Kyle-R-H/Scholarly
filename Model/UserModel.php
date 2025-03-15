@@ -16,26 +16,46 @@ class UserModel {
         // echo "user: " . getUserByEmail('bob@gmail.com');
     }
 
-    // Fetch user email
-    public function getUserByEmail($email) {
-        echo "<br> in getUSerbyEmial";
-        $query = "SELECT * FROM users WHERE email = ?";
-        echo "<br>" . $query;
-        $userEmail =  $this->db->query($query, [$email])->fetch(PDO::FETCH_ASSOC);
-        echo "user: " . $userEmail;
-        return $userEmail;
+// Fetch user by email
+public function getUserByEmail($email) {
+    echo "<br> In UserModel-getUserByEmail";  // Confirm method is called
+
+    $query = "SELECT * FROM Users WHERE Email = ?";
+    echo "<br> Query to execute: " . $query;
+
+    $stmt = $this->db->query($query, [$email]); // Call query() method
+    echo "<br> Query executed. Checking if statement is valid...";
+
+    if (!$stmt) {
+        echo "<br> Query execution failed!";
+        return null;
     }
+
+    echo "<br> Query executed successfully. Fetching results...";
+
+    $userEmail = $stmt->fetch(PDO::FETCH_ASSOC); // Fetch result
+    echo "<br> UserEmail result: " . print_r($userEmail, true);
+
+    if (!$userEmail) {
+        echo "<br> No user found with email: " . $email;
+        return null;
+    }
+
+    echo "<br> User found! Returning data...";
+    return $userEmail;
+}
+
 
     // Fetch user by ID
     public function getUserById($userId) {
-        return $this->db->query("SELECT * FROM users WHERE userid = ?", [$userId])->fetch(PDO::FETCH_ASSOC);
+        return $this->db->query("SELECT * FROM Users WHERE UserID = ?", [$userId])->fetch(PDO::FETCH_ASSOC);
     }
 
     // TODO: Complete
-    public function registerUser($name, $email, $password) {
-        $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
-        $this->db->query("INSERT INTO users (name, email, password) VALUES (?, ?, ?)", [$name, $email, $hashedPassword]);
-        return $this->db->lastInsertId();
-    }
+    // public function registerUser($name, $email, $password) {
+    //     $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
+    //     $this->db->query("INSERT INTO Users (name, email, password) VALUES (?, ?, ?)", [$name, $email, $hashedPassword]);
+    //     return $this->db->lastInsertId();
+    // }
 }
 ?>

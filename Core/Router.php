@@ -5,7 +5,7 @@ require_once 'Controller.php';
 
 // Get the URL parameters
 $controller = isset($_GET['controller']) ? $_GET['controller'] : 'Auth';
-$action = isset($_GET['action']) ? $_GET['action'] : 'loginView';
+$action = isset($_GET['action']) ? $_GET['action'] : 'login';
 
 // Format controller name
 $controllerName = ucfirst(strtolower($controller)) . 'Controller';
