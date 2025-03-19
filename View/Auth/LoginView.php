@@ -13,9 +13,9 @@
         <img src="https://www.studiesup.com/wp-content/uploads/import/UL_Glucksman-Library-1-scaled.jpg" style="margin-top:-300px; float:right;">
         <div style="top:25vh; right:10vw;" class="d-flex justify-content-center position-absolute">
             <div class="form-signin pt-3 pb-4 px-5" style="background-color:white; border-radius:5%; box-shadow: 0.25rem 0.25rem 0.25rem;">
-                <img src="https://github.com/kylehellstrom-22343261/Scholarly/blob/main/App/scholarly%20logo.png?raw=true" style="height: 40pt; width:auto;">
+                <img src="../../Public/Images/scholarly logo.png" style="height: 40pt; width:auto;">
                 <h1 class="py-3">Log in</h1>
-                <form method="POST" action="?Controller=Auth&action=login">
+                <form method="POST" action="?controller=auth&action=login">
                     <div class="form-floating mb-3">
                         <input name="Email" id="emailInput" type="email" class="form-control" placeholder="name@ul.ie" required>
                         <label for="emailInput">UL email address</label>
@@ -29,7 +29,7 @@
                     </div>
                 </form>
                 <div class="pt-2">
-                    Register a new account <a href="?controller=Auth&action=register">here</a>
+                    Register a new account <a href="?controller=auth&action=registerView">here</a>
                 </div>
             </div>
         </div>

@@ -6,10 +6,12 @@ if (!file_exists('Core/Controller.php')) {
 require_once 'Core/Controller.php';
 // echo "Core/Controller.php loaded successfully.<br>";
 
-class AuthController extends Controller {
+class AuthController extends Controller
+{
     private $userModel;
 
-    public function __construct() {
+    public function __construct()
+    {
         // echo "<br> AuthController constructor running...<br>";
         if (!method_exists($this, 'model')) {
             die("Error: model() method not found. Check if Core/Controller.php is correctly included.");
@@ -24,69 +26,71 @@ class AuthController extends Controller {
         // echo "Hashed password: " . $hashedPassword . "<br>";
     }
 
-public function login() {
-    echo "<br> Login function called.<br>";
+    public function login()
+    {
+        echo "<br> Login function called.<br>";
 
-    if ($_SERVER["REQUEST_METHOD"] == "POST") {
-        echo "<br> In POST request.<br>";
+        if ($_SERVER["REQUEST_METHOD"] == "POST") {
+            echo "<br> In POST request.<br>";
 
-        // Debugging input values
-        $email = $_POST['Email'] ?? 'EMPTY';
-        $password = $_POST['Password'] ?? 'EMPTY';
-        echo "Email: " . htmlspecialchars($email) . "<br>";
-        echo "Password: " . htmlspecialchars($password) . "<br>";
+            // Debugging input values
+            $email = $_POST['Email'] ?? 'EMPTY';
+            $password = $_POST['Password'] ?? 'EMPTY';
+            echo "Email: " . htmlspecialchars($email) . "<br>";
+            echo "Password: " . htmlspecialchars($password) . "<br>";
 
-        // Check if userModel is set
-        if (!$this->userModel) {
-            die("Error: userModel is NULL! Check if it is being initialized correctly.");
+            // Check if userModel is set
+            if (!$this->userModel) {
+                die("Error: userModel is NULL! Check if it is being initialized correctly.");
+            }
+            echo "UserModel is set.<br>";
+
+            // Fetch user from database
+            $user = $this->userModel->getUserByEmail($email);
+            echo "Query executed, result: <pre>" . print_r($user, true) . "</pre>";
+
+            // Check if user exists
+            if (!$user) {
+                echo "Error: No user found with email $email!<br>";
+            } else {
+                echo "User found!<br>";
+            }
+
+            // Verify password
+            $passwordMatch = password_verify($password, $user['Password'] ?? '');
+            echo "Password Verify Result: " . ($passwordMatch ? "MATCH" : "NO MATCH") . "<br>";
+            echo "Password Result: " . $passwordMatch;
+
+            if ($user && $passwordMatch) {
+                echo "User authenticated, setting session variables.<br>";
+
+                $_SESSION['UserID'] = $user['UserID'];
+                $_SESSION['FirstName'] = $user['FirstName'];
+
+                echo "Redirecting to restaurantView...<br>";
+                header("Location: ?controller=user&action=restaurantView");
+                exit();
+            } else {
+                echo "Invalid credentials, displaying error.<br>";
+                $error = "Invalid email or password.";
+            }
         }
-        echo "UserModel is set.<br>";
 
-        // Fetch user from database
-        $user = $this->userModel->getUserByEmail($email);
-        echo "Query executed, result: <pre>" . print_r($user, true) . "</pre>";
-
-        // Check if user exists
-        if (!$user) {
-            echo "Error: No user found with email $email!<br>";
-        } else {
-            echo "User found!<br>";
-        }
-
-        // Verify password
-        $passwordMatch = password_verify($password, $user['Password'] ?? '');
-        echo "Password Verify Result: " . ($passwordMatch ? "MATCH" : "NO MATCH") . "<br>";
-        echo "Password Result: " . $passwordMatch;
-
-        if ($user && $passwordMatch) {
-            echo "User authenticated, setting session variables.<br>";
-
-            $_SESSION['UserID'] = $user['UserID'];
-            $_SESSION['FirstName'] = $user['FirstName'];
-
-            echo "Redirecting to restaurantView...<br>";
-            header("Location: ?controller=user&action=restaurantView");
-            exit();
-        } else {
-            echo "Invalid credentials, displaying error.<br>";
-            $error = "Invalid email or password.";
-        }
-    }
-
-    // Show login view
-    $this->view('Auth/LoginView', isset($error) ? ['error' => $error] : []);
-}
-
-
-    public function register(){
-        require_once 'View\Auth\RegisterView.php';
+        // Show login view
+        $this->view('Auth/LoginView', isset($error) ? ['error' => $error] : []);
     }
 
 
-    public function logout() {
+    public function registerView()
+    {
+        $this->view('Auth/RegisterView', isset($error) ? ['error' => $error] : []);
+    }
+
+
+    public function logout()
+    {
         session_destroy();
-        header("Location: index.php?controller=auth&action=login");
+        header("Location: ?controller=auth&action=login");
         exit;
     }
 }
-?>
