@@ -80,6 +80,45 @@ class AuthController extends Controller
         $this->view('Auth/LoginView', isset($error) ? ['error' => $error] : []);
     }
 
+    public function register()
+    {
+        echo "<br>Register function called.<br>";
+
+        // Debugging input values
+        $email = $_POST['RegisterEmail'] ?? 'EMPTY';
+        $password = $_POST['RegisterPassword'] ?? 'EMPTY';
+        $confirmPassword = $_POST['RegisterConfirmPassword'] ?? 'EMPTY';
+        echo "Email: " . htmlspecialchars($email) . "<br>";
+        echo "Password: " . htmlspecialchars($password) . "<br>";
+        echo "Confirm password: " . htmlspecialchars($confirmPassword) . "<br>";
+
+        // Check if userModel is set
+        if (!$this->userModel) {
+            die("Error: userModel is NULL! Check if it is being initialized correctly.");
+        }
+        echo "UserModel is set.<br>";
+
+        // Fetch user from database
+        $user = $this->userModel->getUserByEmail($email);
+        echo "<br>Query executed, result: <pre>" . print_r($user, true) . "</pre>";
+
+        // Check if user exists
+        if (!$user) {
+            echo "User with email $email not found, new user :)<br>";
+
+            if($password == $confirmPassword){
+                echo "Passwords match :)";
+            } else{
+                echo "Passwords don't match :(";
+            }
+        } else {
+            echo "User already exists :(<br>";
+            $error = "User with that email already exists. Go to login page instead.";
+        }
+
+        $this->view('Auth/RegisterView', isset($error) ? ['error' => $error] : []);
+    }
+
 
     public function registerView()
     {
