@@ -37,13 +37,11 @@ if (file_exists($controllerPath)) {
         // echo "<br> method exists";
         call_user_func_array([$controllerInstance, $action],[]);
     } else {
-        // ob_start();
         echo "Error: Action '$action' not found in controller '$controllerName'.";
-        // ob_end_clean();
+        require "View/Error.php";
     }
 } else {
-    // ob_start();
     echo "Error: Controller '$controllerName' not found.";
-    // ob_end_clean();
+    require "View/Error.php";
 }
 ?>
