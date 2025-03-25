@@ -5,7 +5,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="..\..\public\css\Styles.css">
+    <link rel="stylesheet" href="public\css\Styles.css">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </head>
 
@@ -15,7 +15,7 @@
     <header class="py-3 ps-4 pe-5 border-bottom">
         <div class="container-fluid">
             <div class="d-flex flex-wrap align-items-center justify-content-center">
-            <img class="pt-1 px-3" src="..\..\Public\Images\scholarly logo.png" alt="Scholarly Logo" height="40" width="auto">
+            <img class="pt-1 px-3" src="Public\Images\scholarly logo.png" alt="Scholarly Logo" height="40" width="auto">
             <ul class="nav col-12 col-lg-auto me-lg-auto justify-content-center mb-md-0">
                     <li><a href="?controller=user&action=restaurantView" class="nav-link px-2 link-secondary">Restaurants</a></li>
                     <li><a href="?controller=user&action=servicesView" class="nav-link px-2 link-body-emphasis">Services</a></li>
@@ -44,7 +44,7 @@
                 <!-- Profile and Dropdown Section -->
                 <div class="dropdown text-end">
                     <a href="#" class="d-block link-body-emphasis text-decoration-none dropdown-toggle p-2 ms-1" data-bs-toggle="dropdown" aria-expanded="false">
-                        <img src="..\..\Public\Images\default_pfp_128.png" class="border" height="34" width="34" alt="pfp" style="border-radius: 50%;">
+                        <img src="Public\Images\default_pfp_128.png" class="border" height="34" width="34" alt="pfp" style="border-radius: 50%;">
                     </a>
                     <ul class="dropdown-menu text-small">
                         <li><a class="dropdown-item" href="?controller=user&action=profile">Profile</a></li>
@@ -83,7 +83,7 @@
                     <h1 class="display-5 fw-bold lh-1 text-body-emphasis">The Pavilion</h1>
                     <p class="lead">The Pavilion is across the living bridge near the UL student accomodation Cappavilla and Quigley.</p>
                     <div class="d-grid gap-2 d-md-flex justify-content-md-start mb-4 mb-lg-3">
-                        <button type="button" class="btn btn-outline-secondary btn-lg px-4">Menu</button>
+                        <button type="button" class="btn  btn-lg px-4">Menu</button>
                     </div>
                 </div>
                 <div class="col-lg-4 offset-lg-1 p-0 overflow-hidden shadow-lg">
@@ -98,7 +98,7 @@
                     <h1 class="display-5 fw-bold lh-1 text-body-emphasis">Stables</h1>
                     <p class="lead">Stables is the go to student restaurant to get a meal and a drink in the center of campus.</p>
                     <div class="d-grid gap-2 d-md-flex justify-content-md-start mb-4 mb-lg-3">
-                        <button type="button" class="btn btn-outline-secondary btn-lg px-4">Menu</button>
+                        <button type="button" class="btn  btn-lg px-4">Menu</button>
                     </div>
                 </div>
                 <div class="col-lg-4 offset-lg-1 p-0 overflow-hidden shadow-lg" >
