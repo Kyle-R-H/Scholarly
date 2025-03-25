@@ -108,14 +108,33 @@ class AuthController extends Controller
             if (!$user) {
                 echo "User with email $email not found, new user :)<br>";
 
-                if ($password == $confirmPassword){
-                    echo "Passwords match :)<br>";
-                    $this->userModel->registerUser("John", "Doe", $email, $password);
-                } else if (empty($password) || empty($confirmPassword)){
-                    echo "One of the passwords is empty :(<br>";
-                } else {
-                    echo "Passwords don't match :(<br>";
+                // if password == confirmPassword && both not empty
+                // else dont
+                if (empty($password)){
+                    echo "Password is empty <br>";
+                } else if (empty($confirmPassword)){
+                    echo "ConfirmPassword is empty <br>";
+                } else if ($password == $confirmPassword){
+                    echo "Password matches confirmPassword <br>";
+                    echo "<br>Email Type: " . gettype($email);
+                    echo "<br>Password Type: " . gettype($password);
+                    echo "<br>Confirm Password Type: " . gettype($confirmPassword);
+
+                    echo "<br>Email: " . $email;
+                    echo "<br>Password: " . $password;
+                    echo "<br>Confirm Password: " . $confirmPassword;
+
                 }
+
+
+
+                // if (($password == $confirmPassword) && (!empty($password) && !empty($confirmPassword))){
+                //     echo "Passwords match :> <br>";
+                //     echo "Statement == =" . ($password == $confirmPassword) . "<br> !empty = " . (!empty($password) && !empty($confirmPassword));
+                //     $this->userModel->registerUser("John", "Doe", $email, $password);
+                // } else {
+                //     echo "Passwords don't match :(<br>";
+                // }
             } else {
                 echo "User already exists :(<br>";
                 $error = "User with that email already exists. Go to login page instead.";
