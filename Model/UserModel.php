@@ -55,7 +55,7 @@ public function getUserByEmail($email) {
     // public function registerUser($name, $email, $password) {
     //     $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
     //     $this->db->query("INSERT INTO Users (name, email, password) VALUES (?, ?, ?)", [$name, $email, $hashedPassword]);
-    //     return $this->db->lastInsertId();
+        // return $this->db->lastInsertId();
     // }
 }
 ?>

@@ -9,6 +9,8 @@ require_once 'Core/Controller.php';
 class AuthController extends Controller
 {
     private $userModel;
+    private $cookieName = "Login_Info";
+    private $cookieValue;
 
     public function __construct()
     {
@@ -68,6 +70,9 @@ class AuthController extends Controller
                 $_SESSION['FirstName'] = $user['FirstName'];
 
                 echo "Redirecting to restaurantView...<br>";
+
+                $this -> cookieValue = $email;
+                setcookie($this-> cookieName, $this -> cookieValue,  time() + (86400 * 30));
                 header("Location: ?controller=user&action=restaurantView");
                 exit();
             } else {

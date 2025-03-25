@@ -7,10 +7,18 @@ class UserController {
 
     public function __construct() {
         $this->userModel = new UserModel();
+        
+        if (!isset($_COOKIE)){
+            require_once "/";
+        } else {
+            print_r($_COOKIE);
+        }
+
     }
 
-    public function profile($id) {
-        $user = $this->userModel->getUserById($id);
+    public function profile() {
+        $user = $this->userModel->getUserByEmail($_COOKIE["Login_Info"]);
+        // print_r($user);
         require_once 'View/User/UserProfileView.php';
     }
 
