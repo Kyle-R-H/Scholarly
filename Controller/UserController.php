@@ -27,6 +27,8 @@ class UserController {
     }
 
     public function restaurantView(){
+        $restaurants = $this->userModel->getBusinesses("Restaurant");
+        // print_r($restaurants);
         require_once 'View/User/RestaurantView.php';    
     }
     

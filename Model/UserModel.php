@@ -67,5 +67,11 @@ public function getUserByEmail($email) {
 
         return $this->db->lastInsertId();
     }
+
+        // General method to fetch all businessTypes
+        public function getBusinesses($businessType) {
+            return $this->db->query("SELECT * FROM Business Where BusinessType = ?", [$businessType])->fetchAll(PDO::FETCH_ASSOC);
+        }
+
 }
 ?>

@@ -30,7 +30,7 @@ class AuthController extends Controller
 
     public function login()
     {
-        echo "<br> Login function called.<br>";
+        // echo "<br> Login function called.<br>";
 
         if ($_SERVER["REQUEST_METHOD"] == "POST") {
             echo "<br> In POST request.<br>";
