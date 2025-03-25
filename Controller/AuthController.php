@@ -88,6 +88,7 @@ class AuthController extends Controller
         $email = $_POST['RegisterEmail'] ?? 'EMPTY';
         $password = $_POST['RegisterPassword'] ?? 'EMPTY';
         $confirmPassword = $_POST['RegisterConfirmPassword'] ?? 'EMPTY';
+
         echo "Email: " . htmlspecialchars($email) . "<br>";
         echo "Password: " . htmlspecialchars($password) . "<br>";
         echo "Confirm password: " . htmlspecialchars($confirmPassword) . "<br>";
@@ -103,22 +104,25 @@ class AuthController extends Controller
         echo "<br>Query executed, result: <pre>" . print_r($user, true) . "</pre>";
 
         // Check if user exists
+        if(!empty($email)){
+            if (!$user) {
+                echo "User with email $email not found, new user :)<br>";
 
-        if (!$user) {
-            echo "User with email $email not found, new user :)<br>";
-
-            if($password == $confirmPassword){
-                echo "Passwords match :)";
-            } else if (!empty($password) && !empty($confirmPassword)){
-                echo "Passwords don't match :(";
+                if ($password == $confirmPassword){
+                    echo "Passwords match :)<br>";
+                    $this->userModel->registerUser("John", "Doe", $email, $password);
+                } else if (empty($password) || empty($confirmPassword)){
+                    echo "One of the passwords is empty :(<br>";
+                } else {
+                    echo "Passwords don't match :(<br>";
+                }
             } else {
-                echo "One of the passwords is empty :(";
+                echo "User already exists :(<br>";
+                $error = "User with that email already exists. Go to login page instead.";
             }
-        }else {
-            echo "User already exists :(<br>";
-            $error = "User with that email already exists. Go to login page instead.";
+        } else {
+            echo "Empty email :(<br>";
         }
-        
 
         $this->view('Auth/RegisterView', isset($error) ? ['error' => $error] : []);
     }
