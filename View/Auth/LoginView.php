@@ -39,7 +39,7 @@
                     </form>
 
                     <div class="pt-4" style="text-align:center">
-                        Register a new account <a href="?controller=auth&action=register">here</a>.
+                        Register a new account <a href="?controller=auth&action=registerView">here</a>.
                     </div>
                 </div>
             </div>

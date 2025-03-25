@@ -34,7 +34,7 @@
                             
                             <div class="form-floating mb-4">
                                 <input name="RegisterConfirmPassword" id="confirmPasswordInput" type="password" class="form-control" placeholder="Password">
-                                
+
                                 <label for="confirmPasswordInput">Confirm password</label>
                             </div>
                             

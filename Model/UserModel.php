@@ -52,10 +52,20 @@ public function getUserByEmail($email) {
     }
 
     // TODO: Complete
-    // public function registerUser($name, $email, $password) {
-    //     $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
-    //     $this->db->query("INSERT INTO Users (name, email, password) VALUES (?, ?, ?)", [$name, $email, $hashedPassword]);
-        // return $this->db->lastInsertId();
-    // }
+    public function registerUser($firstName, $lastName, $email, $password) {
+        // Generate UserID, max ID in user table + 1
+        $userID = 123;
+
+        $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
+
+        $this->db->query(
+            "INSERT INTO Users (UserID, Email, Password, PermissionLevel, VerifiedCustomer, FirstName, LastName) VALUES (?, ?, ?, ?, ?, ?, ?)"
+            ,[$userID, $email, $hashedPassword, 0, 0, $firstName, $lastName]
+        );
+
+        echo "Got past insert query";
+
+        return $this->db->lastInsertId();
+    }
 }
 ?>
