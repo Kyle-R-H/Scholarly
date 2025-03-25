@@ -103,18 +103,22 @@ class AuthController extends Controller
         echo "<br>Query executed, result: <pre>" . print_r($user, true) . "</pre>";
 
         // Check if user exists
+
         if (!$user) {
             echo "User with email $email not found, new user :)<br>";
 
             if($password == $confirmPassword){
                 echo "Passwords match :)";
-            } else{
+            } else if (!empty($password) && !empty($confirmPassword)){
                 echo "Passwords don't match :(";
+            } else {
+                echo "One of the passwords is empty :(";
             }
-        } else {
+        }else {
             echo "User already exists :(<br>";
             $error = "User with that email already exists. Go to login page instead.";
         }
+        
 
         $this->view('Auth/RegisterView', isset($error) ? ['error' => $error] : []);
     }
