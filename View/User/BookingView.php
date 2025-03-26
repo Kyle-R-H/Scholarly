@@ -1,23 +1,22 @@
 <!DOCTYPE html>
+<html>
 
 <head>
-    <title>Restaurants</title>
-    <meta charset="utf-8">
+    <title>User Settings</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="public\css\Styles.css">
+    <link href="../../../public/css/Styles.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </head>
-
 
 <body class="d-flex flex-column min-vh-100">
     <!-- Header -->
     <header class="py-3 ps-4 pe-5 border-bottom">
         <div class="container-fluid">
             <div class="d-flex flex-wrap align-items-center justify-content-center">
-            <img class="pt-1 px-3" src="Public\Images\scholarly logo.png" alt="Scholarly Logo" height="40" width="auto">
-            <ul class="nav col-12 col-lg-auto me-lg-auto justify-content-center mb-md-0">
-                    <li><a href="?controller=user&action=restaurantView" class="nav-link px-2 link-secondary">Restaurants</a></li>
+                <img class="pt-1 px-3" src="..\..\Public\Images\scholarly logo.png" alt="Scholarly Logo" height="40" width="auto">
+                <ul class="nav col-12 col-lg-auto me-lg-auto justify-content-center mb-md-0">
+                    <li><a href="?controller=user&action=restaurantView" class="nav-link px-2 link-body-emphasis">Restaurants</a></li>
                     <li><a href="?controller=user&action=servicesView" class="nav-link px-2 link-body-emphasis">Services</a></li>
                     <li><a href="?controller=user&action=eventsView" class="nav-link px-2 link-body-emphasis">Events</a></li>
                     <li><a href="?controller=user&action=activitiesView" class="nav-link px-2 link-body-emphasis">Activities</a></li>
@@ -44,7 +43,7 @@
                 <!-- Profile and Dropdown Section -->
                 <div class="dropdown text-end">
                     <a href="#" class="d-block link-body-emphasis text-decoration-none dropdown-toggle p-2 ms-1" data-bs-toggle="dropdown" aria-expanded="false">
-                        <img src="Public\Images\default_pfp_128.png" class="border" height="34" width="34" alt="pfp" style="border-radius: 50%;">
+                        <img src="..\..\Public\Images\default_pfp_128.png" class="border" height="34" width="34" alt="pfp" style="border-radius: 50%;">
                     </a>
                     <ul class="dropdown-menu text-small">
                         <li><a class="dropdown-item" href="?controller=user&action=profile">Profile</a></li>
@@ -52,7 +51,7 @@
                         <li>
                             <hr class="dropdown-divider">
                         </li>
-                        <li><a class="dropdown-item" href="?controller=auth&action=logout">Sign out</a></li>
+                        <li><a class="dropdown-item" href="#">Sign out</a></li>
                     </ul>
                 </div>
             </div>
@@ -65,76 +64,42 @@
         <div class="border-end d-flex flex-column p-3" style="width: 280px; min-width: 160px;">
             <ul class="nav nav-pills flex-column ">
                 <li class="nav-item">
-                    <a href="#" class="nav-link active" aria-current="page">Restaurants</a>
+                    <a href="#" class="nav-link active" aria-current="page">Order Again</a>
                 </li>
                 <li class="nav-item">
-                    <a href="#" class="nav-link link-body-emphasis">Active Orders</a>
+                    <a href="#" class="nav-link link-body-emphasis">Chefs favourites</a>
                 </li>
                 <li>
-                    <a href="#" class="nav-link link-body-emphasis">Past Orders</a>
+                    <a href="#" class="nav-link delete-account">Current Order</a>
                 </li>
-                <hr>
-                <!-- Search Bar Funcitonality -->
-                <form class="" role="search">
-                    <input type="search" class="form-control" placeholder="Search..." aria-label="Search">
-                </form>
             </ul>
         </div>
 
         <!-- Main Content -->
-        <div class="px-5 py-3" style="width: 100%;">
-            
-            <?php foreach ($restaurants as $restaurant): ?>
+        <!-- query from databse output to array-->
+
+        <div class="p-2">
                 <div class="row px-4 pe-lg-0 align-items-center rounded-3 border shadow-lg">
                     <div class="col-lg-7 p-5 p-lg-5">
-                        <h1 class="display-5 fw-bold lh-1 text-body-emphasis"><?= htmlspecialchars($restaurant['BusinessName']) ?></h1>
-                        <p class="lead"><?= htmlspecialchars($restaurant['Description']) ?></p>
+                        <h1 class="display-5 fw-bold lh-1 text-body-emphasis">The Pavilion</h1>
+                        <p class="lead">The Pavilion is across the living bridge near the UL student accomodation Cappavilla and Quigley.</p>
                         <div class="d-grid gap-2 d-md-flex justify-content-md-start mb-4 mb-lg-3">
-                            <button type="button" class="btn btn-lg px-4">Menu</button>
+                            <a href="?controller=user&action=bookingView">
+                            </a>
                         </div>
                     </div>
                     <div class="col-lg-4 offset-lg-1 p-0 overflow-hidden shadow-lg">
-                        <img class="rounded-lg-3" src="<?= htmlspecialchars($restaurant['Image']) ?>" alt="" height="320">
+                        <img class="rounded-lg-3" src="https://images.squarespace-cdn.com/content/v1/61796275318d4c3e85af1070/23f92d71-4877-4d00-a860-2b7f1d36388c/External_home_paviliom.jpg"
+                            alt="" height="320">
                     </div>
                 </div>
-                <hr>
-            <?php endforeach; ?>
-
-
-
-
-
-            <!-- <div class="row px-4 pe-lg-0 align-items-center rounded-3 border shadow-lg">
-                <div class="col-lg-7 p-5 p-lg-5">
-                    <h1 class="display-5 fw-bold lh-1 text-body-emphasis">The Pavilion</h1>
-                    <p class="lead">The Pavilion is across the living bridge near the UL student accomodation Cappavilla and Quigley.</p>
-                    <div class="d-grid gap-2 d-md-flex justify-content-md-start mb-4 mb-lg-3">
-                        <button type="button" class="btn  btn-lg px-4">Menu</button>
-                    </div>
-                </div>
-                <div class="col-lg-4 offset-lg-1 p-0 overflow-hidden shadow-lg">
-                    <img class="rounded-lg-3" src="https://images.squarespace-cdn.com/content/v1/61796275318d4c3e85af1070/23f92d71-4877-4d00-a860-2b7f1d36388c/External_home_paviliom.jpg" 
-                    alt="" height="320">
-                </div>
-            </div>
-
-            <hr>
-            <div class="row px-4 pe-lg-0 align-items-center rounded-3 border shadow-lg">
-                <div class="col-lg-7 p-5 p-lg-5">
-                    <h1 class="display-5 fw-bold lh-1 text-body-emphasis">Stables</h1>
-                    <p class="lead">Stables is the go to student restaurant to get a meal and a drink in the center of campus.</p>
-                    <div class="d-grid gap-2 d-md-flex justify-content-md-start mb-4 mb-lg-3">
-                        <button type="button" class="btn  btn-lg px-4">Menu</button>
-                    </div>
-                </div>
-                <div class="col-lg-4 offset-lg-1 p-0 overflow-hidden shadow-lg" >
-                    <img class="rounded-lg-3 flex" src="https://lh4.googleusercontent.com/proxy/Jm2z6NXrTk3UcFlLCXk7FmrwfX8pEg1LYeEny4uj8P37FL2RwbRSOZiIGDQUTn03f-ucxfmuXxRxEfeKcfx6q7wBKnLNsFU" 
-                    alt="" height="320">
-                </div>
-            </div> -->
-
+                <?php
+                include("Database.php");
+              
+                $testsql = "SELECT * FROM users Where FirstName = 'Bob'";
+               $result = mysqli_query($conn, $testsql);
+                mysqli_close($conn);
+                ?>
         </div>
-    </div>
 
-</body>
-
+</html>

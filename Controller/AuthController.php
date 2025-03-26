@@ -9,6 +9,8 @@ require_once 'Core/Controller.php';
 class AuthController extends Controller
 {
     private $userModel;
+    private $cookieName = "Login_Info";
+    private $cookieValue;
 
     public function __construct()
     {
@@ -67,7 +69,9 @@ class AuthController extends Controller
                 $_SESSION['UserID'] = $user['UserID'];
                 $_SESSION['FirstName'] = $user['FirstName'];
 
-                // echo "Redirecting to restaurantView...<br>";
+                $this -> cookieValue = $email;
+                setcookie($this-> cookieName, $this -> cookieValue,  time() + (86400 * 30));
+
                 header("Location: ?controller=user&action=restaurantView");
                 exit();
             } else {
@@ -118,7 +122,17 @@ class AuthController extends Controller
                 } else {
                     $error = "Passwords don't match.";
                     $this->view('Auth/RegisterView', isset($error) ? ['error' => $error] : []);
-                }
+
+                echo "User with email $email not found, new user :)<br>";
+
+
+                // if (($password == $confirmPassword) && (!empty($password) && !empty($confirmPassword))){
+                //     echo "Passwords match :> <br>";
+                //     echo "Statement == =" . ($password == $confirmPassword) . "<br> !empty = " . (!empty($password) && !empty($confirmPassword));
+                //     $this->userModel->registerUser("John", "Doe", $email, $password);
+                // } else {
+                //     echo "Passwords don't match :(<br>";
+                // }
             } else {
                 $error = "User with that email already exists.";
                 $this->view('Auth/RegisterView', isset($error) ? ['error' => $error] : []);

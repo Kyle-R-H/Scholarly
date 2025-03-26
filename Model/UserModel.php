@@ -51,6 +51,10 @@ public function getUserByEmail($email) {
         return $this->db->query("SELECT * FROM Users WHERE UserID = ?", [$userId])->fetch(PDO::FETCH_ASSOC);
     }
 
+    public function getItemsByBusiness($businessName) {
+        return $this->db->query("SELECT * FROM item WHERE BusinessName = ?", [$businessName])->fetch(PDO::FETCH_ASSOC);
+    }
+
     // TODO: Complete
     public function registerUser($firstName, $lastName, $email, $password) {
         // Generate UserID, max ID in user table + 1
@@ -65,5 +69,15 @@ public function getUserByEmail($email) {
 
         return $this->db->lastInsertId();
     }
+
+        // General method to fetch all businessTypes
+        public function getBusinesses($businessType) {
+            return $this->db->query("SELECT * FROM Business Where BusinessType = ?", [$businessType])->fetchAll(PDO::FETCH_ASSOC);
+        }
+        
+        public function getItems($businessName){
+            return $this->db->query("SELECT * FROM Item Where BusinessName = ?", [$businessName])->fetchAll(PDO::FETCH_ASSOC);
+        }
+
 }
 ?>
