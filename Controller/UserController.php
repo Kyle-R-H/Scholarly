@@ -8,9 +8,10 @@ class UserController extends Controller {
     public function __construct() {
         $this->userModel = new UserModel();
         
-        if (!isset($_COOKIE)){
-            require_once "/";
-        } else {
+        if (!isset($_COOKIE['Login_Info'])){
+            require_once "View/Auth/LoginView.php";
+        } 
+        else {
             print_r($_COOKIE);
         }
 
@@ -26,24 +27,72 @@ class UserController extends Controller {
         require_once 'View/User/UserSettingsView.php';
     }
 
-    public function restaurantView(){
+    public function restaurantView() {
+        // Fetch all restaurants from the database
         $restaurants = $this->userModel->getBusinesses("Restaurant");
         // print_r($restaurants);
-        require_once 'View/User/RestaurantView.php';    
+    
+        // Get search query from Form POST
+        $searchQuery = $_POST['search'] ?? '';
+        // echo "<br> Search Q: "; print_r($searchQuery);
+        
+        // Filter restaurants based on the search query
+        if (!empty($searchQuery)) {
+            $restaurants = array_filter($restaurants, function ($restaurant) use ($searchQuery) {
+                return stripos($restaurant['BusinessName'], $searchQuery) !== false;
+            });
+        }
+
+        require_once 'View/User/RestaurantView.php';
     }
     
     public function eventsView(){
         $events = $this->userModel->getBusinesses("Event");
+
+        // Get search query from Form POST
+        $searchQuery = $_POST['search'] ?? '';
+        // echo "<br> Search Q: "; print_r($searchQuery);
+        
+        // Filter restaurants based on the search query
+        if (!empty($searchQuery)) {
+            $events = array_filter($events, function ($events) use ($searchQuery) {
+                return stripos($events['BusinessName'], $searchQuery) !== false;
+            });
+        }
+        
         require_once 'View/User/EventsView.php';    
     }
     
     public function servicesView(){
         $services = $this->userModel->getBusinesses("Service");
+
+        // Get search query from Form POST
+        $searchQuery = $_POST['search'] ?? '';
+        // echo "<br> Search Q: "; print_r($searchQuery);
+        
+        // Filter restaurants based on the search query
+        if (!empty($searchQuery)) {
+            $services = array_filter($services, function ($services) use ($searchQuery) {
+                return stripos($services['BusinessName'], $searchQuery) !== false;
+            });
+        }
+
         require_once 'View/User/ServicesView.php';    
     }
     
     public function activitiesView(){
         $activities = $this->userModel->getBusinesses("Activity");
+
+        // Get search query from Form POST
+        $searchQuery = $_POST['search'] ?? '';
+        // echo "<br> Search Q: "; print_r($searchQuery);
+        
+        // Filter restaurants based on the search query
+        if (!empty($searchQuery)) {
+            $activities = array_filter($activities, function ($activities) use ($searchQuery) {
+                return stripos($activities['BusinessName'], $searchQuery) !== false;
+            });
+        }
         require_once 'View/User/ActivitiesView.php';    
     }
 
