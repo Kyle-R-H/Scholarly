@@ -72,6 +72,10 @@ public function getUserByEmail($email) {
         public function getBusinesses($businessType) {
             return $this->db->query("SELECT * FROM Business Where BusinessType = ?", [$businessType])->fetchAll(PDO::FETCH_ASSOC);
         }
+        
+        public function getItems($businessName){
+            return $this->db->query("SELECT * FROM Item Where BusinessName = ?", [$businessName])->fetchAll(PDO::FETCH_ASSOC);
+        }
 
 }
 ?>

@@ -33,14 +33,17 @@ class UserController {
     }
     
     public function eventsView(){
+        $events = $this->userModel->getBusinesses("Event");
         require_once 'View/User/EventsView.php';    
     }
-
+    
     public function servicesView(){
+        $services = $this->userModel->getBusinesses("Service");
         require_once 'View/User/ServicesView.php';    
     }
     
     public function activitiesView(){
+        $activities = $this->userModel->getBusinesses("Activity");
         require_once 'View/User/ActivitiesView.php';    
     }
 
