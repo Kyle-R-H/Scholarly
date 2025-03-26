@@ -18,30 +18,30 @@ class UserModel {
 
 // Fetch user by email
 public function getUserByEmail($email) {
-    echo "<br> In UserModel-getUserByEmail";  // Confirm method is called
+    // echo "<br> In UserModel-getUserByEmail";  // Confirm method is called
 
     $query = "SELECT * FROM Users WHERE Email = ?";
-    echo "<br> Query to execute: " . $query;
+    // echo "<br> Query to execute: " . $query;
 
     $stmt = $this->db->query($query, [$email]); // Call query() method
-    echo "<br> Query executed. Checking if statement is valid...";
+    // echo "<br> Query executed. Checking if statement is valid...";
 
     if (!$stmt) {
-        echo "<br> Query execution failed!";
+        // echo "<br> Query execution failed!";
         return null;
     }
 
-    echo "<br> Query executed successfully. Fetching results...";
+    // echo "<br> Query executed successfully. Fetching results...";
 
     $userEmail = $stmt->fetch(PDO::FETCH_ASSOC); // Fetch result
-    echo "<br> UserEmail result: " . print_r($userEmail, true);
+    // echo "<br> UserEmail result: " . print_r($userEmail, true);
 
     if (!$userEmail) {
-        echo "<br> No user found with email: " . $email;
+        // echo "<br> No user found with email: " . $email;
         return null;
     }
 
-    echo "<br> User found! Returning data...";
+    // echo "<br> User found! Returning data...";
     return $userEmail;
 }
 
@@ -52,24 +52,32 @@ public function getUserByEmail($email) {
     }
 
     public function getItemsByBusiness($businessName) {
-        return $this->db->query("SELECT * FROM item WHERE BusinessName = ?", [$businessName])->fetch(PDO::FETCH_ASSOC);
+        return $this->db->query("SELECT * FROM Item WHERE BusinessName = ?", [$businessName])->fetchAll(PDO::FETCH_ASSOC);
     }
 
     // TODO: Complete
     public function registerUser($firstName, $lastName, $email, $password) {
         // Generate UserID, max ID in user table + 1
-        $userID = 123;
+        $maxUserID = $this->db->query("SELECT MAX(UserID) FROM Users")->fetch(PDO::FETCH_ASSOC);
 
         $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
 
         $this->db->query(
             "INSERT INTO Users (UserID, Email, Password, PermissionLevel, VerifiedCustomer, FirstName, LastName) VALUES (?, ?, ?, ?, ?, ?, ?)"
-            ,[$userID, $email, $hashedPassword, 0, 0, $firstName, $lastName]
+            ,[$maxUserID["MAX(UserID)"] + 1, $email, $hashedPassword, 0, 0, $firstName, $lastName]
         );
-
-        echo "Got past insert query";
 
         return $this->db->lastInsertId();
     }
+
+        // General method to fetch all businessTypes
+        public function getBusinesses($businessType) {
+            return $this->db->query("SELECT * FROM Business Where BusinessType = ?", [$businessType])->fetchAll(PDO::FETCH_ASSOC);
+        }
+        
+        public function getItems($businessName){
+            return $this->db->query("SELECT * FROM Item Where BusinessName = ?", [$businessName])->fetchAll(PDO::FETCH_ASSOC);
+        }
+
 }
 ?>

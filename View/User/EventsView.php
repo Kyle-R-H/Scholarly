@@ -78,8 +78,25 @@
 
         <!-- Main Content -->
         <div class="px-5 py-3" style="width: 100%;">
-            <!-- TODO: Create Events Info -->
-            <div class="row px-4 pe-lg-0 align-items-center rounded-3 border shadow-lg">
+            <?php foreach ($events as $event): ?>
+                <div class="row px-4 pe-lg-0 align-items-center rounded-3 border shadow-lg">
+                    <div class="col-lg-7 p-5 p-lg-5">
+                        <h1 class="display-5 fw-bold lh-1 text-body-emphasis"><?= htmlspecialchars($event['BusinessName']) ?></h1>
+                        <p class="lead"><?= htmlspecialchars($event['Description']) ?></p>
+                        <div class="d-grid gap-2 d-md-flex justify-content-md-start mb-4 mb-lg-3">
+                            <a href="<?= '?controller=user&action=bookingView&businessName=' . htmlspecialchars($event['BusinessName'])?>">
+                                <button type="button" class="btn btn-lg px-4">Menu</button>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="col-lg-4 offset-lg-1 p-0 overflow-hidden shadow-lg">
+                        <img class="rounded-lg-3" src="<?= htmlspecialchars($event['Image']) ?>" alt="" height="320">
+                    </div>
+                </div>
+                <hr>
+            <?php endforeach; ?>
+
+            <!-- <div class="row px-4 pe-lg-0 align-items-center rounded-3 border shadow-lg">
                 <div class="col-lg-7 p-5 p-lg-5">
                     <h1 class="display-5 fw-bold lh-1 text-body-emphasis">Quiz Night</h1>
                     <p class="lead">Book now to join our weekly quiz night at Stables.</p>
@@ -106,7 +123,9 @@
                     <img class="rounded-lg-3 flex" src="https://ulstudentlife.ie/pageassets/info/UL-Student-Life-Pool-Room-800x450.jpg" 
                     alt="" height="320" >
                 </div>
-            </div>
+            </div> -->
+        
+        
         </div>
     </div>
 

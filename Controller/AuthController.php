@@ -9,6 +9,8 @@ require_once 'Core/Controller.php';
 class AuthController extends Controller
 {
     private $userModel;
+    private $cookieName = "Login_Info";
+    private $cookieValue;
 
     public function __construct()
     {
@@ -28,50 +30,52 @@ class AuthController extends Controller
 
     public function login()
     {
-        echo "<br> Login function called.<br>";
+        // echo "<br> Login function called.<br>";
 
         if ($_SERVER["REQUEST_METHOD"] == "POST") {
-            echo "<br> In POST request.<br>";
+            // echo "<br> In POST request.<br>";
 
             // Debugging input values
             $email = $_POST['Email'] ?? 'EMPTY';
             $password = $_POST['Password'] ?? 'EMPTY';
-            echo "Email: " . htmlspecialchars($email) . "<br>";
-            echo "Password: " . htmlspecialchars($password) . "<br>";
+            // echo "Email: " . htmlspecialchars($email) . "<br>";
+            // echo "Password: " . htmlspecialchars($password) . "<br>";
 
             // Check if userModel is set
             if (!$this->userModel) {
                 die("Error: userModel is NULL! Check if it is being initialized correctly.");
             }
-            echo "UserModel is set.<br>";
+            // echo "UserModel is set.<br>";
 
             // Fetch user from database
             $user = $this->userModel->getUserByEmail($email);
-            echo "Query executed, result: <pre>" . print_r($user, true) . "</pre>";
+            // echo "Query executed, result: <pre>" . print_r($user, true) . "</pre>";
 
             // Check if user exists
-            if (!$user) {
-                echo "Error: No user found with email $email!<br>";
-            } else {
-                echo "User found!<br>";
-            }
+            // if (!$user) {
+            //     echo "Error: No user found with email $email!<br>";
+            // } else {
+            //     echo "User found!<br>";
+            // }
 
             // Verify password
             $passwordMatch = password_verify($password, $user['Password'] ?? '');
-            echo "Password Verify Result: " . ($passwordMatch ? "MATCH" : "NO MATCH") . "<br>";
-            echo "Password Result: " . $passwordMatch;
+            // echo "Password Verify Result: " . ($passwordMatch ? "MATCH" : "NO MATCH") . "<br>";
+            // echo "Password Result: " . $passwordMatch;
 
             if ($user && $passwordMatch) {
-                echo "User authenticated, setting session variables.<br>";
+                // echo "User authenticated, setting session variables.<br>";
 
                 $_SESSION['UserID'] = $user['UserID'];
                 $_SESSION['FirstName'] = $user['FirstName'];
 
-                echo "Redirecting to restaurantView...<br>";
+                $this -> cookieValue = $email;
+                setcookie($this-> cookieName, $this -> cookieValue,  time() + (86400 * 30));
+
                 header("Location: ?controller=user&action=restaurantView");
                 exit();
             } else {
-                echo "Invalid credentials, displaying error.<br>";
+                // echo "Invalid credentials, displaying error.<br>";
                 $error = "Invalid email or password.";
             }
         }
@@ -82,68 +86,51 @@ class AuthController extends Controller
 
     public function register()
     {
-        echo "<br>Register function called.<br>";
+        // echo "<br>Register function called.<br>";
 
         // Debugging input values
         $email = $_POST['RegisterEmail'] ?? 'EMPTY';
         $password = $_POST['RegisterPassword'] ?? 'EMPTY';
         $confirmPassword = $_POST['RegisterConfirmPassword'] ?? 'EMPTY';
-
-        echo "Email: " . htmlspecialchars($email) . "<br>";
-        echo "Password: " . htmlspecialchars($password) . "<br>";
-        echo "Confirm password: " . htmlspecialchars($confirmPassword) . "<br>";
+        $firstName = $_POST['RegisterFirstName'] ?? 'EMPTY';
+        $lastName = $_POST['RegisterLastName'] ?? 'EMPTY';
 
         // Check if userModel is set
         if (!$this->userModel) {
             die("Error: userModel is NULL! Check if it is being initialized correctly.");
         }
-        echo "UserModel is set.<br>";
 
         // Fetch user from database
         $user = $this->userModel->getUserByEmail($email);
-        echo "<br>Query executed, result: <pre>" . print_r($user, true) . "</pre>";
+        // echo "<br>Query executed, result: <pre>" . print_r($user, true) . "</pre>";
 
-        // Check if user exists
+
         if(!empty($email)){
             if (!$user) {
-                echo "User with email $email not found, new user :)<br>";
+                // Check if passwords match and aren't empty
+                if ($password == $confirmPassword){
+                    // Successful registration
+                    $this->userModel->registerUser($firstName, $lastName, $email, $password);
 
-                // if password == confirmPassword && both not empty
-                // else dont
-                if (empty($password)){
-                    echo "Password is empty <br>";
-                } else if (empty($confirmPassword)){
-                    echo "ConfirmPassword is empty <br>";
-                } else if ($password == $confirmPassword){
-                    echo "Password matches confirmPassword <br>";
-                    echo "<br>Email Type: " . gettype($email);
-                    echo "<br>Password Type: " . gettype($password);
-                    echo "<br>Confirm Password Type: " . gettype($confirmPassword);
+                    $userDetails = $this->userModel->getUserByEmail($email);
+                    $_SESSION['UserID'] = $userDetails['UserID'];
 
-                    echo "<br>Email: " . $email;
-                    echo "<br>Password: " . $password;
-                    echo "<br>Confirm Password: " . $confirmPassword;
-
+                    $this->view('User/RestaurantView', isset($error) ? ['error' => $error] : []);
+                } else if (empty($password) || empty($confirmPassword)){
+                    $error = "One of the passwords is empty.";
+                    $this->view('Auth/RegisterView', isset($error) ? ['error' => $error] : []);
+                } else {
+                    $error = "Passwords don't match.";
+                    $this->view('Auth/RegisterView', isset($error) ? ['error' => $error] : []);
                 }
-
-
-
-                // if (($password == $confirmPassword) && (!empty($password) && !empty($confirmPassword))){
-                //     echo "Passwords match :> <br>";
-                //     echo "Statement == =" . ($password == $confirmPassword) . "<br> !empty = " . (!empty($password) && !empty($confirmPassword));
-                //     $this->userModel->registerUser("John", "Doe", $email, $password);
-                // } else {
-                //     echo "Passwords don't match :(<br>";
-                // }
             } else {
-                echo "User already exists :(<br>";
-                $error = "User with that email already exists. Go to login page instead.";
+                $error = "User with that email already exists.";
+                $this->view('Auth/RegisterView', isset($error) ? ['error' => $error] : []);
             }
         } else {
-            echo "Empty email :(<br>";
+            // Empty email
+            $this->view('Auth/RegisterView', isset($error) ? ['error' => $error] : []);
         }
-
-        $this->view('Auth/RegisterView', isset($error) ? ['error' => $error] : []);
     }
 
 

@@ -78,7 +78,27 @@
 
         <!-- Main Content -->
         <div class="px-5 py-3" style="width: 100%;">
-            <!-- TODO: Create Services Info -->
+            <?php foreach ($services as $service): ?>
+                <div class="row px-4 pe-lg-0 align-items-center rounded-3 border shadow-lg">
+                    <div class="col-lg-7 p-5 p-lg-5">
+                        <h1 class="display-5 fw-bold lh-1 text-body-emphasis"><?= htmlspecialchars($service['BusinessName']) ?></h1>
+                        <p class="lead"><?= htmlspecialchars($service['Description']) ?></p>
+                        <div class="d-grid gap-2 d-md-flex justify-content-md-start mb-4 mb-lg-3">
+                            <a href="<?= '?controller=user&action=bookingView&businessName=' . htmlspecialchars($service['BusinessName'])?>">
+                                <button type="button" class="btn btn-lg px-4">Menu</button>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="col-lg-4 offset-lg-1 p-0 overflow-hidden shadow-lg">
+                        <img class="rounded-lg-3" src="<?= htmlspecialchars($service['Image']) ?>" alt="" height="320">
+                    </div>
+                </div>
+                <hr>
+            <?php endforeach; ?>
+
+
+
+            <!-- TODO: Create Services Info
             <div class="row px-4 pe-lg-0 align-items-center rounded-3 border shadow-lg">
                 <div class="col-lg-7 p-5 p-lg-5">
                     <h1 class="display-5 fw-bold lh-1 text-body-emphasis">House Cleaning</h1>
@@ -106,7 +126,7 @@
                     <img class="rounded-lg-3 flex" src="https://assets-eu-01.kc-usercontent.com/aa24ba70-9a12-01ae-259b-7ef588a0b2ef/1083fb38-ecbb-4411-8ad3-8eff07c2ffa8/carlingford-greenway-bicycle-hire-shop-front.jpg?w=1332&q=66&h=750&fit=crop&fm=jpg" 
                     alt="" height="320" >
                 </div>
-            </div>
+            </div> -->
         </div>
     </div>
 

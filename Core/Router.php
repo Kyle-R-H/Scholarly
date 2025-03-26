@@ -33,9 +33,14 @@ if (file_exists($controllerPath)) {
     // print_r(get_declared_classes());
     // echo "<br> controller instance";
     if (method_exists($controllerInstance, $action)) {
+        // Get parameters after action
+        $params = $_GET;
+
+        // Remove controller and action
+        unset($params['controller'], $params['action']); 
+
         // Call the action with parameters if available
-        // echo "<br> method exists";
-        call_user_func_array([$controllerInstance, $action],[]);
+        call_user_func_array([$controllerInstance, $action],$params);
     } else {
         echo "Error: Action '$action' not found in controller '$controllerName'.";
         require "View/Error.php";
