@@ -18,6 +18,7 @@ class Database {
             ]);
         } catch (PDOException $e) {
             die("Database connection failed: " . $e->getMessage());
+            require_once "View/ErrorView.php";
         }
     }
 

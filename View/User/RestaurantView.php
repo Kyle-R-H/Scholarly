@@ -73,12 +73,38 @@
                 <li>
                     <a href="#" class="nav-link link-body-emphasis">Past Orders</a>
                 </li>
+                <hr>
+                <!-- Search Bar Funcitonality -->
+                <form class="" role="search">
+                    <input type="search" class="form-control" placeholder="Search..." aria-label="Search">
+                </form>
             </ul>
         </div>
 
         <!-- Main Content -->
         <div class="px-5 py-3" style="width: 100%;">
-            <div class="row px-4 pe-lg-0 align-items-center rounded-3 border shadow-lg">
+            
+            <?php foreach ($restaurants as $restaurant): ?>
+                <div class="row px-4 pe-lg-0 align-items-center rounded-3 border shadow-lg">
+                    <div class="col-lg-7 p-5 p-lg-5">
+                        <h1 class="display-5 fw-bold lh-1 text-body-emphasis"><?= htmlspecialchars($restaurant['BusinessName']) ?></h1>
+                        <p class="lead"><?= htmlspecialchars($restaurant['Description']) ?></p>
+                        <div class="d-grid gap-2 d-md-flex justify-content-md-start mb-4 mb-lg-3">
+                            <button type="button" class="btn btn-lg px-4">Menu</button>
+                        </div>
+                    </div>
+                    <div class="col-lg-4 offset-lg-1 p-0 overflow-hidden shadow-lg">
+                        <img class="rounded-lg-3" src="<?= htmlspecialchars($restaurant['Image']) ?>" alt="" height="320">
+                    </div>
+                </div>
+                <hr>
+            <?php endforeach; ?>
+
+
+
+
+
+            <!-- <div class="row px-4 pe-lg-0 align-items-center rounded-3 border shadow-lg">
                 <div class="col-lg-7 p-5 p-lg-5">
                     <h1 class="display-5 fw-bold lh-1 text-body-emphasis">The Pavilion</h1>
                     <p class="lead">The Pavilion is across the living bridge near the UL student accomodation Cappavilla and Quigley.</p>
@@ -105,14 +131,10 @@
                     <img class="rounded-lg-3 flex" src="https://lh4.googleusercontent.com/proxy/Jm2z6NXrTk3UcFlLCXk7FmrwfX8pEg1LYeEny4uj8P37FL2RwbRSOZiIGDQUTn03f-ucxfmuXxRxEfeKcfx6q7wBKnLNsFU" 
                     alt="" height="320">
                 </div>
-            </div>
+            </div> -->
 
         </div>
     </div>
 
 </body>
 
-<!-- Search Bar Funcitonality -->
-<!-- <form class="col-12 col-lg-auto mb-3 mb-lg-0 me-lg-3" role="search">
-    <input type="search" class="form-control" placeholder="Search..." aria-label="Search">
-</form> -->
