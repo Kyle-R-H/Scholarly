@@ -73,6 +73,14 @@
                 <li>
                     <a href="#" class="nav-link link-body-emphasis">Past Bookings</a>
                 </li>
+                <hr>
+                <!-- Search Bar Functionality -->
+                <form method="POST" role="search">
+                    <input type="hidden" name="controller" value="user">
+                    <input type="hidden" name="action" value="restaurantView">
+                    <input type="search" class="form-control" name="search" placeholder="Search..."
+                        value="<?= isset($_POST['search']) ? htmlspecialchars($_POST['search']) : '' ?>">
+                </form>
             </ul>
         </div>
 
