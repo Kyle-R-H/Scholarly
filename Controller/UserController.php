@@ -2,7 +2,7 @@
 require_once 'Model/UserModel.php';
 require_once 'Core/Database.php'; // If Database.php is used
 
-class UserController {
+class UserController extends Controller {
     private $userModel;
 
     public function __construct() {
@@ -32,6 +32,12 @@ class UserController {
     
     public function activitiesView(){
         require_once 'View/User/ActivitiesView.php';    
+    }
+
+    public function bookingView($businessName)
+    {
+        $items = $this->userModel->getItemsByBusiness($businessName);  
+        $this->view('User/BookingView', isset($error) ? ['error' => $error] : []);
     }
 
 }
