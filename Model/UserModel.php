@@ -51,6 +51,10 @@ public function getUserByEmail($email) {
         return $this->db->query("SELECT * FROM Users WHERE UserID = ?", [$userId])->fetch(PDO::FETCH_ASSOC);
     }
 
+    public function getItemsByBusiness($businessName) {
+        return $this->db->query("SELECT * FROM item WHERE BusinessName = ?", [$businessName])->fetch(PDO::FETCH_ASSOC);
+    }
+
     // TODO: Complete
     // public function registerUser($name, $email, $password) {
     //     $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
