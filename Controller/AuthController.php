@@ -104,7 +104,7 @@ class AuthController extends Controller
         $user = $this->userModel->getUserByEmail($email);
         // echo "<br>Query executed, result: <pre>" . print_r($user, true) . "</pre>";
 
-        // Check if user exists
+
         if(!empty($email)){
             if (!$user) {
                 // Check if passwords match and aren't empty
@@ -122,17 +122,7 @@ class AuthController extends Controller
                 } else {
                     $error = "Passwords don't match.";
                     $this->view('Auth/RegisterView', isset($error) ? ['error' => $error] : []);
-
-                echo "User with email $email not found, new user :)<br>";
-
-
-                // if (($password == $confirmPassword) && (!empty($password) && !empty($confirmPassword))){
-                //     echo "Passwords match :> <br>";
-                //     echo "Statement == =" . ($password == $confirmPassword) . "<br> !empty = " . (!empty($password) && !empty($confirmPassword));
-                //     $this->userModel->registerUser("John", "Doe", $email, $password);
-                // } else {
-                //     echo "Passwords don't match :(<br>";
-                // }
+                }
             } else {
                 $error = "User with that email already exists.";
                 $this->view('Auth/RegisterView', isset($error) ? ['error' => $error] : []);
