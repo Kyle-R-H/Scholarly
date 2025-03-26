@@ -52,7 +52,7 @@ public function getUserByEmail($email) {
     }
 
     public function getItemsByBusiness($businessName) {
-        return $this->db->query("SELECT * FROM item WHERE BusinessName = ?", [$businessName])->fetch(PDO::FETCH_ASSOC);
+        return $this->db->query("SELECT * FROM Item WHERE BusinessName = ?", [$businessName])->fetchAll(PDO::FETCH_ASSOC);
     }
 
     // TODO: Complete

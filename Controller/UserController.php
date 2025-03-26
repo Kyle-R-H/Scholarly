@@ -49,8 +49,19 @@ class UserController extends Controller {
 
     public function bookingView($businessName)
     {
-        $items = $this->userModel->getItemsByBusiness($businessName);  
-        $this->view('User/BookingView', isset($error) ? ['error' => $error] : []);
+        // echo "Booking page for: " . htmlspecialchars($businessName);
+
+        // Fetch items from db
+        $items = $this->userModel->getItemsByBusiness($businessName);
+        // echo "<br>Items:<br>";
+        // print_r($items);  
+
+        if ($businessName) {
+            $this->view('User/BookingView', ['items' => $items]);
+        } else {
+            echo "Business not found.";
+        }
+        // $this->view('User/BookingView', isset($error) ? ['error' => $error] : []);
     }
 
 }

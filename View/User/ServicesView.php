@@ -84,7 +84,9 @@
                         <h1 class="display-5 fw-bold lh-1 text-body-emphasis"><?= htmlspecialchars($service['BusinessName']) ?></h1>
                         <p class="lead"><?= htmlspecialchars($service['Description']) ?></p>
                         <div class="d-grid gap-2 d-md-flex justify-content-md-start mb-4 mb-lg-3">
-                            <button type="button" class="btn btn-lg px-4">Menu</button>
+                            <a href="<?= '?controller=user&action=bookingView&businessName=' . htmlspecialchars($service['BusinessName'])?>">
+                                <button type="button" class="btn btn-lg px-4">Menu</button>
+                            </a>
                         </div>
                     </div>
                     <div class="col-lg-4 offset-lg-1 p-0 overflow-hidden shadow-lg">
