@@ -9,13 +9,13 @@
 .btn{
     background-color: #00A750;
     color: white;
-    border-radius: 1vh;
+    border-radius: 0.6rem;
 }
 
 .btn:hover{
     background-color: #47FF9F;
     color: black;
-    border-radius: 1vh;
+    border-radius: 0.6rem;
 }
 
 .nav-link {
@@ -34,7 +34,7 @@
     z-index: -1; /* Places it behind the link */
     opacity: 0;
     transition: opacity 0.3s ease-in-out;
-    border-radius: 10vh;
+    border-radius: 1rem;
 }
 
 .nav-link:hover::before {
