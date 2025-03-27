@@ -9,9 +9,9 @@
 
     <body>
         <div class="container-fluid p-0 position-relative">
-            <img src="https://www.studiesup.com/wp-content/uploads/import/UL_Glucksman-Library-1-scaled.jpg" style="float:left; min-height:800px; height:100vh">
+            <img src="https://www.studiesup.com/wp-content/uploads/import/UL_Glucksman-Library-1-scaled.jpg" style="float:left; min-height:850px; height:100vh">
 
-            <div style="background-color:white; width:40vw; min-width:500px; min-height:800px;height:100vh; right:0;" class="justify-content-center position-absolute">
+            <div style="background-color:white; width:40vw; min-width:500px; min-height:850px;height:100vh; right:0;" class="justify-content-center position-absolute">
                 <div class="d-flex justify-content-center" style="margin-top:10vh;">
                     <div class="form-signin">
                         <img src="Public/Images/scholarly logo.png" style="height:5rem; width:auto;">
@@ -55,7 +55,7 @@
                         </form>
                         
                         <div class="pt-4" style="text-align:center;">
-                            Already have an account? Click <a href="?controller=auth&action=login">here</a>.
+                            Already have an account? Click <a href="?controller=auth&action=loginView">here</a>.
                         </div>
                     </div>
                 </div>
