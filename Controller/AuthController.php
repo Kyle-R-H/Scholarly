@@ -91,12 +91,12 @@ class AuthController extends Controller
 
                         // Business
                         case 1:
-                            header("Location: ?controller=business&action=businessDashboardView");
+                            header("Location: ?controller=business&action=DashboardView");
                             exit();
                         
                         // Admin
                         case 2:
-                            header("Location: ?controller=admin&action=adminDashboardView");
+                            header("Location: ?controller=admin&action=DashboardView");
                             exit();
                     }
                 } else {
