@@ -15,8 +15,8 @@
     <header class="py-3 ps-4 pe-5 border-bottom">
         <div class="container-fluid">
             <div class="d-flex flex-wrap align-items-center justify-content-center">
-            <img class="pt-1 px-3" src="Public\Images\scholarly logo.png" alt="Scholarly Logo" height="40" width="auto">
-            <ul class="nav col-12 col-lg-auto me-lg-auto justify-content-center mb-md-0">
+                <img class="pt-1 px-3" src="Public\Images\scholarly logo.png" alt="Scholarly Logo" height="40" width="auto">
+                <ul class="nav col-12 col-lg-auto me-lg-auto justify-content-center mb-md-0">
                     <li><a href="?controller=user&action=restaurantView" class="nav-link px-2 link-body-emphasis">Restaurants</a></li>
                     <li><a href="?controller=user&action=servicesView" class="nav-link px-2 link-secondary">Services</a></li>
                     <li><a href="?controller=user&action=eventsView" class="nav-link px-2 link-body-emphasis">Events</a></li>
@@ -44,11 +44,11 @@
                 <!-- Profile and Dropdown Section -->
                 <div class="dropdown text-end">
                     <a href="#" class="d-block link-body-emphasis text-decoration-none dropdown-toggle p-2 ms-1" data-bs-toggle="dropdown" aria-expanded="false">
-                    <img src="Public\Images\default_pfp_128.png" class="border" height="34" width="34" alt="pfp" style="border-radius: 50%;">
+                        <img src="Public\Images\default_pfp_128.png" class="border" height="34" width="34" alt="pfp" style="border-radius: 50%;">
                     </a>
                     <ul class="dropdown-menu text-small">
-                        <li><a class="dropdown-item" href="?controller=user&action=profile" >Profile</a></li>
-                        <li><a class="dropdown-item" href="?controller=user&action=settings" >Settings</a></li>
+                        <li><a class="dropdown-item" href="?controller=user&action=profile">Profile</a></li>
+                        <li><a class="dropdown-item" href="?controller=user&action=settings">Settings</a></li>
                         <li>
                             <hr class="dropdown-divider">
                         </li>
@@ -73,6 +73,14 @@
                 <li>
                     <a href="#" class="nav-link link-body-emphasis">Past Bookings</a>
                 </li>
+                <hr>
+                <!-- Search Bar Functionality -->
+                <form method="POST" role="search">
+                    <input type="hidden" name="controller" value="user">
+                    <input type="hidden" name="action" value="restaurantView">
+                    <input type="search" class="form-control" name="search" placeholder="Search..."
+                        value="<?= isset($_POST['search']) ? htmlspecialchars($_POST['search']) : '' ?>">
+                </form>
             </ul>
         </div>
 
@@ -84,7 +92,7 @@
                         <h1 class="display-5 fw-bold lh-1 text-body-emphasis"><?= htmlspecialchars($service['BusinessName']) ?></h1>
                         <p class="lead"><?= htmlspecialchars($service['Description']) ?></p>
                         <div class="d-grid gap-2 d-md-flex justify-content-md-start mb-4 mb-lg-3">
-                            <a href="<?= '?controller=user&action=bookingView&businessName=' . htmlspecialchars($service['BusinessName'])?>">
+                            <a href="<?= '?controller=user&action=bookingView&businessName=' . htmlspecialchars($service['BusinessName']) ?>">
                                 <button type="button" class="btn btn-lg px-4">Menu</button>
                             </a>
                         </div>

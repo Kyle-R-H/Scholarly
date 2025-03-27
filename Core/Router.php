@@ -38,9 +38,10 @@ if (file_exists($controllerPath)) {
 
         // Remove controller and action
         unset($params['controller'], $params['action']); 
-
+        
         // Call the action with parameters if available
-        call_user_func_array([$controllerInstance, $action],$params);
+        // echo "<br>".$params['search'];
+        call_user_func_array([$controllerInstance, $action], $params);
     } else {
         echo "Error: Action '$action' not found in controller '$controllerName'.";
         require "View/Error.php";
