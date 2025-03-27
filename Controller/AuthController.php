@@ -32,6 +32,7 @@ class AuthController extends Controller
         $user = $this->userModel->getUserByEmail($email);
 
         $permissionLevel = $user['PermissionLevel'];
+        echo $permissionLevel;
 
         return $permissionLevel;
     }
@@ -86,18 +87,18 @@ class AuthController extends Controller
                     switch($permissionLevel){
                         // User
                         case 0:
-                            $this->view('User/RestaurantView', isset($error) ? ['error' => $error] : []);
-                            break;
+                            header("Location: ?controller=user&action=restaurantView");
+                            exit();
 
                         // Business
                         case 1:
-                            $this->view('Business/BusinessDashboardView', isset($error) ? ['error' => $error] : []);
-                            break;
+                            header("Location: ?controller=business&action=businessDashboardView");
+                            exit();
                         
                         // Admin
                         case 2:
-                            $this->view('Admin/AdminDashboardView', isset($error) ? ['error' => $error] : []);
-                            break;
+                            header("Location: ?controller=admin&action=adminDashboardView");
+                            exit();
                     }
                 } else {
                     // echo "Invalid credentials, displaying error.<br>";
@@ -175,7 +176,7 @@ class AuthController extends Controller
     public function logout()
     {
         session_destroy();
-        header("Location: ?controller=auth&action=login");
+        header("Location: ?controller=auth&action=loginView");
         exit;
     }
 }
