@@ -8,7 +8,7 @@ class UserController extends Controller {
     public function __construct() {
         $this->userModel = new UserModel();
         
-        if (!isset($_COOKIE['Login_Info'])){
+        if (!isset($_COOKIE['Login_Info']) || $this->userModel->getUserByEmail($_COOKIE["Login_Info"])['PermissionLevel'] != 0){
             require_once "View/Auth/LoginView.php";
         } 
         else {
