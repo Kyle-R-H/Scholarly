@@ -32,7 +32,6 @@ class AuthController extends Controller
         $user = $this->userModel->getUserByEmail($email);
 
         $permissionLevel = $user['PermissionLevel'];
-        echo $permissionLevel;
 
         return $permissionLevel;
     }
