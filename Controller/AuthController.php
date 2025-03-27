@@ -147,7 +147,8 @@ class AuthController extends Controller
                     $this -> cookieValue = $email;
                     setcookie($this-> cookieName, $this -> cookieValue,  time() + (86400 * 30));
 
-                    $this->view('User/RestaurantView', isset($error) ? ['error' => $error] : []);
+                    header("Location: ?controller=user&action=restaurantView");
+                    exit();
                 } else if (empty($password) || empty($confirmPassword)){
                     // Empty password or confirmPassword
                     $this->view('Auth/RegisterView', isset($error) ? ['error' => $error] : []);
