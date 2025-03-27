@@ -7,7 +7,7 @@ require_once 'Core/Router.php';
 
 // Default to login page
 if (!isset($_GET['controller']) && !isset($_GET['action'])) {
-    header("Location: ?controller=auth&action=login");
+    header("Location: ?controller=auth&action=loginView");
     exit;
 }
 ?>
