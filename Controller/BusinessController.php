@@ -8,7 +8,7 @@ class BusinessController extends Controller{
         if (!isset($_COOKIE['Login_Info']) || $this->businessModel->getUserByEmail($_COOKIE["Login_Info"])['PermissionLevel'] != 1){
             require_once "View/Auth/LoginView.php";
         } else {
-            print_r($_COOKIE);
+            // print_r($_COOKIE);
         }
     }
 

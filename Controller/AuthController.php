@@ -36,8 +36,7 @@ class AuthController extends Controller
         return $permissionLevel;
     }
 
-    public function login()
-    {
+    public function login(){
         // echo "<br> Login function called.<br>";
 
         if ($_SERVER["REQUEST_METHOD"] == "POST") {
@@ -66,7 +65,7 @@ class AuthController extends Controller
                 // header("Location: ?controller=auth&action=loginView");
                 // exit;
             } else {
-                echo "User found!<br>";
+                // echo "User found!<br>";
 
                 // Verify password
                 $passwordMatch = password_verify($password, $user['Password'] ?? '');
@@ -151,6 +150,7 @@ class AuthController extends Controller
                     exit();
                 } else if (empty($password) || empty($confirmPassword)){
                     // Empty password or confirmPassword
+                    // $error = "Please enter Password(s)";
                     $this->view('Auth/RegisterView', isset($error) ? ['error' => $error] : []);
                 } else {
                     $error = "Passwords don't match.";

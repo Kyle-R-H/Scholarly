@@ -12,7 +12,7 @@ class UserController extends Controller {
             require_once "View/Auth/LoginView.php";
         } 
         else {
-            print_r($_COOKIE);
+            // print_r($_COOKIE);
         }
 
     }
