@@ -34,31 +34,31 @@
 
                     <form method="POST" action="?controller=auth&action=register">
                         <div class="form-floating mb-4">
-                            <input name="RegisterEmail" id="emailInput" type="email" class="form-control" placeholder="name@ul.ie">
+                            <input name="RegisterEmail" id="emailInput" type="email" class="form-control" placeholder="name@ul.ie" required>
 
                             <label for="emailInput">UL email address</label>
                         </div>
 
                         <div class="form-floating mb-4">
-                            <input name="RegisterFirstName" id="firstNameInput" class="form-control" placeholder="Name">
+                            <input name="RegisterFirstName" id="firstNameInput" class="form-control" placeholder="Name" required>
 
                             <label for="firstNameInput">Name</label>
                         </div>
 
                         <div class="form-floating mb-4">
-                            <input name="RegisterLastName" id="lastNameInput" class="form-control" placeholder="Surname">
+                            <input name="RegisterLastName" id="lastNameInput" class="form-control" placeholder="Surname" required>
 
                             <label for="lastNameInput">Surname</label>
                         </div>
 
                         <div class="form-floating mb-4">
-                            <input name="RegisterPassword" id="passwordInput" type="password" class="form-control" placeholder="Password">
+                            <input name="RegisterPassword" id="passwordInput" type="password" class="form-control" placeholder="Password" required>
 
                             <label for="passwordInput">Password</label>
                         </div>
 
                         <div class="form-floating mb-4">
-                            <input name="RegisterConfirmPassword" id="confirmPasswordInput" type="password" class="form-control" placeholder="Password">
+                            <input name="RegisterConfirmPassword" id="confirmPasswordInput" type="password" class="form-control" placeholder="Password" required>
 
                             <label for="confirmPasswordInput">Confirm password</label>
                         </div>
