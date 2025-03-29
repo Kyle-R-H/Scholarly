@@ -24,13 +24,13 @@ class BusinessController extends Controller{
 
 
     public function dashboard(){
-        $this->view('Business/BusinessDashboardView', ['businessType' => $this->businessType,'businessName'=>$this->businessName ]);
+        $stats = $this->businessModel->getStatsByBusiness($this->businessName);
+        $this->view('Business/BusinessDashboardView', ['businessType' => $this->businessType,'businessName'=>$this->businessName, 'stats' => $stats]);
     }
     
     public function businessManager(){
-        $stats = $this->businessModel->getStatsByBusiness($this->businessName);
-        print_r($stats);
-        $this->view('Business/BusinessItemManagerView', ['businessType' => $this->businessType,'businessName'=>$this->businessName, 'stats' => $stats]);
+        $items = $this->businessModel->getItemsByBusiness($this->businessName);
+        $this->view('Business/BusinessItemManagerView', ['businessType' => $this->businessType,'businessName'=>$this->businessName, 'items'=>$items]);
     }
     
     public function profile(){

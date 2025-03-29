@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+
 <head>
     <title>Business Management</title>
     <meta charset="utf-8">
@@ -40,30 +41,29 @@
     </header>
 
     <!-- Main Content -->
-    <main class="container-fluid ps-5 pe-2 py-3">
+    <main class="container-fluid px-5 py-3">
         <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-            <h1 class="h2"><?php echo $businessName?></h1>
+            <h1 class="h2"><?php echo $businessType . " | " . $businessName . " Statistics" ?></h1>
         </div>
-        <p>BusinessName</p>
 
-        <h2>Menu</h2> <!-- Change depending on BusinessType-->
         <div class="table-responsive small">
             <table class="table table-striped table-sm">
+
                 <thead>
                     <tr>
-                        <th scope="col">User ID</th>
-                        <th scope="col">Order Price</th>
-                        <th scope="col">Time Of Order</th>
-                        <th scope="col">Status</th>
+                        <th scope="col">Item Name</th>
+                        <th scope="col">Description</th>
+                        <th scope="col">Item Price</th>
+                        <th scope="col">Remove</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <?php foreach ($stats as $stat): ?>
+                    <?php foreach ($items as $item): ?>
                         <tr>
-                            <td><?= htmlspecialchars($stat['UserID'])?></td>
-                            <td><?= htmlspecialchars($stat['OrderPrice'])?></td>
-                            <td><?= htmlspecialchars($stat['TimeOfOrder'])?></td>
-                            <td><?= htmlspecialchars($stat['OrderStatus'])?></td>
+                            <td><?= htmlspecialchars($item['ItemName'])?></td>
+                            <td><?= htmlspecialchars($item['Description'])?></td>
+                            <td><?= htmlspecialchars($item['ItemPrice'])?></td>
+                            <td><?php echo "TODO" //htmlspecialchars($item)?></td>
                         </tr>
                     <?php endforeach; ?>
                 </tbody>

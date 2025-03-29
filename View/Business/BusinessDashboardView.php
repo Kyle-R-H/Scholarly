@@ -42,7 +42,7 @@
     </header>
 
     <!-- Main Content -->
-    <main class="container-fluid ps-5 pe-2 py-3">
+    <main class="container-fluid px-5 py-3">
         <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
             <h1 class="h2">Dashboard</h1>
         </div>
@@ -81,46 +81,29 @@
             });
         </script> -->
 
-        <h2>Section title</h2>
+        <!-- Add filters? -->
+        <h2>TODO: Orders</h2>
         <div class="table-responsive small">
             <table class="table table-striped table-sm">
-                <thead>
+            <thead>
                     <tr>
-                        <th scope="col">#</th>
-                        <th scope="col">Header</th>
-                        <th scope="col">Header</th>
-                        <th scope="col">Header</th>
-                        <th scope="col">Header</th>
+                        <th scope="col">User ID</th>
+                        <th scope="col">Order Price</th>
+                        <th scope="col">Time Of Order</th>
+                        <th scope="col">Status</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <td>1,001</td>
-                        <td>random</td>
-                        <td>data</td>
-                        <td>placeholder</td>
-                        <td>text</td>
-                    </tr>
+                    <?php foreach ($stats as $stat): ?>
+                        <tr>
+                            <td><?= htmlspecialchars($stat['UserID'])?></td>
+                            <td><?= htmlspecialchars($stat['OrderPrice'])?></td>
+                            <td><?= htmlspecialchars($stat['TimeOfOrder'])?></td>
+                            <td><?= htmlspecialchars($stat['OrderStatus'])?></td>
+                        </tr>
+                    <?php endforeach; ?>
                 </tbody>
             </table>
         </div>
     </main>
-
-    <!-- <?php foreach ($restaurants as $restaurant): ?>
-        <div class="row px-4 pe-lg-0 align-items-center rounded-3 border shadow-lg">
-            <div class="col-lg-7 p-5 p-lg-5">
-                <h1 class="display-5 fw-bold lh-1 text-body-emphasis"><?= htmlspecialchars($restaurant['BusinessName']) ?></h1>
-                <p class="lead"><?= htmlspecialchars($restaurant['Description']) ?></p>
-                <div class="d-grid gap-2 d-md-flex justify-content-md-start mb-4 mb-lg-3">
-                    <a href="<?= '?controller=business&action=bookingView&businessName=' . htmlspecialchars($restaurant['BusinessName']) ?>">
-                        <button type="button" class="btn btn-lg px-4">Menu</button>
-                    </a>
-                </div>
-            </div>
-            <div class="col-lg-4 offset-lg-1 p-0 overflow-hidden shadow-lg">
-                <img class="rounded-lg-3" src="<?= htmlspecialchars($restaurant['Image']) ?>" alt="" height="320">
-            </div>
-        </div>
-        <hr>
-    <?php endforeach; ?> -->
 </body>
