@@ -11,4 +11,11 @@ class BusinessModel extends Model{
         parent::__construct();
     }
 
+    public function getBusinessByUserID($userId) {
+        return $this->db->query("SELECT * FROM Business WHERE UserId = ?", [$userId])->fetch(PDO::FETCH_ASSOC);
+    }
+
+    public function getStatsByBusiness($businessName) {
+        return $this->db->query("SELECT * FROM businessstats WHERE BusinessName = ?", [$businessName])->fetchAll(PDO::FETCH_ASSOC);
+    }
 }

@@ -5,8 +5,9 @@ class AdminController extends Controller{
     public function __construct() {
         $this->adminModel = $this->model('AdminModel');
 
-        if (!isset($_COOKIE['Login_Info']) || $this->adminModel->getUserByEmail($_COOKIE["Login_Info"])['PermissionLevel'] != 0){
-            require_once "View/Auth/LoginView.php";
+        if (!isset($_COOKIE['Login_Info']) || $this->adminModel->getUserByEmail($_COOKIE["Login_Info"])['PermissionLevel'] != 2){
+            $error = "Insufficient Permissions";
+            $this->view('Auth/LoginView', isset($error) ? ['error' => $error] : []);
         } 
         else {
             // print_r($_COOKIE);

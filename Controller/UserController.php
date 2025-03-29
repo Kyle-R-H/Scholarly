@@ -9,7 +9,8 @@ class UserController extends Controller {
         $this->userModel = new UserModel();
         
         if (!isset($_COOKIE['Login_Info']) || $this->userModel->getUserByEmail($_COOKIE["Login_Info"])['PermissionLevel'] != 0){
-            require_once "View/Auth/LoginView.php";
+            $error = "Insufficient Permissions";
+            $this->view('Auth/LoginView', isset($error) ? ['error' => $error] : []);
         } 
         else {
             // print_r($_COOKIE);
@@ -29,7 +30,7 @@ class UserController extends Controller {
 
     public function restaurantView() {
         // Fetch all restaurants from the database
-        $restaurants = $this->userModel->getBusinesses("Restaurant");
+        $restaurants = $this->userModel->getBusinessesByType("Restaurant");
         // print_r($restaurants);
     
         // Get search query from Form POST
@@ -47,7 +48,7 @@ class UserController extends Controller {
     }
     
     public function eventsView(){
-        $events = $this->userModel->getBusinesses("Event");
+        $events = $this->userModel->getBusinessesByType("Event");
 
         // Get search query from Form POST
         $searchQuery = $_POST['search'] ?? '';
@@ -64,7 +65,7 @@ class UserController extends Controller {
     }
     
     public function servicesView(){
-        $services = $this->userModel->getBusinesses("Service");
+        $services = $this->userModel->getBusinessesByType("Service");
 
         // Get search query from Form POST
         $searchQuery = $_POST['search'] ?? '';
@@ -81,7 +82,7 @@ class UserController extends Controller {
     }
     
     public function activitiesView(){
-        $activities = $this->userModel->getBusinesses("Activity");
+        $activities = $this->userModel->getBusinessesByType("Activity");
 
         // Get search query from Form POST
         $searchQuery = $_POST['search'] ?? '';

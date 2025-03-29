@@ -1,27 +1,39 @@
 <?php
 class BusinessController extends Controller{
     private $businessModel;
-
+    private $businessType;
+    private $businessName;
+    
     public function __construct() {
         $this->businessModel = $this->model('BusinessModel');
 
         if (!isset($_COOKIE['Login_Info']) || $this->businessModel->getUserByEmail($_COOKIE["Login_Info"])['PermissionLevel'] != 1){
-            require_once "View/Auth/LoginView.php";
+            $error = "Insufficient Permissions";
+            $this->view('Auth/LoginView', isset($error) ? ['error' => $error] : []);
         } else {
-            // print_r($_COOKIE);
+            // Get user table
+            $user = $this->businessModel->getUserByEmail($_COOKIE['Login_Info']);
+
+            // Get business table from userID
+            $business = $this->businessModel->getBusinessByUserID($user['UserID']);
+
+            $this->businessType = $business['BusinessType'];
+            $this->businessName = $business['BusinessName'];
         }
     }
 
 
-    public function dashboardView(){
-        require_once 'View/Business/BusinessDashboardView.php';
+    public function dashboard(){
+        $this->view('Business/BusinessDashboardView', ['businessType' => $this->businessType,'businessName'=>$this->businessName ]);
     }
-
-    public function businessManagerView(){
-        require_once 'View/Business/BusinessItemManagerView.php';
+    
+    public function businessManager(){
+        $stats = $this->businessModel->getStatsByBusiness($this->businessName);
+        print_r($stats);
+        $this->view('Business/BusinessItemManagerView', ['businessType' => $this->businessType,'businessName'=>$this->businessName, 'stats' => $stats]);
     }
-
-    public function profileView(){
-        require_once 'View/Business/BusinessProfileView.php';
+    
+    public function profile(){
+        $this->view('Business/BusinessProfileView', ['businessType' => $this->businessType,'businessName'=>$this->businessName ]);
     }
 }
