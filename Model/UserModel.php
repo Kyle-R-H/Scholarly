@@ -11,6 +11,15 @@ class UserModel extends Model {
         parent::__construct();
     }
 
+    public function getBusinessByBusinessName($businessName) {
+        return $this->db->query("SELECT * FROM Business WHERE BusinessName = ?", [$businessName])->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    public function getReviewByReviewID($ReviewID) {
+        return $this->db->query("SELECT * FROM Review WHERE ReviewID = ?", [$ReviewID])->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+
     public function registerUser($firstName, $lastName, $email, $password) {
         // Generate UserID, max ID in user table + 1
         $maxUserID = $this->db->query("SELECT MAX(UserID) FROM Users")->fetch(PDO::FETCH_ASSOC);

@@ -103,15 +103,32 @@ class UserController extends Controller {
 
         // Fetch items from db
         $items = $this->userModel->getItemsByBusiness($businessName);
+        $business = $this->userModel->getBusinessByBusinessName($businessName);
         // echo "<br>Items:<br>";
         // print_r($items);  
 
         if ($businessName) {
-            $this->view('User/BookingView', ['items' => $items]);
+            $this->view('User/BookingView', ['items' => $items, 'business' => $business]);
         } else {
             echo "Business not found.";
         }
         // $this->view('User/BookingView', isset($error) ? ['error' => $error] : []);
+    }
+
+    public function reviewView(){
+        $reviews = $this->userModel->getReviewByReviewID("Review");
+
+        // Get search query from Form POST
+        $searchQuery = $_POST['search'] ?? '';
+        // echo "<br> Search Q: "; print_r($searchQuery);
+        
+        // Filter Reviews based on the search query
+        if (!empty($searchQuery)) {
+            $activities = array_filter($reviews, function ($reviews) use ($searchQuery) {
+                return stripos($reviews['BusinessName'], $searchQuery) !== false;
+            });
+        }
+        require_once 'View/User/ReviewsView.php';    
     }
 
 }
