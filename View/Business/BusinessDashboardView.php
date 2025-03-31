@@ -44,26 +44,26 @@
     <!-- Main Content -->
     <main class="container-fluid px-5 py-3">
         <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-            <h1 class="h2">Dashboard</h1>
+            <h1 class="h2"><?php echo "Dashboard | ". htmlspecialchars($businessName)?></h1>
         </div>
 
-        <canvas class="my-4 w-100" id="myChart" width="1119" height="472" style="display: block; box-sizing: border-box; height: 378px; width: 895px;"></canvas>
+        <canvas class="my-4 w-100" id="myChart" style="display: block; box-sizing: border-box; height: 378px; width: 895px;"></canvas>
         
         <!-- TODO: Complete script to work with our database -->
-        <!-- <script>
+        <script>
             // Fetch PHP data and convert it to JavaScript arrays
-            var salesData = <?php //echo json_encode(array_column($salesData, 'sales')); ?>;
-            var months = <?php //echo json_encode(array_column($salesData, 'month')); ?>;
+            var price = <?php echo json_encode(array_column($stats, 'OrderPrice')); ?>;
+            var timeOfOrder = <?php echo json_encode(array_column($stats, 'TimeOfOrder')); ?>;
 
             // Initialize Chart.js
             var ctx = document.getElementById('myChart').getContext('2d');
             var myChart = new Chart(ctx, {
-                type: 'line',
+                type: 'bar',
                 data: {
-                    labels: months, // X-axis labels from DB
+                    labels: timeOfOrder, // X-axis labels from DB
                     datasets: [{
                         label: 'Monthly Sales',
-                        data: salesData, // Y-axis data from DB
+                        data: price, // Y-axis data from DB
                         backgroundColor: 'rgba(75, 192, 192, 0.2)',
                         borderColor: 'rgba(75, 192, 192, 1)',
                         borderWidth: 2
@@ -71,7 +71,7 @@
                 },
                 options: {
                     responsive: true,
-                    maintainAspectRatio: false,
+                    maintainAspectRatio: true,
                     scales: {
                         y: {
                             beginAtZero: true
@@ -79,7 +79,7 @@
                     }
                 }
             });
-        </script> -->
+        </script>
 
         <!-- Add filters? -->
         <h2>TODO: Orders</h2>

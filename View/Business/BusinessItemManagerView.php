@@ -43,7 +43,7 @@
     <!-- Main Content -->
     <main class="container-fluid px-5 py-3">
         <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-            <h1 class="h2"><?php echo $businessType . " | " . $businessName . " Statistics" ?></h1>
+            <h1 class="h2"><?php echo "Items | " . $businessName  ?></h1>
         </div>
 
         <div class="table-responsive small">
