@@ -15,15 +15,17 @@ class AdminController extends Controller{
     }
 
 
-    public function dashboardView(){
-        require_once 'View/Admin/AdminDashboardView.php';
+    public function dashboard(){
+        $this->view('Admin/AdminDashboardView', []);
     }
-
-    public function adminManagerView(){
-        require_once 'View/Admin/AdminItemManagerView.php';
+    
+    public function profile(){
+        $this->view('Admin/AdminProfileView', []);
     }
+    
+    public function adminManager(){
+        $businesses = $this->adminModel->getBusinessesWithOwners();
 
-    public function profileView(){
-        require_once 'View/Admin/AdminProfileView.php';
+        $this->view('Admin/AdminManagerView', ['businesses'=>$businesses]);
     }
 }

@@ -34,8 +34,7 @@ class UserModel extends Model {
         return $this->db->lastInsertId();
     }
 
-    // General method to fetch all businessTypes
-    public function getBusinessesByType($businessType) {
+    public function getBusinessByType($businessType) {
         return $this->db->query("SELECT * FROM Business Where BusinessType = ?", [$businessType])->fetchAll(PDO::FETCH_ASSOC);
     }
     

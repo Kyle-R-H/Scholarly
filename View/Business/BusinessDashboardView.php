@@ -82,7 +82,7 @@
         </script>
 
         <!-- Add filters? -->
-        <h2>TODO: Orders</h2>
+        <h2>Orders</h2>
         <div class="table-responsive small">
             <table class="table table-striped table-sm">
             <thead>
