@@ -6,20 +6,9 @@ if (!file_exists('Core/Model.php')) {
 require_once 'Core/Model.php';
 
 class UserModel extends Model {
-    // private $db;
-
     public function __construct() {
+        // Construct from Core/Model
         parent::__construct();
-        // $this->db = new Database();
-    }
-
-    // Fetch user by ID
-    public function getUserById($userId) {
-        return $this->db->query("SELECT * FROM Users WHERE UserID = ?", [$userId])->fetch(PDO::FETCH_ASSOC);
-    }
-
-    public function getItemsByBusiness($businessName) {
-        return $this->db->query("SELECT * FROM Item WHERE BusinessName = ?", [$businessName])->fetchAll(PDO::FETCH_ASSOC);
     }
 
     public function registerUser($firstName, $lastName, $email, $password) {
@@ -37,13 +26,10 @@ class UserModel extends Model {
     }
 
     // General method to fetch all businessTypes
-    public function getBusinesses($businessType) {
+    public function getBusinessesByType($businessType) {
         return $this->db->query("SELECT * FROM Business Where BusinessType = ?", [$businessType])->fetchAll(PDO::FETCH_ASSOC);
     }
     
-    public function getItems($businessName){
-        return $this->db->query("SELECT * FROM Item Where BusinessName = ?", [$businessName])->fetchAll(PDO::FETCH_ASSOC);
-    }
 
 }
 ?>

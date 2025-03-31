@@ -7,6 +7,8 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="public\css\Styles.css">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
 </head>
 
 
@@ -15,10 +17,10 @@
     <header class="py-3 ps-4 pe-5 border-bottom">
         <div class="container-fluid">
             <div class="d-flex flex-wrap align-items-center justify-content-center">
-            <img class="pt-1 px-3" src="Public\Images\scholarly logo.png" alt="Scholarly Logo" height="40" width="auto">
+                <img class="pt-1 px-3" src="Public\Images\scholarly logo.png" alt="Scholarly Logo" height="40" width="auto">
                 <ul class="nav col-12 col-lg-auto me-lg-auto justify-content-center mb-md-0">
-                    <li><a href="?controller=business&action=businessDashboardView" class="nav-link px-2 link-secondary">Dashboard</a></li>
-                    <li><a href="?controller=business&action=businessSettingsView" class="nav-link px-2 link-body-emphasis">Business Management</a></li>
+                    <li><a href="?controller=business&action=dashboard" class="nav-link px-2 link-secondary">Dashboard</a></li>
+                    <li><a href="?controller=business&action=businessManager" class="nav-link px-2 link-body-emphasis">Business Management</a></li>
                 </ul>
 
 
@@ -40,24 +42,68 @@
     </header>
 
     <!-- Main Content -->
-    <div class="container-fluid d-flex flex-grow-1 px-5 py-3" style="width: 100%;">
-        <!-- <?php foreach ($restaurants as $restaurant): ?>
-            <div class="row px-4 pe-lg-0 align-items-center rounded-3 border shadow-lg">
-                <div class="col-lg-7 p-5 p-lg-5">
-                    <h1 class="display-5 fw-bold lh-1 text-body-emphasis"><?= htmlspecialchars($restaurant['BusinessName']) ?></h1>
-                    <p class="lead"><?= htmlspecialchars($restaurant['Description']) ?></p>
-                    <div class="d-grid gap-2 d-md-flex justify-content-md-start mb-4 mb-lg-3">
-                        <a href="<?= '?controller=business&action=bookingView&businessName=' . htmlspecialchars($restaurant['BusinessName'])?>">
-                            <button type="button" class="btn btn-lg px-4">Menu</button>
-                        </a>
-                    </div>
-                </div>
-                <div class="col-lg-4 offset-lg-1 p-0 overflow-hidden shadow-lg">
-                    <img class="rounded-lg-3" src="<?= htmlspecialchars($restaurant['Image']) ?>" alt="" height="320">
-                </div>
-            </div>
-            <hr>
-        <?php endforeach; ?> -->
-    </div>
-</body>
+    <main class="container-fluid px-5 py-3">
+        <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+            <h1 class="h2"><?php echo "Dashboard | ". htmlspecialchars($businessName)?></h1>
+        </div>
 
+        <canvas class="my-4 w-100" id="myChart" style="display: block; box-sizing: border-box; height: 378px; width: 895px;"></canvas>
+        
+        <!-- TODO: Complete script to work with our database -->
+        <script>
+            // Fetch PHP data and convert it to JavaScript arrays
+            var price = <?php echo json_encode(array_column($stats, 'OrderPrice')); ?>;
+            var timeOfOrder = <?php echo json_encode(array_column($stats, 'TimeOfOrder')); ?>;
+
+            // Initialize Chart.js
+            var ctx = document.getElementById('myChart').getContext('2d');
+            var myChart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: timeOfOrder, // X-axis labels from DB
+                    datasets: [{
+                        label: 'Monthly Sales',
+                        data: price, // Y-axis data from DB
+                        backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                        borderColor: 'rgba(75, 192, 192, 1)',
+                        borderWidth: 2
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: true,
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
+                }
+            });
+        </script>
+
+        <!-- Add filters? -->
+        <h2>TODO: Orders</h2>
+        <div class="table-responsive small">
+            <table class="table table-striped table-sm">
+            <thead>
+                    <tr>
+                        <th scope="col">User ID</th>
+                        <th scope="col">Order Price</th>
+                        <th scope="col">Time Of Order</th>
+                        <th scope="col">Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php foreach ($stats as $stat): ?>
+                        <tr>
+                            <td><?= htmlspecialchars($stat['UserID'])?></td>
+                            <td><?= htmlspecialchars($stat['OrderPrice'])?></td>
+                            <td><?= htmlspecialchars($stat['TimeOfOrder'])?></td>
+                            <td><?= htmlspecialchars($stat['OrderStatus'])?></td>
+                        </tr>
+                    <?php endforeach; ?>
+                </tbody>
+            </table>
+        </div>
+    </main>
+</body>
