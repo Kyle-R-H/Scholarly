@@ -51,7 +51,7 @@
                         <li>
                             <hr class="dropdown-divider">
                         </li>
-                        <li><a class="dropdown-item" href="#">Sign out</a></li>
+                        <li><a class="dropdown-item" href="?controller=auth&action=logout">Sign out</a></li>
                     </ul>
                 </div>
             </div>
@@ -64,14 +64,14 @@
         <div class="border-end d-flex flex-column p-3" style="width: 280px; min-width: 160px;">
             <ul class="nav nav-pills flex-column ">
                 <li class="nav-item">
-                    <a href="#" class="nav-link active" aria-current="page">Reset Password</a>
+                    <a href="#" class="nav-link active" aria-current="page">Temp</a>
                 </li>
                 <li class="nav-item">
-                    <a href="#" class="nav-link link-body-emphasis">Notifications</a>
+                    <a href="#" class="nav-link link-body-emphasis">Temp</a>
                 </li>
-                <li>
+                <!-- <li>
                     <a href="#" class="nav-link delete-account">Delete Account</a>
-                </li>
+                </li> -->
             </ul>
         </div>
 

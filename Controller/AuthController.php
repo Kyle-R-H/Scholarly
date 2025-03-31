@@ -28,8 +28,15 @@ class AuthController extends Controller
         // echo "Hashed password: " . $hashedPassword . "<br>";
     }
 
-    public function login()
-    {
+    public function checkPermissionLevel($email){
+        $user = $this->userModel->getUserByEmail($email);
+
+        $permissionLevel = $user['PermissionLevel'];
+
+        return $permissionLevel;
+    }
+
+    public function login(){
         // echo "<br> Login function called.<br>";
 
         if ($_SERVER["REQUEST_METHOD"] == "POST") {
@@ -52,35 +59,56 @@ class AuthController extends Controller
             // echo "Query executed, result: <pre>" . print_r($user, true) . "</pre>";
 
             // Check if user exists
-            // if (!$user) {
-            //     echo "Error: No user found with email $email!<br>";
-            // } else {
-            //     echo "User found!<br>";
-            // }
-
-            // Verify password
-            $passwordMatch = password_verify($password, $user['Password'] ?? '');
-            // echo "Password Verify Result: " . ($passwordMatch ? "MATCH" : "NO MATCH") . "<br>";
-            // echo "Password Result: " . $passwordMatch;
-
-            if ($user && $passwordMatch) {
-                // echo "User authenticated, setting session variables.<br>";
-
-                $_SESSION['UserID'] = $user['UserID'];
-                $_SESSION['FirstName'] = $user['FirstName'];
-
-                $this -> cookieValue = $email;
-                setcookie($this-> cookieName, $this -> cookieValue,  time() + (86400 * 30));
-
-                header("Location: ?controller=user&action=restaurantView");
-                exit();
+            if (!$user) {
+                $error = "User not found.";
+                $this->view('Auth/LoginView', isset($error) ? ['error' => $error] : []);
+                // header("Location: ?controller=auth&action=loginView");
+                // exit;
             } else {
-                // echo "Invalid credentials, displaying error.<br>";
-                $error = "Invalid email or password.";
+                // echo "User found!<br>";
+
+                // Verify password
+                $passwordMatch = password_verify($password, $user['Password'] ?? '');
+                // echo "Password Verify Result: " . ($passwordMatch ? "MATCH" : "NO MATCH") . "<br>";
+                // echo "Password Result: " . $passwordMatch;
+
+                if ($user && $passwordMatch) {
+                    // echo "User authenticated, setting session variables.<br>";
+
+                    $_SESSION['UserID'] = $user['UserID'];
+                    $_SESSION['FirstName'] = $user['FirstName'];
+
+                    $this -> cookieValue = $email;
+                    setcookie($this-> cookieName, $this -> cookieValue,  time() + (86400 * 30));
+
+                    $permissionLevel = $this->checkPermissionLevel($email);
+                    switch($permissionLevel){
+                        // User
+                        case 0:
+                            header("Location: ?controller=user&action=restaurantView");
+                            exit();
+
+                        // Business
+                        case 1:
+                            header("Location: ?controller=business&action=DashboardView");
+                            exit();
+                        
+                        // Admin
+                        case 2:
+                            header("Location: ?controller=admin&action=DashboardView");
+                            exit();
+                    }
+                } else {
+                    // echo "Invalid credentials, displaying error.<br>";
+                    $error = "Invalid email or password.";
+                    $this->view('Auth/LoginView', isset($error) ? ['error' => $error] : []);
+                }
             }
         }
+    }
 
-        // Show login view
+    public function loginView()
+    {
         $this->view('Auth/LoginView', isset($error) ? ['error' => $error] : []);
     }
 
@@ -115,9 +143,14 @@ class AuthController extends Controller
                     $userDetails = $this->userModel->getUserByEmail($email);
                     $_SESSION['UserID'] = $userDetails['UserID'];
 
-                    $this->view('User/RestaurantView', isset($error) ? ['error' => $error] : []);
+                    $this -> cookieValue = $email;
+                    setcookie($this-> cookieName, $this -> cookieValue,  time() + (86400 * 30));
+
+                    header("Location: ?controller=user&action=restaurantView");
+                    exit();
                 } else if (empty($password) || empty($confirmPassword)){
-                    $error = "One of the passwords is empty.";
+                    // Empty password or confirmPassword
+                    // $error = "Please enter Password(s)";
                     $this->view('Auth/RegisterView', isset($error) ? ['error' => $error] : []);
                 } else {
                     $error = "Passwords don't match.";
@@ -143,7 +176,7 @@ class AuthController extends Controller
     public function logout()
     {
         session_destroy();
-        header("Location: ?controller=auth&action=login");
+        header("Location: ?controller=auth&action=loginView");
         exit;
     }
 }
