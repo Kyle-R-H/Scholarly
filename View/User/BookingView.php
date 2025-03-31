@@ -32,7 +32,7 @@
                         </a>
                     </li>
 
-                    <li><a href="#" class="nav-link link-body-emphasis">
+                    <li><a href="?controller=user&action=reviewView" class="nav-link link-body-emphasis">
                             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512" width="22" height="22" fill="currentColor"><!--!Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2025 Fonticons, Inc.-->
                                 <path d="M316.9 18C311.6 7 300.4 0 288.1 0s-23.4 7-28.8 18L195 150.3 51.4 171.5c-12 1.8-22 10.2-25.7 21.7s-.7 24.2 7.9 32.7L137.8 329 113.2 474.7c-2 12 3 24.2 12.9 31.3s23 8 33.8 2.3l128.3-68.5 128.3 68.5c10.8 5.7 23.9 4.9 33.8-2.3s14.9-19.3 12.9-31.3L438.5 329 542.7 225.9c8.6-8.5 11.7-21.2 7.9-32.7s-13.7-19.9-25.7-21.7L381.2 150.3 316.9 18z" />
                             </svg>
@@ -78,46 +78,48 @@
         <!-- Main Content -->
         <!-- query from databse output to array-->
 
-        <div class="px-5 py-1" style="width: 100%;">
-            <?php if (!empty($items)): ?>
-                <div class="row px-4 pe-lg-0 align-items-center rounded-3 border shadow-lg">
-                    <div class="col-lg-7 p-5 p-lg-5">
-                        <h1 class="display-10 fw-bold lh-1 text-body-emphasis">
-                            <?= htmlspecialchars($items[0]['BusinessName']) ?>
-                        </h1>
-                    </div>
+        <div class="container my-5">
+    <?php if (!empty($items)): ?>
+        <!-- Business Info Section (Smaller) -->
+        <div class="row align-items-center bg-light rounded shadow-sm p-3 mb-4">
+            <div class="col-md-4">
+                <h3 class="fw-bold"><?= htmlspecialchars($items[0]['BusinessName']) ?></h3>
+                <p class="small"><?= htmlspecialchars($business[0]['Description']) ?></p>
+            </div>
+            <div class="col-md-4 text-center">
+                <img src="<?= htmlspecialchars($business[0]['Image']) ?>" class="img-fluid rounded shadow" alt="Business Image">
+            </div>
+            <div class="fixed-bottom bg-light py-3">
+    <div class="container-fluid d-flex justify-content-end">
+        <a href="#" class="btn btn-primary w-100">Basket</a> 
+    </div>
+</div>
 
-                <?php endif; ?>
+        </div>
+    <?php endif; ?>
 
-
-                <?php foreach ($items as $item): ?>
-                    <div class="row px-9 pe-lg-0 align-items-center rounded-3 border shadow-lg position-relative">
-
-                        <div class="col-lg-7 p-4 p-lg-4">
-                            <h1 class="display-10 fw-bold lh-1 text-body-emphasis"><?= htmlspecialchars($item['ItemName']) ?></h1>
-                            <p class="lead"><?= htmlspecialchars($item['Description']) ?></p>
-                            <p><strong>Price: </strong>$<?= number_format($item['ItemPrice'], 2) ?></p>
-                            <div class="d-grid gap-2 d-md-flex justify-content-md-start mb-4 mb-lg-3">
-
-                                <!-- <a href="<?= '?controller=user&action=bookingView&businessName=' . htmlspecialchars($item['BusinessName']) ?>">
-                                <button type="button" class="btn btn-lg px-4">Menu</button>
-                            </a> -->
-                            </div>
-                            <div style="right: 0; height: 100%;">
-                                <button type="button" class="btn btn-lg position-absolute top-0 end-0 m-3">
-                                    +
-                                </button>
-
-                            </div>
-
+    <!-- Menu Items Section -->
+    <div class="row">
+        <?php foreach ($items as $item): ?>
+            <div class="col-md-6 mb-4">
+                <div class="card h-100 shadow-sm">
+                    <!-- Added extra right padding to card body to reserve space for the plus button -->
+                    <div class="card-body position-relative" style="padding-right: 4rem;">
+                        <h4 class="card-title"><?= htmlspecialchars($item['ItemName']) ?></h4>
+                        <p class="card-text"><?= htmlspecialchars($item['Description']) ?></p>
+                        <p class="fw-bold">Price: $<?= number_format($item['ItemPrice'], 2) ?></p>
+                        <!-- Plus button positioned absolutely, no overlap due to reserved space -->
+                        <button type="button" class="btn btn-primary position-absolute top-0 end-0 m-3">+</button>
+                        <div class="mt-3">
+                            <img src="<?= htmlspecialchars($item['ItemImage']) ?>" class="img-fluid card-img-bottom" style="max-width: 200px; height: auto;" alt="Item Image">
                         </div>
-                        <!-- <div class="col-lg-4 offset-lg-1 p-0 overflow-hidden shadow-lg">
-                        <img class="rounded-lg-3" src="<?= htmlspecialchars($item['Image']) ?>" alt="" height="320">
-                    </div> -->
                     </div>
-                    <hr>
-                <?php endforeach; ?>
-
                 </div>
+            </div>
+        <?php endforeach; ?>
+    </div>
+</div>
+
+
 
 </html>

@@ -1,22 +1,23 @@
 <!DOCTYPE html>
-<html>
 
 <head>
-    <title>User Profile</title>
+    <title>Restaurants</title>
+    <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="public/css/Styles.css" rel="stylesheet">
+    <link rel="stylesheet" href="public\css\Styles.css">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </head>
+
 
 <body class="d-flex flex-column min-vh-100">
     <!-- Header -->
     <header class="py-3 ps-4 pe-5 border-bottom">
         <div class="container-fluid">
             <div class="d-flex flex-wrap align-items-center justify-content-center">
-                <img class="pt-1 px-3" src="Public\Images\scholarly logo.png" alt="Scholarly Logo" height="40" width="auto">
-                <ul class="nav col-12 col-lg-auto me-lg-auto justify-content-center mb-md-0">
-                    <li><a href="?controller=user&action=restaurantView" class="nav-link px-2 link-body-emphasis">Restaurants</a></li>
+            <img class="pt-1 px-3" src="Public\Images\scholarly logo.png" alt="Scholarly Logo" height="40" width="auto">
+            <ul class="nav col-12 col-lg-auto me-lg-auto justify-content-center mb-md-0">
+                    <li><a href="?controller=user&action=restaurantView" class="nav-link px-2 link-secondary">Restaurants</a></li>
                     <li><a href="?controller=user&action=servicesView" class="nav-link px-2 link-body-emphasis">Services</a></li>
                     <li><a href="?controller=user&action=eventsView" class="nav-link px-2 link-body-emphasis">Events</a></li>
                     <li><a href="?controller=user&action=activitiesView" class="nav-link px-2 link-body-emphasis">Activities</a></li>
@@ -51,7 +52,7 @@
                         <li>
                             <hr class="dropdown-divider">
                         </li>
-                        <li><a class="dropdown-item" href="#">Sign out</a></li>
+                        <li><a class="dropdown-item" href="?controller=auth&action=logout">Sign out</a></li>
                     </ul>
                 </div>
             </div>
@@ -64,26 +65,25 @@
         <div class="border-end d-flex flex-column p-3" style="width: 280px; min-width: 160px;">
             <ul class="nav nav-pills flex-column ">
                 <li class="nav-item">
-                    <a href="#" class="nav-link active" aria-current="page">Reset Password</a>
+                    <a href="#" class="nav-link active" aria-current="page">Best Rated restaurants</a>
                 </li>
                 <li class="nav-item">
-                    <a href="#" class="nav-link link-body-emphasis">Notifications</a>
+                    <a href="#" class="nav-link link-body-emphasis">? dont know</a>
                 </li>
                 <li>
-                    <a href="#" class="nav-link delete-account">Delete Account</a>
+                    <a href="#" class="nav-link link-body-emphasis">? dont know</a>
                 </li>
+                <hr>
+                <!-- Search Bar Functionality -->
+                <form method="POST" role="search">
+                    <input type="hidden" name="controller" value="user">
+                    <input type="hidden" name="action" value="restaurantView">
+                    <input type="search" class="form-control" name="search" placeholder="Search..." 
+                            value="<?= isset($_POST['search']) ? htmlspecialchars($_POST['search']) : '' ?>">
+                </form>
+
             </ul>
         </div>
 
         <!-- Main Content -->
-        <div class="p-3">
-            <?php if ($user): ?>
-                <h1><?php echo htmlspecialchars($user['FirstName'] . ' ' . $user['LastName']); ?></h1>
-                <p>Email: <?php echo htmlspecialchars($user['Email']); ?></p>
-            <?php else: ?>
-                <p>User not found.</p>
-            <?php endif; ?>
-        </div>
-    </div>
-
-</html>
+         
