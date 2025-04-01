@@ -79,46 +79,46 @@
         <!-- query from databse output to array-->
 
         <div class="container my-5">
-    <?php if (!empty($items)): ?>
-        <!-- Business Info Section (Smaller) -->
-        <div class="row align-items-center bg-light rounded shadow-sm p-3 mb-4">
-            <div class="col-md-4">
-                <h3 class="fw-bold"><?= htmlspecialchars($items[0]['BusinessName']) ?></h3>
-                <p class="small"><?= htmlspecialchars($business[0]['Description']) ?></p>
-            </div>
-            <div class="col-md-4 text-center">
-                <img src="<?= htmlspecialchars($business[0]['Image']) ?>" class="img-fluid rounded shadow" alt="Business Image">
-            </div>
-            <div class="fixed-bottom bg-light py-3">
-    <div class="container-fluid d-flex justify-content-end">
-        <a href="#" class="btn btn-primary w-100">Basket</a> 
-    </div>
-</div>
-
-        </div>
-    <?php endif; ?>
-
-    <!-- Menu Items Section -->
-    <div class="row">
-        <?php foreach ($items as $item): ?>
-            <div class="col-md-6 mb-4">
-                <div class="card h-100 shadow-sm">
-                    <!-- Added extra right padding to card body to reserve space for the plus button -->
-                    <div class="card-body position-relative" style="padding-right: 4rem;">
-                        <h4 class="card-title"><?= htmlspecialchars($item['ItemName']) ?></h4>
-                        <p class="card-text"><?= htmlspecialchars($item['Description']) ?></p>
-                        <p class="fw-bold">Price: $<?= number_format($item['ItemPrice'], 2) ?></p>
-                        <!-- Plus button positioned absolutely, no overlap due to reserved space -->
-                        <button type="button" class="btn btn-primary position-absolute top-0 end-0 m-3">+</button>
-                        <div class="mt-3">
-                            <img src="<?= htmlspecialchars($item['ItemImage']) ?>" class="img-fluid card-img-bottom" style="max-width: 200px; height: auto;" alt="Item Image">
+            <?php if (!empty($items)): ?>
+                <!-- Business Info Section (Smaller) -->
+                <div class="row align-items-center bg-light rounded shadow-sm p-3 mb-4">
+                    <div class="col-md-4">
+                        <h3 class="fw-bold"><?= htmlspecialchars($items[0]['BusinessName']) ?></h3>
+                        <p class="small"><?= htmlspecialchars($business[0]['Description']) ?></p>
+                    </div>
+                    <div class="col-md-4 text-center">
+                        <img src="<?= htmlspecialchars($business[0]['Image']) ?>" class="img-fluid rounded shadow" alt="Business Image">
+                    </div>
+                    <div class="fixed-bottom bg-light py-3">
+                        <div class="container-fluid d-flex justify-content-end">
+                            <a href="#" class="btn btn-primary w-100">Basket</a>
                         </div>
                     </div>
+
                 </div>
+            <?php endif; ?>
+
+            <!-- Menu Items Section -->
+            <div class="row">
+                <?php foreach ($items as $item): ?>
+                    <div class="col-md-6 mb-4">
+                        <div class="card h-100 shadow-sm">
+                            <!-- Added extra right padding to card body to reserve space for the plus button -->
+                            <div class="card-body position-relative" style="padding-right: 4rem;">
+                                <h4 class="card-title"><?= htmlspecialchars($item['ItemName']) ?></h4>
+                                <p class="card-text"><?= htmlspecialchars($item['Description']) ?></p>
+                                <p class="fw-bold">Price: $<?= number_format($item['ItemPrice'], 2) ?></p>
+                                <!-- Plus button positioned absolutely, no overlap due to reserved space -->
+                                <button type="button" class="btn btn-primary position-absolute top-0 end-0 m-3">+</button>
+                                <div class="mt-3">
+                                    <img src="<?= htmlspecialchars($item['ItemImage']) ?>" class="img-fluid card-img-bottom" style="max-width: 200px; height: auto;" alt="Item Image">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                <?php endforeach; ?>
             </div>
-        <?php endforeach; ?>
-    </div>
-</div>
+        </div>
 
 
 

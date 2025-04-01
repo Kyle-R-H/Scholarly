@@ -136,19 +136,14 @@ class UserController extends Controller {
     }
 
     public function historyView() {
-       // $history = $this->userModel->getStatsByBusiness($businessName);
+        $user = $this->userModel->getUserByEmail($_COOKIE["Login_Info"])['UserID'];
+       // print_r($user);
+        $restaurant = $this->userModel->getBusinessStatsByType("Restaurant", $user);
+        $services = $this->userModel->getBusinessStatsByType("Service", $user);
+        $events = $this->userModel->getBusinessStatsByType("Event", $user);
+        $activities = $this->userModel->getBusinessStatsByType("Activity", $user);
 
-        // Get search query from Form POST
-       // $searchQuery = $_POST['search'] ?? '';
-        // echo "<br> Search Q: "; print_r($searchQuery);
-        
-        // Filter Reviews based on the search query
-       // if (!empty($searchQuery)) {
-         //   $history = array_filter($businessStats, function ($history) use ($searchQuery) {
-           //     return stripos($history['BusinessName'], $searchQuery) !== false;
-           // });
-       // }
-        require_once 'View/User/ReviewsView.php';    
+        require_once 'View/User/HistoryView.php';    
     }
 
 }

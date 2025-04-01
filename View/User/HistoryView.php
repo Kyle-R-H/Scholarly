@@ -61,8 +61,140 @@
 
     <!-- Main Layout -->
     <div class="container-fluid d-flex flex-grow-1">
-        </div>
+
 
         <!-- Main Content -->
-        <div class="row">
+        <!-- Resturants -->
+        <div class="container mt-4">
+            <h1 class="mb-4">Order History</h1>
+
+            <div class="row">
+                <!-- Restaurant Section -->
+                <div class="col-md-6 mb-4">
+                    <div class="card">
+                        <div class="card-header">
+                            <h3> Restaurant </h3>
+                        </div>
+                        <div class="card-body p-0">
+                            <table class="table table-striped table-sm m-0">
+                                <thead>
+                                    <tr>
+                                        <th>Business Name</th>
+                                        <th>Order Price</th>
+                                        <th>Time Of Order</th>
+                                        <th>Status</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <?php foreach ($restaurant as $stat): ?>
+                                        <tr>
+                                            <td><?= htmlspecialchars($stat['BusinessName']) ?></td>
+                                            <td><?= htmlspecialchars($stat['OrderPrice']) ?></td>
+                                            <td><?= htmlspecialchars($stat['TimeOfOrder']) ?></td>
+                                            <td><?= htmlspecialchars($stat['OrderStatus']) ?></td>
+                                        </tr>
+                                    <?php endforeach; ?>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Services Section -->
+                <div class="col-md-6 mb-4">
+                    <div class="card">
+                        <div class="card-header">
+                            <h3> Services </h3>
+                        </div>
+                        <div class="card-body p-0">
+                            <table class="table table-striped table-sm m-0">
+                                <thead>
+                                    <tr>
+                                        <th>Business Name</th>
+                                        <th>Order Price</th>
+                                        <th>Time Of Order</th>
+                                        <th>Status</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <?php foreach ($services as $stat): ?>
+                                        <tr>
+                                            <td><?= htmlspecialchars($stat['BusinessName']) ?></td>
+                                            <td><?= htmlspecialchars($stat['OrderPrice']) ?></td>
+                                            <td><?= htmlspecialchars($stat['TimeOfOrder']) ?></td>
+                                            <td><?= htmlspecialchars($stat['OrderStatus']) ?></td>
+                                        </tr>
+                                    <?php endforeach; ?>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <!-- Events Section -->
+                <div class="col-md-6 mb-4">
+                    <div class="card">
+                        <div class="card-header">
+                            <h3> Events </h3>
+                        </div>
+                        <div class="card-body p-0">
+                            <table class="table table-striped table-sm m-0">
+                                <thead>
+                                    <tr>
+                                        <th>Business Name</th>
+                                        <th>Order Price</th>
+                                        <th>Time Of Order</th>
+                                        <th>Status</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <?php foreach ($events as $stat): ?>
+                                        <tr>
+                                            <td><?= htmlspecialchars($stat['BusinessName']) ?></td>
+                                            <td><?= htmlspecialchars($stat['OrderPrice']) ?></td>
+                                            <td><?= htmlspecialchars($stat['TimeOfOrder']) ?></td>
+                                            <td><?= htmlspecialchars($stat['OrderStatus']) ?></td>
+                                        </tr>
+                                    <?php endforeach; ?>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Activities Section -->
+                <div class="col-md-6 mb-4">
+                    <div class="card">
+                        <div class="card-header">
+                            <h3> Activities </h3>
+                        </div>
+                        <div class="card-body p-0">
+                            <table class="table table-striped table-sm m-0">
+                                <thead>
+                                    <tr>
+                                        <th>Business Name</th>
+                                        <th>Order Price</th>
+                                        <th>Time Of Order</th>
+                                        <th>Status</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <?php foreach ($activities as $stat): ?>
+                                        <tr>
+                                            <td><?= htmlspecialchars($stat['BusinessName']) ?></td>
+                                            <td><?= htmlspecialchars($stat['OrderPrice']) ?></td>
+                                            <td><?= htmlspecialchars($stat['TimeOfOrder']) ?></td>
+                                            <td><?= htmlspecialchars($stat['OrderStatus']) ?></td>
+                                        </tr>
+                                    <?php endforeach; ?>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
+    </div>
+</body> 
