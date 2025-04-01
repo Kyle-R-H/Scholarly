@@ -105,6 +105,7 @@
                 <thead>
                     <tr>
                         <th scope="col">Business</th>
+                        <th scope="col">User ID</th>
                         <th scope="col">Time Of Order</th>
                         <th scope="col">Total Price</th>
                         <th scope="col">Order ID</th>
@@ -114,6 +115,7 @@
                     <?php foreach ($orders as $order): ?>
                         <tr>
                             <td><?= htmlspecialchars($order['BusinessName']) ?></td>
+                            <td><?= htmlspecialchars($order['UserID']) ?></td>
                             <td><?= htmlspecialchars($order['TimeOfOrder']) ?></td>
                             <td><?= htmlspecialchars($order['TotalPrice']) ?></td>
                             <td><?= htmlspecialchars($order['Order_ID']) ?></td>
