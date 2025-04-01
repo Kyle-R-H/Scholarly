@@ -83,21 +83,46 @@
         </div>
 
         <!-- Main Content -->
-        <div class="row">
-            <?php foreach ($reviews as $review): ?>
-                <div class="col-md-6 mb-4">
-                    <div class="card h-100 shadow-sm">
-                        <!-- Added extra right padding to card body to reserve space for the plus button -->
-                        <div class="card-body position-relative" style="padding-right: 4rem;">
-                            <h4 class="card-title"><?= htmlspecialchars($review['ItemName']) ?></h4>
-                            <p class="card-text"><?= htmlspecialchars($review['Description']) ?></p>
-                            <p class="fw-bold">Price: $<?= number_format($review['ItemPrice'], 2) ?></p>
-                            <!-- Plus button positioned absolutely, no overlap due to reserved space -->
-                            <button type="button" class="btn btn-primary position-absolute top-0 end-0 m-3">+</button>
-                        </div>
-                    </div>
-                </div>
-            <?php endforeach; ?>
+        <!-- Main Content -->
+        <div class="flex-grow-1 p-4">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h1>Reviews</h1>
+                <a href="#" class="btn btn-success">Add Review</a>
+            </div>
+
+            <?php if (isset($reviews) && count($reviews) > 0): ?>
+                <table class="table table-striped align-middle">
+                    <thead class="table-dark">
+                        <tr>
+                            <th>Business</th>
+                            <th>Rating</th>
+                            <th>Comment</th>
+                            <th>Response</th>
+                            <th>Created At</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php foreach ($reviews as $review): ?>
+                            <tr>
+                                <td class="d-flex align-items-center justify-content-between">
+                                    <span class="fw-semibold"><?= htmlspecialchars($review['BusinessName']) ?></span>
+                                    <img class="rounded ms-3" src="<?= htmlspecialchars($review['Image']) ?>" alt="Business Image" height="50" width="50" style="object-fit: cover;">
+                                </td>
+                                <td>
+                                    <span class="btn fs-6"><?= htmlspecialchars($review['Rating']) ?> ⭐
+                                    </span>
+                                </td>
+                                <td><?= nl2br(htmlspecialchars($review['Comment'])) ?></td>
+                                <td><?= $review['Response'] ? htmlspecialchars($review['Response']) : '<em>No response</em>' ?></td>
+                                <td><?= date('F j, Y', strtotime($review['CreatedAt'])) ?></td>
+                            </tr>
+                        <?php endforeach; ?>
+                    </tbody>
+                </table>
+            <?php else: ?>
+                <p class="text-muted">No reviews found.</p>
+            <?php endif; ?>
         </div>
+
     </div>
 </body>
