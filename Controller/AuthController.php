@@ -36,8 +36,7 @@ class AuthController extends Controller
         return $permissionLevel;
     }
 
-    public function login()
-    {
+    public function login(){
         // echo "<br> Login function called.<br>";
 
         if ($_SERVER["REQUEST_METHOD"] == "POST") {
@@ -66,7 +65,7 @@ class AuthController extends Controller
                 // header("Location: ?controller=auth&action=loginView");
                 // exit;
             } else {
-                echo "User found!<br>";
+                // echo "User found!<br>";
 
                 // Verify password
                 $passwordMatch = password_verify($password, $user['Password'] ?? '');
@@ -86,18 +85,18 @@ class AuthController extends Controller
                     switch($permissionLevel){
                         // User
                         case 0:
-                            $this->view('User/RestaurantView', isset($error) ? ['error' => $error] : []);
-                            break;
+                            header("Location: ?controller=user&action=restaurantView");
+                            exit();
 
                         // Business
                         case 1:
-                            $this->view('Business/BusinessDashboardView', isset($error) ? ['error' => $error] : []);
-                            break;
+                            header("Location: ?controller=business&action=Dashboard");
+                            exit();
                         
                         // Admin
                         case 2:
-                            $this->view('Admin/AdminDashboardView', isset($error) ? ['error' => $error] : []);
-                            break;
+                            header("Location: ?controller=admin&action=Dashboard");
+                            exit();
                     }
                 } else {
                     // echo "Invalid credentials, displaying error.<br>";
@@ -147,9 +146,11 @@ class AuthController extends Controller
                     $this -> cookieValue = $email;
                     setcookie($this-> cookieName, $this -> cookieValue,  time() + (86400 * 30));
 
-                    $this->view('User/RestaurantView', isset($error) ? ['error' => $error] : []);
+                    header("Location: ?controller=user&action=restaurantView");
+                    exit();
                 } else if (empty($password) || empty($confirmPassword)){
                     // Empty password or confirmPassword
+                    // $error = "Please enter Password(s)";
                     $this->view('Auth/RegisterView', isset($error) ? ['error' => $error] : []);
                 } else {
                     $error = "Passwords don't match.";
@@ -175,7 +176,7 @@ class AuthController extends Controller
     public function logout()
     {
         session_destroy();
-        header("Location: ?controller=auth&action=login");
+        header("Location: ?controller=auth&action=loginView");
         exit;
     }
 }

@@ -8,11 +8,12 @@ class UserController extends Controller {
     public function __construct() {
         $this->userModel = new UserModel();
         
-        if (!isset($_COOKIE['Login_Info'])){
-            require_once "View/Auth/LoginView.php";
+        if (!isset($_COOKIE['Login_Info']) || $this->userModel->getUserByEmail($_COOKIE["Login_Info"])['PermissionLevel'] != 0){
+            $error = "Insufficient Permissions";
+            $this->view('Auth/LoginView', isset($error) ? ['error' => $error] : []);
         } 
         else {
-            print_r($_COOKIE);
+            // print_r($_COOKIE);
         }
 
     }
@@ -29,7 +30,7 @@ class UserController extends Controller {
 
     public function restaurantView() {
         // Fetch all restaurants from the database
-        $restaurants = $this->userModel->getBusinesses("Restaurant");
+        $restaurants = $this->userModel->getBusinessesByType("Restaurant");
         // print_r($restaurants);
     
         // Get search query from Form POST
@@ -47,7 +48,7 @@ class UserController extends Controller {
     }
     
     public function eventsView(){
-        $events = $this->userModel->getBusinesses("Event");
+        $events = $this->userModel->getBusinessesByType("Event");
 
         // Get search query from Form POST
         $searchQuery = $_POST['search'] ?? '';
@@ -64,7 +65,7 @@ class UserController extends Controller {
     }
     
     public function servicesView(){
-        $services = $this->userModel->getBusinesses("Service");
+        $services = $this->userModel->getBusinessesByType("Service");
 
         // Get search query from Form POST
         $searchQuery = $_POST['search'] ?? '';
@@ -81,7 +82,7 @@ class UserController extends Controller {
     }
     
     public function activitiesView(){
-        $activities = $this->userModel->getBusinesses("Activity");
+        $activities = $this->userModel->getBusinessesByType("Activity");
 
         // Get search query from Form POST
         $searchQuery = $_POST['search'] ?? '';
@@ -102,19 +103,36 @@ class UserController extends Controller {
 
         // Fetch items from db
         $items = $this->userModel->getItemsByBusiness($businessName);
+        $business = $this->userModel->getBusinessByBusinessName($businessName);
         // echo "<br>Items:<br>";
         // print_r($items);  
 
         if ($businessName) {
-            $this->view('User/BookingView', ['items' => $items]);
+            $this->view('User/BookingView', ['items' => $items, 'business' => $business]);
         } else {
             echo "Business not found.";
         }
         // $this->view('User/BookingView', isset($error) ? ['error' => $error] : []);
     }
 
+
     public function basketView() {
-        require_once 'View/User/BasketView.php';
+        require_once 'View/User/BasketView.php';}
+
+    public function reviewView(){
+        $reviews = $this->userModel->getReviewByReviewID("Review");
+
+        // Get search query from Form POST
+        $searchQuery = $_POST['search'] ?? '';
+        // echo "<br> Search Q: "; print_r($searchQuery);
+        
+        // Filter Reviews based on the search query
+        if (!empty($searchQuery)) {
+            $activities = array_filter($reviews, function ($reviews) use ($searchQuery) {
+                return stripos($reviews['BusinessName'], $searchQuery) !== false;
+            });
+        }
+        require_once 'View/User/ReviewsView.php';    
     }
 
 }
