@@ -30,7 +30,7 @@ class BusinessController extends Controller{
     
     public function businessManager(){
         $items = $this->businessModel->getItemsByBusiness($this->businessName);
-        $this->view('Business/BusinessItemManagerView', ['businessType' => $this->businessType,'businessName'=>$this->businessName, 'items'=>$items]);
+        $this->view('Business/BusinessItemManagerView', ['businessType' => $this->businessType,'businessName'=>$this->businessName, 'items' => $items]);
     }
     
     public function profile(){

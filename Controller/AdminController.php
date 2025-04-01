@@ -63,9 +63,6 @@ class AdminController extends Controller
 
     public function registerBusiness()
     {
-
-        // echo "<br>Register function called.<br>";
-
         // Debugging input values
         $name = $_POST['RegisterName'] ?? 'EMPTY';
         $email = $_POST['RegisterEmail'] ?? 'EMPTY';

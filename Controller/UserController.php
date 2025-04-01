@@ -189,3 +189,4 @@ class UserController extends Controller
 
         require_once 'View/User/HistoryView.php';    
     }
+}

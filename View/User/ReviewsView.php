@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 
+<html>
 <head>
     <title>Restaurants</title>
     <meta charset="utf-8">
@@ -17,7 +18,7 @@
             <div class="d-flex flex-wrap align-items-center justify-content-center">
                 <img class="pt-1 px-3" src="Public\Images\scholarly logo.png" alt="Scholarly Logo" height="40" width="auto">
                 <ul class="nav col-12 col-lg-auto me-lg-auto justify-content-center mb-md-0">
-                    <li><a href="?controller=user&action=restaurantView" class="nav-link px-2 link-secondary">Restaurants</a></li>
+                    <li><a href="?controller=user&action=restaurantView" class="nav-link px-2 link-body-emphasis">Restaurants</a></li>
                     <li><a href="?controller=user&action=servicesView" class="nav-link px-2 link-body-emphasis">Services</a></li>
                     <li><a href="?controller=user&action=eventsView" class="nav-link px-2 link-body-emphasis">Events</a></li>
                     <li><a href="?controller=user&action=activitiesView" class="nav-link px-2 link-body-emphasis">Activities</a></li>
@@ -101,3 +102,4 @@
         </div>
     </div>
 </body>
+<html>
