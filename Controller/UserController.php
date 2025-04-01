@@ -115,6 +115,10 @@ class UserController extends Controller {
         // $this->view('User/BookingView', isset($error) ? ['error' => $error] : []);
     }
 
+
+    public function basketView() {
+        require_once 'View/User/BasketView.php';}
+
     public function reviewView(){
         $reviews = $this->userModel->getReviewByReviewID("Review");
 
