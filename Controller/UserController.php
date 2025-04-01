@@ -30,7 +30,7 @@ class UserController extends Controller {
 
     public function restaurantView() {
         // Fetch all restaurants from the database
-        $restaurants = $this->userModel->getBusinessesByType("Restaurant");
+        $restaurants = $this->userModel->getBusinessByType("Restaurant");
         // print_r($restaurants);
     
         // Get search query from Form POST
@@ -48,7 +48,7 @@ class UserController extends Controller {
     }
     
     public function eventsView(){
-        $events = $this->userModel->getBusinessesByType("Event");
+        $events = $this->userModel->getBusinessByType("Event");
 
         // Get search query from Form POST
         $searchQuery = $_POST['search'] ?? '';
@@ -65,7 +65,7 @@ class UserController extends Controller {
     }
     
     public function servicesView(){
-        $services = $this->userModel->getBusinessesByType("Service");
+        $services = $this->userModel->getBusinessByType("Service");
 
         // Get search query from Form POST
         $searchQuery = $_POST['search'] ?? '';
@@ -82,7 +82,7 @@ class UserController extends Controller {
     }
     
     public function activitiesView(){
-        $activities = $this->userModel->getBusinessesByType("Activity");
+        $activities = $this->userModel->getBusinessByType("Activity");
 
         // Get search query from Form POST
         $searchQuery = $_POST['search'] ?? '';
