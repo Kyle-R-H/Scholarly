@@ -12,6 +12,7 @@ class AdminModel extends Model
         parent::__construct();
     }
 
+    // Main Data Methods 
     public function getBusinessesWithOwners()
     {
         $query = "SELECT Business.BusinessName, Business.UserID, Business.Rating, Business.Description, Users.Email 
@@ -21,8 +22,24 @@ class AdminModel extends Model
         return $this->db->query($query)->fetchAll(PDO::FETCH_ASSOC);
     }
 
-    public function getMostPopularItem()
+    public function getAllOrders()
     {
+        $query = "SELECT 
+                    Order_ID, 
+                    UserID, 
+                    BusinessName, 
+                    SUM(OrderPrice) AS TotalPrice, 
+                    TimeOfOrder
+                  FROM BusinessStats
+                  GROUP BY Order_ID, UserID, BusinessName, TimeOfOrder
+                  ORDER BY TimeOfOrder DESC";
+    
+        return $this->db->query($query)->fetchAll(PDO::FETCH_ASSOC);
+    }
+    
+
+    // Niche funky stats methods
+    public function getMostPopularItem() {
         $query = "SELECT ItemName, COUNT(*) AS OrderCount
                   FROM BusinessStats
                   GROUP BY ItemName
@@ -31,6 +48,7 @@ class AdminModel extends Model
 
         return $this->db->query($query)->fetch(PDO::FETCH_ASSOC);
     }
+    
 
     public function getMostPopularBusiness()
     {

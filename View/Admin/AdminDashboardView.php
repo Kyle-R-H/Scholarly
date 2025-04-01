@@ -47,39 +47,56 @@
             <h1 class="h2">Business Statistics</h1>
         </div>
 
-        <canvas class="my-4 w-100" id="myChart" style="display: block; box-sizing: border-box; height: 378px; width: 895px;"></canvas>
+        <!-- <canvas class="my-4 w-100" id="myChart" style="display: block; box-sizing: border-box; height: 378px; width: 895px;"></canvas> -->
 
-        <!-- TODO: Complete script to work with our database -->
-        <script>
-            // Fetch PHP data and convert it to JavaScript arrays
-            var price = <?php // echo json_encode(array_column($stats, 'OrderPrice')); ?>;
-            var timeOfOrder = <?php // echo json_encode(array_column($stats, 'TimeOfOrder')); ?>;
 
-            // Initialize Chart.js
-            var ctx = document.getElementById('myChart').getContext('2d');
-            var myChart = new Chart(ctx, {
-                type: 'bar',
-                data: {
-                    labels: timeOfOrder, // X-axis labels from DB
-                    datasets: [{
-                        label: 'Monthly Sales',
-                        data: price, // Y-axis data from DB
-                        backgroundColor: 'rgba(75, 192, 192, 0.2)',
-                        borderColor: 'rgba(75, 192, 192, 1)',
-                        borderWidth: 2
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: true,
-                    scales: {
-                        y: {
-                            beginAtZero: true
-                        }
-                    }
-                }
-            });
-        </script>
+        <div class="container mt-4">
+            <div class="row g-3">
+                <div class="col-md-4">
+                    <div class="p-3 bg-light rounded-pill text-center shadow-sm">
+                        <strong>Most Popular Item:</strong>
+                        <?= htmlspecialchars($mostPopularItem['ItemName']) ?>
+                        (Ordered <?= $mostPopularItem['OrderCount'] ?> times)
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="p-3 bg-light rounded-pill text-center shadow-sm">
+                        <strong>Most Popular Business:</strong>
+                        <?= htmlspecialchars($mostPopularBusiness['BusinessName']) ?>
+                        (<?= $mostPopularBusiness['OrderCount'] ?> orders)
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="p-3 bg-light rounded-pill text-center shadow-sm">
+                        <strong>Busiest Day:</strong>
+                        <?= htmlspecialchars($mostPopularDay['OrderDate']) ?>
+                        (<?= $mostPopularDay['OrderCount'] ?> orders)
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="p-3 bg-light rounded-pill text-center shadow-sm">
+                        <strong>Largest Order by Price:</strong>
+                        $<?= htmlspecialchars($largestOrderByPrice['TotalOrderValue']) ?>
+                        (Order ID: <?= $largestOrderByPrice['Order_ID'] ?>)
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="p-3 bg-light rounded-pill text-center shadow-sm">
+                        <strong>Largest Order by Items:</strong>
+                        <?= $largestOrderByItems['TotalItems'] ?> items
+                        (Order ID: <?= $largestOrderByItems['Order_ID'] ?>)
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="p-3 bg-light rounded-pill text-center shadow-sm">
+                        <strong>Top Customer:</strong>
+                        User ID <?= $topCustomer['UserID'] ?>
+                        (Bought <?= $topCustomer['TotalItemsBought'] ?> items)
+                    </div>
+                </div>
+            </div>
+        </div>
+
 
         <!-- Add filters? -->
         <h2>Data</h2>
@@ -87,27 +104,21 @@
             <table class="table table-striped table-sm">
                 <thead>
                     <tr>
-                        <th scope="col">temp</th>
-                        <th scope="col">temp</th>
-                        <th scope="col">temp</th>
-                        <th scope="col">temp</th>
+                        <th scope="col">Business</th>
+                        <th scope="col">Time Of Order</th>
+                        <th scope="col">Total Price</th>
+                        <th scope="col">Order ID</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <?php foreach ($stats as $stat): ?>
+                    <?php foreach ($orders as $order): ?>
                         <tr>
-                            <td><?= htmlspecialchars($stat['UserID']) ?></td>
-                            <td><?= htmlspecialchars($stat['OrderPrice']) ?></td>
-                            <td><?= htmlspecialchars($stat['TimeOfOrder']) ?></td>
-                            <td><?= htmlspecialchars($stat['OrderStatus']) ?></td>
+                            <td><?= htmlspecialchars($order['BusinessName']) ?></td>
+                            <td><?= htmlspecialchars($order['TimeOfOrder']) ?></td>
+                            <td><?= htmlspecialchars($order['TotalPrice']) ?></td>
+                            <td><?= htmlspecialchars($order['Order_ID']) ?></td>
                         </tr>
                     <?php endforeach; ?>
-                    <tr>
-                        <td>temp</td>
-                        <td>temp</td>
-                        <td>temp</td>
-                        <td>temp</td>
-                    </tr>
                 </tbody>
             </table>
         </div>
