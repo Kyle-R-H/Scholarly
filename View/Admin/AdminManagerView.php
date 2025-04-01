@@ -44,7 +44,7 @@
     <main class="container-fluid px-5 py-3">
         <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
             <h1 class="h2">Businesses</h1>
-            <button class="btn">Add</button>
+            <a href="?controller=admin&action=registerBusinessView" class="btn">Add</a>
         </div>
 
         <div class="table-responsive small">
@@ -65,8 +65,8 @@
                             <td><?= htmlspecialchars($business['Email'])?></td>
                             <td><?= htmlspecialchars($business['Rating'])?></td>
                             <td><?= htmlspecialchars($business['Description'])?></td>
-                            <td>
-                                <button>-</button>
+                            <td class="text-center">
+                                <button class="">-</button> // TODO: Make button red
                                 <!-- <?php echo "TODO" //htmlspecialchars($business)?> -->
                             </td>
                         </tr>
