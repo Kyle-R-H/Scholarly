@@ -140,8 +140,7 @@ class AuthController extends Controller
                     // Successful registration
                     $this->userModel->registerUser($firstName, $lastName, $email, $password);
 
-                    $userDetails = $this->userModel->getUserByEmail($email);
-                    $_SESSION['UserID'] = $userDetails['UserID'];
+                    $_SESSION['UserID'] = $user['UserID'];
 
                     $this -> cookieValue = $email;
                     setcookie($this-> cookieName, $this -> cookieValue,  time() + (86400 * 30));

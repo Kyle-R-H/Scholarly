@@ -34,19 +34,19 @@
 
                     <form method="POST" action="?controller=auth&action=register">
                         <div class="form-floating mb-4">
-                            <input name="RegisterEmail" id="emailInput" type="email" class="form-control" placeholder="name@ul.ie" required>
+                            <input name="RegisterEmail" id="emailInput" type="email" class="form-control" placeholder="name@ul.ie" value="<?php echo isset($_POST['RegisterEmail']) ? htmlspecialchars($_POST['RegisterEmail']) : ''; ?>" required>
 
-                            <label for="emailInput">UL email address</label>
+                            <label for="emailInput">UL Email Address</label>
                         </div>
 
                         <div class="form-floating mb-4">
-                            <input name="RegisterFirstName" id="firstNameInput" class="form-control" placeholder="Name" required>
+                            <input name="RegisterFirstName" id="firstNameInput" class="form-control" placeholder="Name" value="<?php echo isset($_POST['RegisterFirstName']) ? htmlspecialchars($_POST['RegisterFirstName']) : ''; ?>" required>
 
                             <label for="firstNameInput">Name</label>
                         </div>
 
                         <div class="form-floating mb-4">
-                            <input name="RegisterLastName" id="lastNameInput" class="form-control" placeholder="Surname" required>
+                            <input name="RegisterLastName" id="lastNameInput" class="form-control" placeholder="Surname" value="<?php echo isset($_POST['RegisterLastName']) ? htmlspecialchars($_POST['RegisterLastName']) : ''; ?>" required>
 
                             <label for="lastNameInput">Surname</label>
                         </div>

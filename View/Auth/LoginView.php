@@ -36,7 +36,7 @@
                         <div class="form-floating mb-4">
                             <input name="Email" id="emailInput" type="email" class="form-control" placeholder="name@ul.ie" value="<?php echo isset($_POST['Email']) ? htmlspecialchars($_POST['Email']) : ''; ?>" required>
 
-                            <label for="emailInput">UL email address</label>
+                            <label for="emailInput">UL Email Address</label>
                         </div>
 
                         <div class="form-floating mb-4">
