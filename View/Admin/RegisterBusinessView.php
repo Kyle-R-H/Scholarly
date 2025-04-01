@@ -61,10 +61,11 @@
         <?php endif; ?>
 
         <form method="POST" action="?controller=admin&action=registerBusiness">
-            <div class="form-floating mb-4">
-                <input name="RegisterName" id="nameInput" type="name" class="form-control" value="<?php echo isset($_POST['RegisterName']) ? htmlspecialchars($_POST['RegisterName']) : ''; ?>" required>
-                <label for="nameInput">Business Name</label>
-            </div>
+        <div class="form-floating mb-4">
+            <input name="RegisterName" id="nameInput" type="text" class="form-control" placeholder="Business Name" value="<?php echo isset($_POST['RegisterName']) ? htmlspecialchars($_POST['RegisterName']) : ''; ?>" required>
+            <label for="nameInput">Business Name</label>
+        </div>
+
             
             <div class="form-floating mb-4">
                 <input name="RegisterEmail" id="emailInput" type="email" class="form-control" placeholder="name@ul.ie" value="<?php echo isset($_POST['RegisterEmail']) ? htmlspecialchars($_POST['RegisterEmail']) : ''; ?>" required>
