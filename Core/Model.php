@@ -31,6 +31,10 @@ class Model {
     public function getItemsByBusiness($businessName) {
         return $this->db->query("SELECT * FROM Item WHERE BusinessName = ?", [$businessName])->fetchAll(PDO::FETCH_ASSOC);
     }
+
+    public function getStatsByBusiness($businessName) {
+        return $this->db->query("SELECT * FROM businessstats WHERE BusinessName = ?", [$businessName])->fetchAll(PDO::FETCH_ASSOC);
+    }
     
 }
 ?>

@@ -124,10 +124,26 @@ class UserController extends Controller {
         
         // Filter Reviews based on the search query
         if (!empty($searchQuery)) {
-            $activities = array_filter($reviews, function ($reviews) use ($searchQuery) {
+            $reviews = array_filter($reviews, function ($reviews) use ($searchQuery) {
                 return stripos($reviews['BusinessName'], $searchQuery) !== false;
             });
         }
+        require_once 'View/User/ReviewsView.php';    
+    }
+
+    public function historyView() {
+       // $history = $this->userModel->getStatsByBusiness($businessName);
+
+        // Get search query from Form POST
+       // $searchQuery = $_POST['search'] ?? '';
+        // echo "<br> Search Q: "; print_r($searchQuery);
+        
+        // Filter Reviews based on the search query
+       // if (!empty($searchQuery)) {
+         //   $history = array_filter($businessStats, function ($history) use ($searchQuery) {
+           //     return stripos($history['BusinessName'], $searchQuery) !== false;
+           // });
+       // }
         require_once 'View/User/ReviewsView.php';    
     }
 
