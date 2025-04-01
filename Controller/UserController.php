@@ -163,6 +163,7 @@ class UserController extends Controller
 
     public function reviewView()
     {
+
         $reviews = $this->userModel->getReviewByReviewID("Review");
 
         // Get search query from Form POST
