@@ -163,7 +163,6 @@ class UserController extends Controller
 
     public function reviewView()
     {
-
         $reviews = $this->userModel->getReviewByReviewID("Review");
 
         // Get search query from Form POST
@@ -172,10 +171,21 @@ class UserController extends Controller
 
         // Filter Reviews based on the search query
         if (!empty($searchQuery)) {
-            $activities = array_filter($reviews, function ($reviews) use ($searchQuery) {
+            $reviews = array_filter($reviews, function ($reviews) use ($searchQuery) {
                 return stripos($reviews['BusinessName'], $searchQuery) !== false;
             });
         }
         require_once 'View/User/ReviewsView.php';
     }
-}
+
+
+    public function historyView() {
+        $user = $this->userModel->getUserByEmail($_COOKIE["Login_Info"])['UserID'];
+       // print_r($user);
+        $restaurant = $this->userModel->getBusinessStatsByType("Restaurant", $user);
+        $services = $this->userModel->getBusinessStatsByType("Service", $user);
+        $events = $this->userModel->getBusinessStatsByType("Event", $user);
+        $activities = $this->userModel->getBusinessStatsByType("Activity", $user);
+
+        require_once 'View/User/HistoryView.php';    
+    }

@@ -68,10 +68,7 @@
                     <a href="#" class="nav-link active" aria-current="page">Services</a>
                 </li>
                 <li class="nav-item">
-                    <a href="#" class="nav-link link-body-emphasis">Active Bookings</a>
-                </li>
-                <li>
-                    <a href="#" class="nav-link link-body-emphasis">Past Bookings</a>
+                    <a href="?controller=user&action=historyView" class="nav-link link-body-emphasis">Order History</a>
                 </li>
                 <hr>
                 <!-- Search Bar Functionality -->

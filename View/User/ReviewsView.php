@@ -15,8 +15,8 @@
     <header class="py-3 ps-4 pe-5 border-bottom">
         <div class="container-fluid">
             <div class="d-flex flex-wrap align-items-center justify-content-center">
-            <img class="pt-1 px-3" src="Public\Images\scholarly logo.png" alt="Scholarly Logo" height="40" width="auto">
-            <ul class="nav col-12 col-lg-auto me-lg-auto justify-content-center mb-md-0">
+                <img class="pt-1 px-3" src="Public\Images\scholarly logo.png" alt="Scholarly Logo" height="40" width="auto">
+                <ul class="nav col-12 col-lg-auto me-lg-auto justify-content-center mb-md-0">
                     <li><a href="?controller=user&action=restaurantView" class="nav-link px-2 link-secondary">Restaurants</a></li>
                     <li><a href="?controller=user&action=servicesView" class="nav-link px-2 link-body-emphasis">Services</a></li>
                     <li><a href="?controller=user&action=eventsView" class="nav-link px-2 link-body-emphasis">Events</a></li>
@@ -68,22 +68,36 @@
                     <a href="#" class="nav-link active" aria-current="page">Best Rated restaurants</a>
                 </li>
                 <li class="nav-item">
-                    <a href="#" class="nav-link link-body-emphasis">? dont know</a>
-                </li>
-                <li>
-                    <a href="#" class="nav-link link-body-emphasis">? dont know</a>
+                    <a href="?controller=user&action=historyView" class="nav-link link-body-emphasis">Order History</a>
                 </li>
                 <hr>
                 <!-- Search Bar Functionality -->
                 <form method="POST" role="search">
                     <input type="hidden" name="controller" value="user">
                     <input type="hidden" name="action" value="restaurantView">
-                    <input type="search" class="form-control" name="search" placeholder="Search..." 
-                            value="<?= isset($_POST['search']) ? htmlspecialchars($_POST['search']) : '' ?>">
+                    <input type="search" class="form-control" name="search" placeholder="Search..."
+                        value="<?= isset($_POST['search']) ? htmlspecialchars($_POST['search']) : '' ?>">
                 </form>
 
             </ul>
         </div>
 
         <!-- Main Content -->
-         
+        <div class="row">
+            <?php foreach ($reviews as $review): ?>
+                <div class="col-md-6 mb-4">
+                    <div class="card h-100 shadow-sm">
+                        <!-- Added extra right padding to card body to reserve space for the plus button -->
+                        <div class="card-body position-relative" style="padding-right: 4rem;">
+                            <h4 class="card-title"><?= htmlspecialchars($review['ItemName']) ?></h4>
+                            <p class="card-text"><?= htmlspecialchars($review['Description']) ?></p>
+                            <p class="fw-bold">Price: $<?= number_format($review['ItemPrice'], 2) ?></p>
+                            <!-- Plus button positioned absolutely, no overlap due to reserved space -->
+                            <button type="button" class="btn btn-primary position-absolute top-0 end-0 m-3">+</button>
+                        </div>
+                    </div>
+                </div>
+            <?php endforeach; ?>
+        </div>
+    </div>
+</body>
