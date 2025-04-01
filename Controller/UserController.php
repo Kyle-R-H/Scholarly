@@ -2,41 +2,44 @@
 require_once 'Model/UserModel.php';
 require_once 'Core/Database.php'; // If Database.php is used
 
-class UserController extends Controller {
+class UserController extends Controller
+{
     private $userModel;
 
-    public function __construct() {
+    public function __construct()
+    {
         $this->userModel = new UserModel();
-        
-        if (!isset($_COOKIE['Login_Info']) || $this->userModel->getUserByEmail($_COOKIE["Login_Info"])['PermissionLevel'] != 0){
+
+        if (!isset($_COOKIE['Login_Info']) || $this->userModel->getUserByEmail($_COOKIE["Login_Info"])['PermissionLevel'] != 0) {
             $error = "Insufficient Permissions";
             $this->view('Auth/LoginView', isset($error) ? ['error' => $error] : []);
-        } 
-        else {
+        } else {
             // print_r($_COOKIE);
         }
-
     }
 
-    public function profile() {
+    public function profile()
+    {
         $user = $this->userModel->getUserByEmail($_COOKIE["Login_Info"]);
         // print_r($user);
         require_once 'View/User/UserProfileView.php';
     }
 
-    public function settings(){
+    public function settings()
+    {
         require_once 'View/User/UserSettingsView.php';
     }
 
-    public function restaurantView() {
+    public function restaurantView()
+    {
         // Fetch all restaurants from the database
         $restaurants = $this->userModel->getBusinessByType("Restaurant");
         // print_r($restaurants);
-    
+
         // Get search query from Form POST
         $searchQuery = $_POST['search'] ?? '';
         // echo "<br> Search Q: "; print_r($searchQuery);
-        
+
         // Filter restaurants based on the search query
         if (!empty($searchQuery)) {
             $restaurants = array_filter($restaurants, function ($restaurant) use ($searchQuery) {
@@ -46,31 +49,33 @@ class UserController extends Controller {
 
         require_once 'View/User/RestaurantView.php';
     }
-    
-    public function eventsView(){
+
+    public function eventsView()
+    {
         $events = $this->userModel->getBusinessByType("Event");
 
         // Get search query from Form POST
         $searchQuery = $_POST['search'] ?? '';
         // echo "<br> Search Q: "; print_r($searchQuery);
-        
+
         // Filter restaurants based on the search query
         if (!empty($searchQuery)) {
             $events = array_filter($events, function ($events) use ($searchQuery) {
                 return stripos($events['BusinessName'], $searchQuery) !== false;
             });
         }
-        
-        require_once 'View/User/EventsView.php';    
+
+        require_once 'View/User/EventsView.php';
     }
-    
-    public function servicesView(){
+
+    public function servicesView()
+    {
         $services = $this->userModel->getBusinessByType("Service");
 
         // Get search query from Form POST
         $searchQuery = $_POST['search'] ?? '';
         // echo "<br> Search Q: "; print_r($searchQuery);
-        
+
         // Filter restaurants based on the search query
         if (!empty($searchQuery)) {
             $services = array_filter($services, function ($services) use ($searchQuery) {
@@ -78,62 +83,99 @@ class UserController extends Controller {
             });
         }
 
-        require_once 'View/User/ServicesView.php';    
+        require_once 'View/User/ServicesView.php';
     }
-    
-    public function activitiesView(){
+
+    public function activitiesView()
+    {
         $activities = $this->userModel->getBusinessByType("Activity");
 
         // Get search query from Form POST
         $searchQuery = $_POST['search'] ?? '';
         // echo "<br> Search Q: "; print_r($searchQuery);
-        
+
         // Filter restaurants based on the search query
         if (!empty($searchQuery)) {
             $activities = array_filter($activities, function ($activities) use ($searchQuery) {
                 return stripos($activities['BusinessName'], $searchQuery) !== false;
             });
         }
-        require_once 'View/User/ActivitiesView.php';    
+        require_once 'View/User/ActivitiesView.php';
     }
 
     public function bookingView($businessName)
     {
-        // echo "Booking page for: " . htmlspecialchars($businessName);
-
+        // Check if business is already set
+        if (!isset($_SESSION['current_business']) || $_SESSION['current_business'] !== $businessName) {
+            $_SESSION['cart'] = []; 
+            $_SESSION['current_business'] = $businessName; 
+        }
+    
+        // Generate a unique CSRF token to prevent duplicate submissions
+        if (!isset($_SESSION['form_token'])) {
+            $_SESSION['form_token'] = bin2hex(random_bytes(32));
+        }
+    
+        // Handle Add to Cart Request
+        if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['item_name'])) {
+            // Validate CSRF token
+            if (!isset($_POST['form_token']) || $_POST['form_token'] !== $_SESSION['form_token']) {
+                die("Invalid form submission."); // TODO: Add error redirect
+            }
+    
+            $itemName = $_POST['item_name'];
+            $itemPrice = $_POST['item_price'];
+            $itemImage = $_POST['item_image'];
+    
+            // Check if item is already in the cart
+            if (isset($_SESSION['cart'][$itemName])) {
+                $_SESSION['cart'][$itemName]['quantity'] += 1;
+            } else {
+                $_SESSION['cart'][$itemName] = [
+                    'name' => $itemName,
+                    'price' => $itemPrice,
+                    'image' => $itemImage,
+                    'quantity' => 1
+                ];
+            }
+    
+            // Regenerate token to prevent re-submission on refresh
+            $_SESSION['form_token'] = bin2hex(random_bytes(32));
+    
+            // Redirect to the same page to clear POST data and prevent duplicate submissions
+            header("Location: ?controller=user&action=bookingView&businessName=" . urlencode($businessName));
+            exit();
+        }
+    
         // Fetch items from db
         $items = $this->userModel->getItemsByBusiness($businessName);
         $business = $this->userModel->getBusinessByBusinessName($businessName);
-        // echo "<br>Items:<br>";
-        // print_r($items);  
-
+    
         if ($businessName) {
             $this->view('User/BookingView', ['items' => $items, 'business' => $business]);
         } else {
+            $error = "Couldn't find business";
+            $this->view('User/BookingView', isset($error) ? ['error' => $error] : []);
             echo "Business not found.";
         }
-        // $this->view('User/BookingView', isset($error) ? ['error' => $error] : []);
     }
+    
 
+    public function reviewView()
+    {
 
-    public function basketView() {
-        require_once 'View/User/BasketView.php';}
-
-    public function reviewView(){
         $reviews = $this->userModel->getReviewByReviewID("Review");
 
         // Get search query from Form POST
         $searchQuery = $_POST['search'] ?? '';
         // echo "<br> Search Q: "; print_r($searchQuery);
-        
+
         // Filter Reviews based on the search query
         if (!empty($searchQuery)) {
             $activities = array_filter($reviews, function ($reviews) use ($searchQuery) {
                 return stripos($reviews['BusinessName'], $searchQuery) !== false;
             });
         }
-        require_once 'View/User/ReviewsView.php';    
+        require_once 'View/User/ReviewsView.php';
     }
-
 }
-?>
