@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 
 <html>
+
 <head>
     <title>Events</title>
     <meta charset="utf-8">
@@ -62,6 +63,32 @@
 
     <!-- Main Layout -->
     <div class="container-fluid d-flex flex-grow-1">
+        <?php if (!empty($_SESSION['error'])) : ?>
+            <div class="position-fixed top-0 end-0 p-3" style="z-index: 1050">
+                <div id="errorToast" class="toast align-items-center text-bg-danger border-0 show" role="alert" aria-live="assertive" aria-atomic="true">
+                    <div class="d-flex">
+                        <div class="toast-body">
+                            <?php echo $_SESSION['error'] ?>
+                        </div>
+                        <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"><?php unset($_SESSION['error']) ?></button>
+                    </div>
+                </div>
+            </div>
+        <?php endif; ?>
+
+        <?php if (!empty($_SESSION['success'])) : ?>
+            <div class="position-fixed top-0 end-0 p-3" style="z-index: 1050">
+                <div id="successToast" class="toast align-items-center text-bg-success border-0 show" role="alert" aria-live="assertive" aria-atomic="true">
+                    <div class="d-flex">
+                        <div class="toast-body">
+                            <?php echo $_SESSION['success'] ?>
+                        </div>
+                        <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"><?php unset($_SESSION['success']) ?></button>
+                    </div>
+                </div>
+            </div>
+        <?php endif; ?>
+        
         <!-- Sidebar -->
         <div class="border-end d-flex flex-column p-3" style="width: 280px;">
             <ul class="nav nav-pills flex-column mb-auto">
@@ -104,38 +131,8 @@
                 </div>
                 <hr>
             <?php endforeach; ?>
-
-            <!-- <div class="row px-4 pe-lg-0 align-items-center rounded-3 border shadow-lg">
-                <div class="col-lg-7 p-5 p-lg-5">
-                    <h1 class="display-5 fw-bold lh-1 text-body-emphasis">Quiz Night</h1>
-                    <p class="lead">Book now to join our weekly quiz night at Stables.</p>
-                    <div class="d-grid gap-2 d-md-flex justify-content-md-start mb-4 mb-lg-3">
-                        <button type="button" class="btn  btn-lg px-4">Book</button>
-                    </div>
-                </div>
-                <div class="col-lg-4 offset-lg-1 p-0 overflow-hidden shadow-lg">
-                    <img class="rounded-lg-3" src="https://lh3.googleusercontent.com/proxy/k-PWh0hYZIH-omBFh5sWiUfjIuOJP9oSDI-BfrZd75L3RE_Elldq56Lc4rc5CZskkMiLeVCD8TlZ4ppk9LQCkZp7e81P7yPZvknomcQ" 
-                    alt="" height="320" width="auto" >
-                </div>
-            </div>
-
-            <hr>
-            <div class="row px-4 pe-lg-0 align-items-center rounded-3 border shadow-lg">
-                <div class="col-lg-7 p-5 p-lg-5">
-                    <h1 class="display-5 fw-bold lh-1 text-body-emphasis">Pool Tournament</h1>
-                    <p class="lead">Friends to make, balls to hit, tournaments to win. Join us at the Student Hub on campus and book now.</p>
-                    <div class="d-grid gap-2 d-md-flex justify-content-md-start mb-4 mb-lg-3">
-                        <button type="button" class="btn  btn-lg px-4">Book</button>
-                    </div>
-                </div>
-                <div class="col-lg-4 offset-lg-1 p-0 overflow-hidden shadow-lg" >
-                    <img class="rounded-lg-3 flex" src="https://ulstudentlife.ie/pageassets/info/UL-Student-Life-Pool-Room-800x450.jpg" 
-                    alt="" height="320" >
-                </div>
-            </div> -->
-
-
         </div>
     </div>
 </body>
+
 </html>

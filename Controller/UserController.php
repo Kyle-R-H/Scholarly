@@ -10,8 +10,9 @@ class UserController extends Controller
         $this->userModel = new UserModel();
 
         if (!isset($_COOKIE['Login_Info']) || $this->userModel->getUserByEmail($_COOKIE["Login_Info"])['PermissionLevel'] != 0) {
-            $error = "Insufficient Permissions";
-            $this->view('Auth/LoginView', isset($error) ? ['error' => $error] : []);
+            $_SESSION['error'] = "Insufficient Permissions";
+            header("Location: ?controller=auth&action=login");
+            exit();
         } else {
             // print_r($_COOKIE);
         }
@@ -152,8 +153,8 @@ class UserController extends Controller
         if ($businessName) {
             $this->view('User/BookingView', ['items' => $items, 'business' => $business]);
         } else {
-            $error = "Couldn't find business";
-            $this->view('User/BookingView', isset($error) ? ['error' => $error] : []);
+            $_SESSION['error'] = "Could not find business";
+            $this->view('User/BookingView', []);
             echo "Business not found.";
         }
     }
@@ -194,8 +195,10 @@ class UserController extends Controller
     {
         $user = $this->userModel->getUserByEmail($_COOKIE["Login_Info"]);
         if (!$user || $user['VerifiedCustomer'] != 1) {
-            $error = "You must be a verified customer to view this page.";
-            header("Location: ?controller=user&action=restaurantView");
+            $_SESSION['error'] = "You must be a verified customer to view this page.";
+
+            // Stops view redirect and keeps user on current view
+            header("Location: " . $_SERVER['HTTP_REFERER'] ?? '?controller=user&action=restaurantView');
             exit();
         }
 
@@ -243,11 +246,11 @@ class UserController extends Controller
                     $this->userModel->placeOrder($businessName, $price, $userID, $orderID, $itemName);
                 }
             }
-            $error = "Order Placed!";
+            $_SESSION['success'] = "Order Placed!";
         } else {
-            $error = "Cart is empty.";
+            $_SESSION['error'] = "Cart is empty.";
         }
-        // $this->view('User/RestaurantView', isset($error) ? ['error' => $error] : []);
+        // $this->view('User/RestaurantView', []);
         header("Location: ?controller=user&action=restaurantView");
         exit();
     }
@@ -317,10 +320,22 @@ class UserController extends Controller
 
     public function sendMessage()
     {
-        require_once 'View/User/MessagingView.php';
+        if ($_SERVER["REQUEST_METHOD"] == "POST") {
+
+            $senderID = $this->userModel->getUserByEmail($_COOKIE['Login_Info'])['UserID'];
+            $receiverID = $_POST['receiverID'];
+            $message = trim($_POST['messageText']);
+
+            $this->userModel->createMessage($senderID, $receiverID, $message);
+            $_SESSION['success'] = "Message sent successfully!";
+        } else {
+            $_SESSION['error'] = "Message failed to send";
+        }
+        header("Location: ?controller=user&action=userMessagesView");
     }
 
-    public function sendMessageView($receiverID) {
+    public function sendMessageView($receiverID)
+    {
         // Get sender and receiver details
         $senderID = $_COOKIE['Login_Info'];
         $receiverID = $_GET['receiverID'];
@@ -331,12 +346,6 @@ class UserController extends Controller
             $receiverID = $_POST['receiverID'];
             $message = trim($_POST['messageText']);
 
-            if (empty($message)) {
-                $_SESSION['error'] = "Message cannot be empty.";
-                header("Location: ?controller=user&action=sendMessage&receiverID=$receiverID");
-                exit;
-            }
-            $this -> userModel -> createMessage($senderID, $receiverID, $message);
             $_SESSION['success'] = "Message sent successfully!";
             header("Location: ?controller=user&action=userMessagesView");
         }
