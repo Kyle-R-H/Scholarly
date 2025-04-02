@@ -108,7 +108,14 @@ class Model
 
 
     public function getUsersByVerifiedCustomer($permissionLevel)
-    {
-        return $this->db->query("SELECT * FROM users where VerifiedCustomer = '1' AND PermissionLevel = ?", [$permissionLevel])->fetchAll(PDO::FETCH_ASSOC);
-    }
+{
+    return $this->db->query("
+        SELECT users.*, business.BusinessName 
+        FROM users 
+        LEFT JOIN business ON users.UserID = business.UserID 
+        WHERE users.VerifiedCustomer = '1' 
+        AND users.PermissionLevel = ?", 
+        [$permissionLevel]
+    )->fetchAll(PDO::FETCH_ASSOC);
+}
 }

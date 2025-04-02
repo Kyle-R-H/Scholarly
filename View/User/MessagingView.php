@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 
 <html>
+
 <head>
     <title>Restaurants</title>
     <meta charset="utf-8">
@@ -18,7 +19,7 @@
             <div class="d-flex flex-wrap align-items-center justify-content-center">
                 <img class="pt-1 px-3" src="Public\Images\scholarly logo.png" alt="Scholarly Logo" height="40" width="auto">
                 <ul class="nav col-12 col-lg-auto me-lg-auto justify-content-center mb-md-0">
-                    <li><a href="?controller=user&action=restaurantView" class="nav-link px-2 link-body-emphasis">Restaurants</a></li>
+                    <li><a href="?controller=user&action=restaurantView" class="nav-link px-2 link-secondary">Restaurants</a></li>
                     <li><a href="?controller=user&action=servicesView" class="nav-link px-2 link-body-emphasis">Services</a></li>
                     <li><a href="?controller=user&action=eventsView" class="nav-link px-2 link-body-emphasis">Events</a></li>
                     <li><a href="?controller=user&action=activitiesView" class="nav-link px-2 link-body-emphasis">Activities</a></li>
@@ -62,69 +63,23 @@
 
     <!-- Main Layout -->
     <div class="container-fluid d-flex flex-grow-1">
-        <!-- Sidebar -->
-        <div class="border-end d-flex flex-column p-3" style="width: 280px; min-width: 160px;">
-            <ul class="nav nav-pills flex-column ">
-                <li class="nav-item">
-                    <a href="?controller=user&action=reviewView" class="nav-link active" aria-current="page">Reviews</a>
-                </li>
-                <li class="nav-item">
-                    <a href="?controller=user&action=historyView" class="nav-link link-body-emphasis">Order History</a>
-                </li>
+        <?php if (isset($_SESSION['error'])): ?>
+            <div class="alert alert-danger"><?= $_SESSION['error'] ?></div>
+            <?php unset($_SESSION['error']); ?>
+        <?php endif; ?>
 
-
-            </ul>
-        </div>
-
-        <!-- Main Content -->
-        <div class="flex-grow-1 p-4">
-            <div class="d-flex justify-content-between align-items-center">
-                <h1>Reviews</h1>
-                <a href="?controller=user&action=addReviewView" class="btn btn-success">Add Review</a>
+        <form method="POST" action="?controller=user&action=sendMessage">
+            <input type="hidden" name="receiverID" value="<?= htmlspecialchars($receiverID) ?>">
+            <div class="mb-3">
+                <label for="messageText" class="form-label">Message:</label>
+                <textarea class="form-control" id="messageText" name="messageText" required></textarea>
             </div>
-
-            <!-- Search Bar Functionality -->
-            <form class="py-2" method="POST" role="search">
-                <input type="hidden" name="controller" value="user">
-                <input type="hidden" name="action" value="reviewView">
-                <input type="search" class="form-control" name="search" placeholder="Search Business"
-                    value="<?= isset($_POST['search']) ? htmlspecialchars($_POST['search']) : '' ?>">
-            </form>
-
-            <?php if (isset($reviews) && count($reviews) > 0): ?>
-                <table class="table table-striped align-middle rounded-3 overflow-hidden">
-                    <thead class="table-dark">
-                        <tr>
-                            <th>Business</th>
-                            <th>Comment</th>
-                            <th>Response</th>
-                            <th>Created At</th>
-                            <th>By</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <?php foreach ($reviews as $review): ?>
-                            <tr>
-                                <td class="d-flex align-items-center justify-content-between">
-                                    <div>
-                                        <span class="fw-bold"><?= htmlspecialchars($review['BusinessName']) ?></span>
-                                        <span class="fs-6 text-muted">(<?= number_format($review['Rating'], 1) ?> ⭐)</span>
-                                    </div>
-                                    <img class="rounded ms-3" src="<?= htmlspecialchars($review['Image']) ?>" alt="Business Image" height="50" width="50" style="object-fit: cover;">
-                                </td>
-                                <td><?= nl2br(htmlspecialchars($review['Comment'])) ?></td>
-                                <td><?= $review['Response'] ? htmlspecialchars($review['Response']) : '<em>No response</em>' ?></td>
-                                <td><?= date('F j, Y', strtotime($review['CreatedAt'])) ?></td>
-                                <td><?= nl2br(htmlspecialchars($review['FirstName']) . " " . htmlspecialchars($review['LastName'])) ?></td>
-                            </tr>
-                        <?php endforeach; ?>
-                    </tbody>
-                </table>
-            <?php else: ?>
-                <p class="text-muted">No reviews found.</p>
-            <?php endif; ?>
-        </div>
-
+            <button type="submit" class="btn btn-success">Send</button>
+        </form>
     </div>
+
+
+
 </body>
-<html>
+
+</html>
