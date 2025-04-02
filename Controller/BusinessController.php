@@ -41,6 +41,14 @@ class BusinessController extends Controller{
         $this->view('Business/AddItemView', ['businessType' => $this->businessType,'businessName'=>$this->businessName ]);
     }
 
+    public function responseToReview(){
+        $reviews = $this->businessModel->getReviewByReviewID();
+
+        $this->view('Business/ReviewResponseView', ['businessType' => $this->businessType,'businessName'=>$this->businessName
+       , 'reviews' => $reviews
+        ]);
+    }
+
     public function addItem(){
         // Debugging input values
         $name = $_POST['ItemName'] ?? 'EMPTY';
@@ -65,4 +73,31 @@ class BusinessController extends Controller{
         }
         $this->view('Business/AddItemView', ['businessType' => $this->businessType,'businessName'=>$this->businessName ]);
     }
+
+    public function saveResponse()
+{
+    // Get data from POST request
+    $reviewID = $_POST['reviewID'] ?? null;
+    $response = $_POST['response'] ?? '';
+
+    // Validate input
+    if (!$reviewID || empty(trim($response))) {
+        die("Invalid input data.");
+    }
+
+    // Sanitize input
+    $response = htmlspecialchars(trim($response));
+
+    // Update the database
+   $success = $this -> businessModel -> setResponseByReviewID($response, $reviewID);
+
+    // Redirect back to the page (to avoid resubmission on refresh)
+    if ($success) {
+        header("Location: ?controller=business&action=responseToReview");
+        exit;
+    } else {
+        die("Failed to save response.");
+    }
+}
+
 }

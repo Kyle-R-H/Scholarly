@@ -19,7 +19,7 @@
                 <img class="pt-1 px-3" src="Public\Images\scholarly logo.png" alt="Scholarly Logo" height="40" width="auto">
                 <ul class="nav col-12 col-lg-auto me-lg-auto justify-content-center mb-md-0">
                     <li><a href="?controller=business&action=dashboard" class="nav-link px-2 link-body-emphasis">Dashboard</a></li>
-                    <li><a href="?controller=business&action=businessManager" class="nav-link px-2 link-secondary">Business Management</a></li>
+                    <li><a href="?controller=business&action=businessManager" class="nav-link px-2 link-body-emphasis">Business Management</a></li>
                 </ul>
 
                 <!-- Messages and Reviews Section -->
@@ -57,37 +57,69 @@
 
     <!-- Main Content -->
     <main class="container-fluid px-5 py-3">
-        <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-            <h1 class="h2"><?php echo "Items | " . $businessName  ?></h1>
-            <a href="?controller=business&action=addItemView">
-                <button class="btn">Add</button>
-            </a>
-        </div>
+        <div class="flex-grow-1 p-4">
+            <div class="d-flex justify-content-between align-items-center">
+                <h1>Reviews</h1>
+            </div>
 
-        <div class="table-responsive small">
-            <table class="table table-striped table-sm">
+            <!-- Search Bar Functionality -->
+            <form class="py-2" method="POST" role="search">
+                <input type="hidden" name="controller" value="user">
+                <input type="hidden" name="action" value="reviewView">
+                <input type="search" class="form-control" name="search" placeholder="Search Business"
+                    value="<?= isset($_POST['search']) ? htmlspecialchars($_POST['search']) : '' ?>">
+            </form>
 
-                <thead>
-                    <tr>
-                        <th scope="col">Item Name</th>
-                        <th scope="col">Description</th>
-                        <th scope="col">Item Price</th>
-                        <th scope="col">Remove</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <?php foreach ($items as $item): ?>
+            <?php if (isset($reviews) && count($reviews) > 0): ?>
+                <table class="table table-striped align-middle rounded-3 overflow-hidden">
+                    <thead class="table-dark">
                         <tr>
-                            <td><?= htmlspecialchars($item['ItemName']) ?></td>
-                            <td><?= htmlspecialchars($item['Description']) ?></td>
-                            <td><?= htmlspecialchars($item['ItemPrice']) ?></td>
-                            <td class="text-center">
-                                <button class="">-</button> // TODO: Make button red
-                            </td>
+                            <th>Business</th>
+                            <th>Comment</th>
+                            <th>Response</th>
+                            <th>Created At</th>
+                            <th>By</th>
+
                         </tr>
-                    <?php endforeach; ?>
-                </tbody>
-            </table>
+                    </thead>
+                    <tbody>
+                        <?php foreach ($reviews as $review): ?>
+                            <tr>
+                                <td class="d-flex align-items-center justify-content-between">
+                                    <div>
+                                        <span class="fw-bold"><?= htmlspecialchars($review['BusinessName']) ?></span>
+                                        <span class="fs-6 text-muted">(<?= number_format($review['Rating'], 1) ?> ⭐)</span>
+                                    </div>
+                                    <img class="rounded ms-3" src="<?= htmlspecialchars($review['Image']) ?>" alt="Business Image" height="50" width="50" style="object-fit: cover;">
+                                </td>
+                                <td><?= nl2br(htmlspecialchars($review['Comment'])) ?></td>
+                                <td>
+                                    <?php if (empty($review['Response'])): ?>
+                                        <!-- Form for empty response -->
+                                        <form action="?controller=business&action=saveResponse" method="POST">
+                                            <input type="hidden" name="reviewID" value="<?= htmlspecialchars($review['ReviewID']) ?>">
+                                            <textarea name="response"
+                                                class="form-control form-control-sm mb-2"
+                                                rows="2"
+                                                placeholder="Write response..."></textarea>
+                                            <button type="submit" class="btn btn-sm btn-primary">Save</button>
+                                        </form>
+                                    <?php else: ?>
+                                        <!-- Display existing response -->
+                                        <?= htmlspecialchars($review['Response']) ?>
+                                    <?php endif; ?>
+                                </td>
+                                <td><?= date('F j, Y', strtotime($review['CreatedAt'])) ?></td>
+                                <td><?= nl2br(htmlspecialchars($review['FirstName']) . " " . htmlspecialchars($review['LastName'])) ?></td>
+                            </tr>
+                        <?php endforeach; ?>
+
+                    </tbody>
+                </table>
+            <?php else: ?>
+                <p class="text-muted">No reviews found.</p>
+            <?php endif; ?>
         </div>
+
     </main>
 </body>
