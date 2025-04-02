@@ -9,7 +9,7 @@ class BusinessController extends Controller{
 
         if (!isset($_COOKIE['Login_Info']) || $this->businessModel->getUserByEmail($_COOKIE["Login_Info"])['PermissionLevel'] != 1){
             $_SESSION['error'] = "Insufficient Permissions";
-            $this->view('Auth/LoginView', isset($_SESSION['error']) ? ['error' => $_SESSION['error']] : []);
+            $this->view('Auth/LoginView', []);
         } else {
             // Get user table
             $user = $this->businessModel->getUserByEmail($_COOKIE['Login_Info']);
@@ -69,7 +69,7 @@ class BusinessController extends Controller{
             header("Location: ?controller=business&action=businessManager");
             exit();
         } else {
-            $this->view('Admin/RegisterBusinessView', isset($_SESSION['error']) ? ['error' => $_SESSION['error']] : []);
+            $this->view('Admin/RegisterBusinessView', []);
         }
         $this->view('Business/AddItemView', ['businessType' => $this->businessType,'businessName'=>$this->businessName ]);
     }
