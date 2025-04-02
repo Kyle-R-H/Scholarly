@@ -65,19 +65,12 @@
         <div class="border-end d-flex flex-column p-3" style="width: 280px; min-width: 160px;">
             <ul class="nav nav-pills flex-column ">
                 <li class="nav-item">
-                    <a href="#" class="nav-link active" aria-current="page">Best Rated restaurants</a>
+                    <a href="#" class="nav-link active" aria-current="page">Reviews</a>
                 </li>
                 <li class="nav-item">
                     <a href="?controller=user&action=historyView" class="nav-link link-body-emphasis">Order History</a>
                 </li>
-                <hr>
-                <!-- Search Bar Functionality -->
-                <form method="POST" role="search">
-                    <input type="hidden" name="controller" value="user">
-                    <input type="hidden" name="action" value="restaurantView">
-                    <input type="search" class="form-control" name="search" placeholder="Search..."
-                        value="<?= isset($_POST['search']) ? htmlspecialchars($_POST['search']) : '' ?>">
-                </form>
+
 
             </ul>
         </div>
@@ -85,17 +78,24 @@
         <!-- Main Content -->
         <!-- Main Content -->
         <div class="flex-grow-1 p-4">
-            <div class="d-flex justify-content-between align-items-center mb-4">
+            <div class="d-flex justify-content-between align-items-center">
                 <h1>Reviews</h1>
-                <a href="#" class="btn btn-success">Add Review</a>
+                <a href="?controller=user&action=addReview" class="btn btn-success">Add Review</a>
             </div>
 
+            <!-- Search Bar Functionality -->
+            <form class="py-2" method="POST" role="search">
+                <input type="hidden" name="controller" value="user">
+                <input type="hidden" name="action" value="reviewView">
+                <input type="search" class="form-control" name="search" placeholder="Search..."
+                    value="<?= isset($_POST['search']) ? htmlspecialchars($_POST['search']) : '' ?>">
+            </form>
+
             <?php if (isset($reviews) && count($reviews) > 0): ?>
-                <table class="table table-striped align-middle">
+                <table class="table table-striped align-middle rounded-3 overflow-hidden">
                     <thead class="table-dark">
                         <tr>
                             <th>Business</th>
-                            <th>Rating</th>
                             <th>Comment</th>
                             <th>Response</th>
                             <th>Created At</th>
@@ -105,12 +105,11 @@
                         <?php foreach ($reviews as $review): ?>
                             <tr>
                                 <td class="d-flex align-items-center justify-content-between">
-                                    <span class="fw-semibold"><?= htmlspecialchars($review['BusinessName']) ?></span>
+                                    <div>
+                                        <span class="fw-bold"><?= htmlspecialchars($review['BusinessName']) ?></span>
+                                        <span class="fs-6 text-muted">(<?= number_format($review['Rating'], 1) ?> ⭐)</span>
+                                    </div>
                                     <img class="rounded ms-3" src="<?= htmlspecialchars($review['Image']) ?>" alt="Business Image" height="50" width="50" style="object-fit: cover;">
-                                </td>
-                                <td>
-                                    <span class="btn fs-6"><?= htmlspecialchars($review['Rating']) ?> ⭐
-                                    </span>
                                 </td>
                                 <td><?= nl2br(htmlspecialchars($review['Comment'])) ?></td>
                                 <td><?= $review['Response'] ? htmlspecialchars($review['Response']) : '<em>No response</em>' ?></td>

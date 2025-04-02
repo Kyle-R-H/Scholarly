@@ -34,6 +34,7 @@ class UserController extends Controller
     {
         // Fetch all restaurants from the database
         $restaurants = $this->userModel->getBusinessByType("Restaurant");
+
         // print_r($restaurants);
 
         // Get search query from Form POST
@@ -164,6 +165,7 @@ class UserController extends Controller
     public function reviewView()
     {
         $reviews = $this->userModel->getReviewByReviewID("Review");
+        $restaurant = $this->userModel->getBusinessByType("Restaurant");
 
         // Get search query from Form POST
         $searchQuery = $_POST['search'] ?? '';

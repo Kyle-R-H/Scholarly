@@ -18,6 +18,7 @@ class UserModel extends Model
         return $this->db->query("SELECT * FROM Business WHERE BusinessName = ?", [$businessName])->fetchAll(PDO::FETCH_ASSOC);
     }
 
+
     public function getReviewByReviewID()
 {
     $query = "SELECT 
