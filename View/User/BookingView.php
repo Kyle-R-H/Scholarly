@@ -92,7 +92,7 @@
                                     <input type="hidden" name="form_token" value="<?= $_SESSION['form_token'] ?>">
                                     <button type="submit" class="btn btn-primary position-absolute top-0 end-0 m-3">+</button>
                                 </form>
-                            
+
                             </div>
                         </div>
                     </div>
@@ -106,7 +106,6 @@
                 <ul class="list-group">
                     <?php foreach ($_SESSION['cart'] as $cartItem): ?>
                         <li class="list-group-item d-flex justify-content-between align-items-center">
-                            <img src="<?= htmlspecialchars($cartItem['image']) ?>" style="width: 50px; height: 50px;" alt="Item">
                             <?= htmlspecialchars($cartItem['name']) ?> -
                             $<?= number_format($cartItem['price'], 2) ?> × <?= $cartItem['quantity'] ?>
                             = <strong>$<?= number_format($cartItem['price'] * $cartItem['quantity'], 2) ?></strong>

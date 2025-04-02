@@ -1,37 +1,4 @@
-<?php
-$cartItems = isset($_SESSION['cart']) ? $_SESSION['cart'] : [];
 
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    if (isset($_POST['item_name'], $_POST['quantity'])) {
-        $itemName = $_POST['item_name'];
-        $quantity = (int)$_POST['quantity'];
-
-        // Update the quantity in the session
-        foreach ($cartItems as &$item) {
-            if ($item['name'] === $itemName) {
-                $item['quantity'] = $quantity;
-                break;
-            }
-        }
-    } elseif (isset($_POST['remove_item_name'])) {
-        $removeItemName = $_POST['remove_item_name'];
-
-        // Remove the item from the session
-        foreach ($cartItems as $key => $item) {
-            if ($item['name'] === $removeItemName) {
-                unset($cartItems[$key]);
-                break;
-            }
-        }
-    }
-    $_SESSION['cart'] = $cartItems;
-}
-
-$totalPrice = 0;
-foreach ($cartItems as $item) {
-    $totalPrice += $item['price'] * $item['quantity'];
-}
-?>
 <!DOCTYPE html>
 <html>
 
@@ -98,19 +65,23 @@ foreach ($cartItems as $item) {
             <ul class="list-group">
                 <?php foreach ($cartItems as $cartItem): ?>
                     <li class="list-group-item d-flex justify-content-between align-items-center">
-                        <img src="<?= htmlspecialchars($cartItem['image']) ?>" style="width: 50px; height: 50px;" alt="Item">
-                        <?= htmlspecialchars($cartItem['name']) ?> -
-                        $<?= number_format($cartItem['price'], 2) ?> ×
-                        <form method="POST" class="d-inline">
-                            <input type="hidden" name="item_name" value="<?= htmlspecialchars($cartItem['name']) ?>">
-                            <input type="number" name="quantity" value="<?= $cartItem['quantity'] ?>" min="1" class="form-control d-inline" style="width: 60px;">
-                            <button type="submit" class="btn btn-sm btn-primary">Update</button>
-                        </form>
-                        <form method="POST" class="d-inline ms-2">
-                            <input type="hidden" name="remove_item_name" value="<?= htmlspecialchars($cartItem['name']) ?>">
-                            <button type="submit" class="btn btn-sm btn-danger">Remove</button>
-                        </form>
-                        = <strong>$<?= number_format($cartItem['price'] * $cartItem['quantity'], 2) ?></strong>
+                        <div class="row w-100">
+                            <div class="col-3">
+                                <?= htmlspecialchars($cartItem['name']) ?>
+                            </div>
+                            <div class="col-2">
+                                $<?= number_format($cartItem['price'], 2) ?> × <?= $cartItem['quantity'] ?>
+                            </div>
+                            <div class="col-2">
+                                <form method="POST" class="d-inline">
+                                    <input type="hidden" name="remove_item_name" value="<?= htmlspecialchars($cartItem['name']) ?>">
+                                    <button type="submit" class="btn btn-sm btn-danger">Remove</button>
+                                </form>
+                            </div>
+                            <div class="col-1">
+                                = <strong>$<?= number_format($cartItem['price'] * $cartItem['quantity'], 2) ?></strong>
+                            </div>
+                        </div>
                     </li>
                 <?php endforeach; ?>
             </ul>

@@ -53,6 +53,22 @@ class UserModel extends Model
         return $this->db->query($query,[$businessType, $userID])->fetchAll(PDO::FETCH_ASSOC);
     }
 
+    public function getOrderID()
+    {
+        $maxOrderID = $this->db->query("SELECT MAX(Order_ID) FROM BusinessStats")->fetch(PDO::FETCH_ASSOC);
+        return $maxOrderID["MAX(Order_ID)"] + 1;
+    }
+
+    public function placeOrder($businessName, $price, $userID, $orderID, $itemName)
+    {
+        $itemID = $this->db->query("SELECT MAX(ItemID) FROM BusinessStats ", [])->fetch(PDO::FETCH_ASSOC);
+        $this->db->query(
+            "INSERT INTO BusinessStats (BusinessName, OrderPrice, TimeOfOrder, UserID, OrderStatus, Order_ID,ItemName,ItemID) VALUES (?, ?, ?, ?, ?, ?, ?,?)",
+            [$businessName, $price,date("Y-m-d H:i:s")  , $userID, "Pending", $orderID, $itemName,$itemID["MAX(ItemID)"] + 1]
+        );
+        return $this->db->lastInsertId();
+    }
+
     public function createReview($userID, $business, $rating, $comment, $businessName) {
         $maxReviewID = $this->db->query("SELECT MAX(ReviewID) FROM Review")->fetch(PDO::FETCH_ASSOC);
         print_r($maxReviewID);
@@ -66,3 +82,4 @@ class UserModel extends Model
         return $this->db->query("SELECT BusinessName FROM Business", [])->fetchAll(PDO::FETCH_ASSOC);
     }
 }
+
