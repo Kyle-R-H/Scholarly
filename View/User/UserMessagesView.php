@@ -1,8 +1,9 @@
 <!DOCTYPE html>
 
 <html>
+
 <head>
-    <title>Services</title>
+    <title>Restaurants</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -18,8 +19,8 @@
             <div class="d-flex flex-wrap align-items-center justify-content-center">
                 <img class="pt-1 px-3" src="Public\Images\scholarly logo.png" alt="Scholarly Logo" height="40" width="auto">
                 <ul class="nav col-12 col-lg-auto me-lg-auto justify-content-center mb-md-0">
-                    <li><a href="?controller=user&action=restaurantView" class="nav-link px-2 link-body-emphasis">Restaurants</a></li>
-                    <li><a href="?controller=user&action=servicesView" class="nav-link px-2 link-secondary">Services</a></li>
+                    <li><a href="?controller=user&action=restaurantView" class="nav-link px-2 link-secondary">Restaurants</a></li>
+                    <li><a href="?controller=user&action=servicesView" class="nav-link px-2 link-body-emphasis">Services</a></li>
                     <li><a href="?controller=user&action=eventsView" class="nav-link px-2 link-body-emphasis">Events</a></li>
                     <li><a href="?controller=user&action=activitiesView" class="nav-link px-2 link-body-emphasis">Activities</a></li>
                 </ul>
@@ -63,10 +64,10 @@
     <!-- Main Layout -->
     <div class="container-fluid d-flex flex-grow-1">
         <!-- Sidebar -->
-        <div class="border-end d-flex flex-column p-3" style="width: 280px;">
-            <ul class="nav nav-pills flex-column mb-auto">
+        <div class="border-end d-flex flex-column p-3" style="width: 280px; min-width: 160px;">
+            <ul class="nav nav-pills flex-column ">
                 <li class="nav-item">
-                    <a href="#" class="nav-link active" aria-current="page">Services</a>
+                    <a href="#" class="nav-link active" aria-current="page">Restaurants</a>
                 </li>
                 <li class="nav-item">
                     <a href="?controller=user&action=historyView" class="nav-link link-body-emphasis">Order History</a>
@@ -79,65 +80,17 @@
                     <input type="search" class="form-control" name="search" placeholder="Search..."
                         value="<?= isset($_POST['search']) ? htmlspecialchars($_POST['search']) : '' ?>">
                 </form>
+
             </ul>
         </div>
 
         <!-- Main Content -->
         <div class="px-5 py-3" style="width: 100%;">
-            <?php foreach ($services as $service): ?>
-                <div class="row px-4 pe-lg-0 align-items-center rounded-3 border shadow-lg">
-                    <div class="col-lg-7 p-5 p-lg-5">
-                        <h1 class="display-5 fw-bold lh-1 text-body-emphasis">
-                            <?= htmlspecialchars($service['BusinessName']) ?>
-                            <span class="fs-4 text-muted text-muted d-inline-block" style="white-space: nowrap;"><?= number_format($service['Rating'], 1) ?> ⭐</span>
-                        </h1>
-                        <p class="lead"><?= htmlspecialchars($service['Description']) ?></p>
-                        <div class="d-grid gap-2 d-md-flex justify-content-md-start mb-4 mb-lg-3">
-                            <a href="<?= '?controller=user&action=bookingView&businessName=' . htmlspecialchars($service['BusinessName']) ?>">
-                                <button type="button" class="btn btn-lg px-4">Menu</button>
-                            </a>
-                        </div>
-                    </div>
-                    <div class="col-lg-4 offset-lg-1 p-0 overflow-hidden shadow-lg">
-                        <img class="rounded-lg-3" src="<?= htmlspecialchars($service['Image']) ?>" alt="" height="320">
-                    </div>
-                </div>
-                <hr>
-            <?php endforeach; ?>
-
-
-
-            <!-- TODO: Create Services Info
-            <div class="row px-4 pe-lg-0 align-items-center rounded-3 border shadow-lg">
-                <div class="col-lg-7 p-5 p-lg-5">
-                    <h1 class="display-5 fw-bold lh-1 text-body-emphasis">House Cleaning</h1>
-                    <p class="lead">UL House Cleaning allows the quick booking of a range of cleaning services to make the predrinks look like they never happened.</p>
-                    <div class="d-grid gap-2 d-md-flex justify-content-md-start mb-4 mb-lg-3">
-                        <button type="button" class="btn  btn-lg px-4">Book</button>
-                    </div>
-                </div>
-                <div class="col-lg-4 offset-lg-1 p-0 overflow-hidden shadow-lg">
-                    <img class="rounded-lg-3" src="https://studyireland.ie/wp-content/uploads/2024/04/living-room-thomond-2.jpg" 
-                    alt="" height="320" width="auto" >
-                </div>
-            </div>
-
-            <hr>
-            <div class="row px-4 pe-lg-0 align-items-center rounded-3 border shadow-lg">
-                <div class="col-lg-7 p-5 p-lg-5">
-                    <h1 class="display-5 fw-bold lh-1 text-body-emphasis">Bike Hire</h1>
-                    <p class="lead">Places to go? Get there with UL Bike Hire. Book a bike and explore.</p>
-                    <div class="d-grid gap-2 d-md-flex justify-content-md-start mb-4 mb-lg-3">
-                        <button type="button" class="btn  btn-lg px-4">Book</button>
-                    </div>
-                </div>
-                <div class="col-lg-4 offset-lg-1 p-0 overflow-hidden shadow-lg" >
-                    <img class="rounded-lg-3 flex" src="https://assets-eu-01.kc-usercontent.com/aa24ba70-9a12-01ae-259b-7ef588a0b2ef/1083fb38-ecbb-4411-8ad3-8eff07c2ffa8/carlingford-greenway-bicycle-hire-shop-front.jpg?w=1332&q=66&h=750&fit=crop&fm=jpg" 
-                    alt="" height="320" >
-                </div>
-            </div> -->
-        </div>
+            
     </div>
 
+
 </body>
+
 </html>
+
