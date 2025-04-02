@@ -30,10 +30,6 @@
                         <img src="Public\Images\default_pfp_128.png" class="border" height="34" width="34" alt="pfp" style="border-radius: 50%;">
                     </a>
                     <ul class="dropdown-menu text-small">
-                        <li><a class="dropdown-item" href="?controller=business&action=profile">Profile</a></li>
-                        <li>
-                            <hr class="dropdown-divider">
-                        </li>
                         <li><a class="dropdown-item" href="?controller=auth&action=logout">Sign out</a></li>
                     </ul>
                 </div>
@@ -46,9 +42,6 @@
         <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
             <h1 class="h2">Business Statistics</h1>
         </div>
-
-        <!-- <canvas class="my-4 w-100" id="myChart" style="display: block; box-sizing: border-box; height: 378px; width: 895px;"></canvas> -->
-
 
         <div class="container mt-4">
             <div class="row g-3">

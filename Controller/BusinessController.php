@@ -36,4 +36,33 @@ class BusinessController extends Controller{
     public function profile(){
         $this->view('Business/BusinessProfileView', ['businessType' => $this->businessType,'businessName'=>$this->businessName ]);
     }
+
+    public function addItemView(){
+        $this->view('Business/AddItemView', ['businessType' => $this->businessType,'businessName'=>$this->businessName ]);
+    }
+
+    public function addItem(){
+        // Debugging input values
+        $name = $_POST['ItemName'] ?? 'EMPTY';
+        $description = $_POST['ItemDescription'] ?? 'EMPTY';
+        $price = number_format((float)$_POST['ItemPrice'], 2, '.', '');
+
+        // Check if businessModel is set
+        if (!$this->businessModel) {
+            die("Error: businessModel is NULL! Check if it is being initialized correctly.");
+        }
+
+        // Check if name exists
+        $error = $this->businessModel->getSimilarItemNames($name);
+
+        if ($error == null) {
+            // Successful
+            $this->businessModel->addItem($this->businessName, $description, $price, $name);
+            header("Location: ?controller=business&action=businessManager");
+            exit();
+        } else {
+            $this->view('Admin/RegisterBusinessView', isset($error) ? ['error' => $error] : []);
+        }
+        $this->view('Business/AddItemView', ['businessType' => $this->businessType,'businessName'=>$this->businessName ]);
+    }
 }

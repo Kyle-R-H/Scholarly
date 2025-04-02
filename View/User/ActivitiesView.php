@@ -101,38 +101,6 @@
                 <hr>
             <?php endforeach; ?>
 
-
-
-            <!-- TODO: Create Activities Info
-            <div class="row px-4 pe-lg-0 align-items-center rounded-3 border shadow-lg">
-                <div class="col-lg-7 p-5 p-lg-5">
-                    <h1 class="display-5 fw-bold lh-1 text-body-emphasis">Campus Run</h1>
-                    <p class="lead">Forget the weather, put your running shoes on and join us for a run, job or sprint at your pace. Book now!</p>
-                    <div class="d-grid gap-2 d-md-flex justify-content-md-start mb-4 mb-lg-3">
-                        <button type="button" class="btn  btn-lg px-4">Book</button>
-                    </div>
-                </div>
-                <div class="col-lg-4 offset-lg-1 p-0 overflow-hidden shadow-lg">
-                    <img class="rounded-lg-3" src="https://plus.unsplash.com/premium_photo-1669021454145-49146869b916?fm=jpg&q=60&w=3000&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8bWFuJTIwcnVubmluZ3xlbnwwfHwwfHx8MA%3D%3D" 
-                    alt="" height="320">
-                </div>
-            </div>
-
-            <hr>
-            <div class="row px-4 pe-lg-0 align-items-center rounded-3 border shadow-lg">
-                <div class="col-lg-7 p-5 p-lg-5">
-                    <h1 class="display-5 fw-bold lh-1 text-body-emphasis">Social Walk</h1>
-                    <p class="lead">Running is too mcuh effort? No worries, a nice walk is the next best thing. Book now to see places around campus you haven't (that we know of) seen before.</p>
-                    <div class="d-grid gap-2 d-md-flex justify-content-md-start mb-4 mb-lg-3">
-                        <button type="button" class="btn  btn-lg px-4">Book</button>
-                    </div>
-                </div>
-                <div class="col-lg-4 offset-lg-1 p-0 overflow-hidden shadow-lg" >
-                    <img class="rounded-lg-3 flex" src="https://hundeschule-landog.de/wp-content/uploads/2018/10/hsl-portfolio_social-walk.jpg" 
-                    alt="" height="320">
-                </div>
-            </div> -->
-
         </div>
     </div>
 

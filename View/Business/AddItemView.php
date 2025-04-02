@@ -1,14 +1,13 @@
 <!DOCTYPE html>
 
 <head>
-    <title>Dashboard</title>
+    <title>Business Management</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="public\css\Styles.css">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-
 </head>
 
 
@@ -19,7 +18,7 @@
             <div class="d-flex flex-wrap align-items-center justify-content-center">
                 <img class="pt-1 px-3" src="Public\Images\scholarly logo.png" alt="Scholarly Logo" height="40" width="auto">
                 <ul class="nav col-12 col-lg-auto me-lg-auto justify-content-center mb-md-0">
-                    <li><a href="?controller=business&action=dashboard" class="nav-link px-2 link-secondary">Dashboard</a></li>
+                    <li><a href="?controller=business&action=dashboard" class="nav-link px-2 link-body-emphasis">Dashboard</a></li>
                     <li><a href="?controller=business&action=businessManager" class="nav-link px-2 link-body-emphasis">Business Management</a></li>
                 </ul>
 
@@ -54,66 +53,31 @@
     <!-- Main Content -->
     <main class="container-fluid px-5 py-3">
         <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-            <h1 class="h2"><?php echo "Dashboard | ". htmlspecialchars($businessName)?></h1>
+            <h1 class="h2">Add Item</h1>
         </div>
+        <form method="POST" action="?controller=business&action=addItem">
+            <div class="form-floating mb-4">
+                <input name="ItemName" id="nameInput" type="text" class="form-control" placeholder="Item Name" value="<?php echo isset($_POST['ItemName']) ? htmlspecialchars($_POST['ItemName']) : ''; ?>" required>
+                <label for="nameInput">Item Name</label>
+            </div>
 
-        <canvas class="my-4 w-100" id="myChart" style="display: block; box-sizing: border-box; height: 378px; width: 895px;"></canvas>
+            <div class="form-floating mb-4">
+                <input name="ItemDescription" id="descriptionInput" class="form-control" placeholder="Description" value="<?php echo isset($_POST['ItemDescription']) ? htmlspecialchars($_POST['ItemDescription']) : ''; ?>" required>
+                <label for="descriptionInput">Description</label>
+            </div>
+            
+            <div class="form-floating mb-4">
+            <input name="ItemPrice" id="priceInput" class="form-control" 
+                    placeholder="Price" value="<?php echo isset($_POST['ItemPrice']) ? htmlspecialchars($_POST['ItemPrice']) : ''; ?>" 
+                    required pattern="^\d+(\.\d{1,2})?$" 
+                    title="Enter a valid price (e.g., 10.99)">
+                <label for="priceInput">Item Price</label>
+            </div>
+
+            <div class="pt-4">
+                <button class="position-relative start-50 translate-middle btn" type="submit">Add</button>
+            </div>
+        </form>
         
-        <!-- TODO: Complete script to work with our database -->
-        <script>
-            // Fetch PHP data and convert it to JavaScript arrays
-            var price = <?php echo json_encode(array_column($stats, 'OrderPrice')); ?>;
-            var timeOfOrder = <?php echo json_encode(array_column($stats, 'TimeOfOrder')); ?>;
-
-            // Initialize Chart.js
-            var ctx = document.getElementById('myChart').getContext('2d');
-            var myChart = new Chart(ctx, {
-                type: 'bar',
-                data: {
-                    labels: timeOfOrder, // X-axis labels from DB
-                    datasets: [{
-                        label: 'Monthly Sales',
-                        data: price, // Y-axis data from DB
-                        backgroundColor: 'rgba(75, 192, 192, 0.2)',
-                        borderColor: 'rgba(75, 192, 192, 1)',
-                        borderWidth: 2
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: true,
-                    scales: {
-                        y: {
-                            beginAtZero: true
-                        }
-                    }
-                }
-            });
-        </script>
-
-        <!-- Add filters? -->
-        <h2>Orders</h2>
-        <div class="table-responsive small">
-            <table class="table table-striped table-sm">
-            <thead>
-                    <tr>
-                        <th scope="col">User ID</th>
-                        <th scope="col">Order Price</th>
-                        <th scope="col">Time Of Order</th>
-                        <th scope="col">Status</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <?php foreach ($stats as $stat): ?>
-                        <tr>
-                            <td><?= htmlspecialchars($stat['UserID'])?></td>
-                            <td><?= htmlspecialchars($stat['OrderPrice'])?></td>
-                            <td><?= htmlspecialchars($stat['TimeOfOrder'])?></td>
-                            <td><?= htmlspecialchars($stat['OrderStatus'])?></td>
-                        </tr>
-                    <?php endforeach; ?>
-                </tbody>
-            </table>
-        </div>
     </main>
 </body>
