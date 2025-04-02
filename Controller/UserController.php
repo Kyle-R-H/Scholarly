@@ -283,6 +283,21 @@ class UserController extends Controller
 
     public function userMessagesView()
     {
+        $users = $this->userModel->getUsersByVerifiedCustomer(0); // 0 = normal user
+        $businessUsers = $this->userModel->getUsersByVerifiedCustomer(1); // business user
+
+        // Get search query from Form POST
+        $searchQuery = $_POST['search'] ?? '';
+        // echo "<br> Search Q: "; print_r($searchQuery);
+
+        // Filter Reviews based on the search query
+        if (!empty($searchQuery)) {
+            $users = array_filter($users, function ($users) use ($searchQuery) {
+                return stripos($users['Email'], $searchQuery) !== false;
+            });
+        }
+
         require_once 'View/User/userMessagesView.php';
     }
+
 }
