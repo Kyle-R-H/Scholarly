@@ -12,6 +12,29 @@ class AdminModel extends Model
         parent::__construct();
     }
 
+    // Register new Business
+    public function registerBusiness($userID, $businessName, $businessType, $description, $image){
+        // Add new business to Business table
+        $this->db->query(
+            "INSERT INTO Business (UserID, BusinessName, BusinessType, Rating, Description, Image) 
+             VALUES (?, ?, ?, ?, ?, ?)"
+            ,[$userID, $businessName, $businessType, 0.0, $description, $image]
+        );
+        
+        return $this->db->lastInsertId();
+    }
+    
+    public function getSimilarBusinessNames($businessName){
+        $existingNames = $this->db->query(
+            "SELECT BusinessName FROM BusinessStats WHERE BusinessName LIKE ?"
+            ,[$businessName])->fetchAll(PDO::FETCH_COLUMN);
+    
+        if (!empty($existingNames)) {
+            return "Business Name already exists";
+        }
+    }
+
+
     // Main Data Methods 
     public function getBusinessesWithOwners()
     {
@@ -25,21 +48,23 @@ class AdminModel extends Model
     public function getAllOrders()
     {
         $query = "SELECT 
-                    Order_ID, 
-                    UserID, 
-                    BusinessName, 
-                    SUM(OrderPrice) AS TotalPrice, 
-                    TimeOfOrder
-                  FROM BusinessStats
-                  GROUP BY Order_ID, UserID, BusinessName, TimeOfOrder
-                  ORDER BY TimeOfOrder DESC";
-    
+                Order_ID, 
+                UserID, 
+                BusinessName, 
+                SUM(OrderPrice) AS TotalPrice, 
+                TimeOfOrder
+                FROM BusinessStats
+                GROUP BY Order_ID, UserID, BusinessName, TimeOfOrder
+                ORDER BY TimeOfOrder DESC";
+
         return $this->db->query($query)->fetchAll(PDO::FETCH_ASSOC);
     }
-    
+
+
 
     // Niche funky stats methods
-    public function getMostPopularItem() {
+    public function getMostPopularItem()
+    {
         $query = "SELECT ItemName, COUNT(*) AS OrderCount
                   FROM BusinessStats
                   GROUP BY ItemName
@@ -48,7 +73,7 @@ class AdminModel extends Model
 
         return $this->db->query($query)->fetch(PDO::FETCH_ASSOC);
     }
-    
+
 
     public function getMostPopularBusiness()
     {
