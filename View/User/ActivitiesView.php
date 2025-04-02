@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-
+<html>
 <head>
     <title>Activities</title>
     <meta charset="utf-8">
@@ -15,8 +15,8 @@
     <header class="py-3 ps-4 pe-5 border-bottom">
         <div class="container-fluid">
             <div class="d-flex flex-wrap align-items-center justify-content-center">
-            <img class="pt-1 px-3" src="Public\Images\scholarly logo.png" alt="Scholarly Logo" height="40" width="auto">
-            <ul class="nav col-12 col-lg-auto me-lg-auto justify-content-center mb-md-0">
+                <img class="pt-1 px-3" src="Public\Images\scholarly logo.png" alt="Scholarly Logo" height="40" width="auto">
+                <ul class="nav col-12 col-lg-auto me-lg-auto justify-content-center mb-md-0">
                     <li><a href="?controller=user&action=restaurantView" class="nav-link px-2 link-body-emphasis">Restaurants</a></li>
                     <li><a href="?controller=user&action=servicesView" class="nav-link px-2 link-body-emphasis">Services</a></li>
                     <li><a href="?controller=user&action=eventsView" class="nav-link px-2 link-body-emphasis">Events</a></li>
@@ -44,11 +44,11 @@
                 <!-- Profile and Dropdown Section -->
                 <div class="dropdown text-end">
                     <a href="#" class="d-block link-body-emphasis text-decoration-none dropdown-toggle p-2 ms-1" data-bs-toggle="dropdown" aria-expanded="false">
-                    <img src="Public\Images\default_pfp_128.png" class="border" height="34" width="34" alt="pfp" style="border-radius: 50%;">
+                        <img src="Public\Images\default_pfp_128.png" class="border" height="34" width="34" alt="pfp" style="border-radius: 50%;">
                     </a>
                     <ul class="dropdown-menu text-small">
-                        <li><a class="dropdown-item" href="?controller=user&action=profile" >Profile</a></li>
-                        <li><a class="dropdown-item" href="?controller=user&action=settings" >Settings</a></li>
+                        <li><a class="dropdown-item" href="?controller=user&action=profile">Profile</a></li>
+                        <li><a class="dropdown-item" href="?controller=user&action=settings">Settings</a></li>
                         <li>
                             <hr class="dropdown-divider">
                         </li>
@@ -83,13 +83,16 @@
 
         <!-- Main Content -->
         <div class="px-5 py-3" style="width: 100%;">
-        <?php foreach ($activities as $activity): ?>
+            <?php foreach ($activities as $activity): ?>
                 <div class="row px-4 pe-lg-0 align-items-center rounded-3 border shadow-lg">
                     <div class="col-lg-7 p-5 p-lg-5">
-                        <h1 class="display-5 fw-bold lh-1 text-body-emphasis"><?= htmlspecialchars($activity['BusinessName']) ?></h1>
+                        <h1 class="display-5 fw-bold lh-1 text-body-emphasis">
+                            <?= htmlspecialchars($activity['BusinessName']) ?>
+                            <span class="fs-4 text-muted text-muted d-inline-block" style="white-space: nowrap;"><?= number_format($activity['Rating'], 1) ?> ⭐</span>
+                        </h1>
                         <p class="lead"><?= htmlspecialchars($activity['Description']) ?></p>
                         <div class="d-grid gap-2 d-md-flex justify-content-md-start mb-4 mb-lg-3">
-                            <a href="<?= '?controller=user&action=bookingView&businessName=' . htmlspecialchars($activity['BusinessName'])?>">
+                            <a href="<?= '?controller=user&action=bookingView&businessName=' . htmlspecialchars($activity['BusinessName']) ?>">
                                 <button type="button" class="btn btn-lg px-4">Menu</button>
                             </a>
                         </div>
@@ -101,44 +104,8 @@
                 <hr>
             <?php endforeach; ?>
 
-
-
-            <!-- TODO: Create Activities Info
-            <div class="row px-4 pe-lg-0 align-items-center rounded-3 border shadow-lg">
-                <div class="col-lg-7 p-5 p-lg-5">
-                    <h1 class="display-5 fw-bold lh-1 text-body-emphasis">Campus Run</h1>
-                    <p class="lead">Forget the weather, put your running shoes on and join us for a run, job or sprint at your pace. Book now!</p>
-                    <div class="d-grid gap-2 d-md-flex justify-content-md-start mb-4 mb-lg-3">
-                        <button type="button" class="btn  btn-lg px-4">Book</button>
-                    </div>
-                </div>
-                <div class="col-lg-4 offset-lg-1 p-0 overflow-hidden shadow-lg">
-                    <img class="rounded-lg-3" src="https://plus.unsplash.com/premium_photo-1669021454145-49146869b916?fm=jpg&q=60&w=3000&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8bWFuJTIwcnVubmluZ3xlbnwwfHwwfHx8MA%3D%3D" 
-                    alt="" height="320">
-                </div>
-            </div>
-
-            <hr>
-            <div class="row px-4 pe-lg-0 align-items-center rounded-3 border shadow-lg">
-                <div class="col-lg-7 p-5 p-lg-5">
-                    <h1 class="display-5 fw-bold lh-1 text-body-emphasis">Social Walk</h1>
-                    <p class="lead">Running is too mcuh effort? No worries, a nice walk is the next best thing. Book now to see places around campus you haven't (that we know of) seen before.</p>
-                    <div class="d-grid gap-2 d-md-flex justify-content-md-start mb-4 mb-lg-3">
-                        <button type="button" class="btn  btn-lg px-4">Book</button>
-                    </div>
-                </div>
-                <div class="col-lg-4 offset-lg-1 p-0 overflow-hidden shadow-lg" >
-                    <img class="rounded-lg-3 flex" src="https://hundeschule-landog.de/wp-content/uploads/2018/10/hsl-portfolio_social-walk.jpg" 
-                    alt="" height="320">
-                </div>
-            </div> -->
-
         </div>
     </div>
 
 </body>
-
-<!-- Search Bar Funcitonality -->
-<!-- <form class="col-12 col-lg-auto mb-3 mb-lg-0 me-lg-3" role="search">
-    <input type="search" class="form-control" placeholder="Search..." aria-label="Search">
-</form> -->
+</html>

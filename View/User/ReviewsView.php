@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 
+<html>
 <head>
     <title>Restaurants</title>
     <meta charset="utf-8">
@@ -17,7 +18,7 @@
             <div class="d-flex flex-wrap align-items-center justify-content-center">
                 <img class="pt-1 px-3" src="Public\Images\scholarly logo.png" alt="Scholarly Logo" height="40" width="auto">
                 <ul class="nav col-12 col-lg-auto me-lg-auto justify-content-center mb-md-0">
-                    <li><a href="?controller=user&action=restaurantView" class="nav-link px-2 link-secondary">Restaurants</a></li>
+                    <li><a href="?controller=user&action=restaurantView" class="nav-link px-2 link-body-emphasis">Restaurants</a></li>
                     <li><a href="?controller=user&action=servicesView" class="nav-link px-2 link-body-emphasis">Services</a></li>
                     <li><a href="?controller=user&action=eventsView" class="nav-link px-2 link-body-emphasis">Events</a></li>
                     <li><a href="?controller=user&action=activitiesView" class="nav-link px-2 link-body-emphasis">Activities</a></li>
@@ -65,39 +66,66 @@
         <div class="border-end d-flex flex-column p-3" style="width: 280px; min-width: 160px;">
             <ul class="nav nav-pills flex-column ">
                 <li class="nav-item">
-                    <a href="#" class="nav-link active" aria-current="page">Best Rated restaurants</a>
+                    <a href="?controller=user&action=reviewView" class="nav-link active" aria-current="page">Reviews</a>
                 </li>
                 <li class="nav-item">
                     <a href="?controller=user&action=historyView" class="nav-link link-body-emphasis">Order History</a>
                 </li>
-                <hr>
-                <!-- Search Bar Functionality -->
-                <form method="POST" role="search">
-                    <input type="hidden" name="controller" value="user">
-                    <input type="hidden" name="action" value="restaurantView">
-                    <input type="search" class="form-control" name="search" placeholder="Search..."
-                        value="<?= isset($_POST['search']) ? htmlspecialchars($_POST['search']) : '' ?>">
-                </form>
+
 
             </ul>
         </div>
 
         <!-- Main Content -->
-        <div class="row">
-            <?php foreach ($reviews as $review): ?>
-                <div class="col-md-6 mb-4">
-                    <div class="card h-100 shadow-sm">
-                        <!-- Added extra right padding to card body to reserve space for the plus button -->
-                        <div class="card-body position-relative" style="padding-right: 4rem;">
-                            <h4 class="card-title"><?= htmlspecialchars($review['ItemName']) ?></h4>
-                            <p class="card-text"><?= htmlspecialchars($review['Description']) ?></p>
-                            <p class="fw-bold">Price: $<?= number_format($review['ItemPrice'], 2) ?></p>
-                            <!-- Plus button positioned absolutely, no overlap due to reserved space -->
-                            <button type="button" class="btn btn-primary position-absolute top-0 end-0 m-3">+</button>
-                        </div>
-                    </div>
-                </div>
-            <?php endforeach; ?>
+        <!-- Main Content -->
+        <div class="flex-grow-1 p-4">
+            <div class="d-flex justify-content-between align-items-center">
+                <h1>Reviews</h1>
+                <a href="?controller=user&action=addReviewView" class="btn btn-success">Add Review</a>
+            </div>
+
+            <!-- Search Bar Functionality -->
+            <form class="py-2" method="POST" role="search">
+                <input type="hidden" name="controller" value="user">
+                <input type="hidden" name="action" value="reviewView">
+                <input type="search" class="form-control" name="search" placeholder="Search..."
+                    value="<?= isset($_POST['search']) ? htmlspecialchars($_POST['search']) : '' ?>">
+            </form>
+
+            <?php if (isset($reviews) && count($reviews) > 0): ?>
+                <table class="table table-striped align-middle rounded-3 overflow-hidden">
+                    <thead class="table-dark">
+                        <tr>
+                            <th>Business</th>
+                            <th>Comment</th>
+                            <th>Response</th>
+                            <th>Created At</th>
+                            <th>By</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php foreach ($reviews as $review): ?>
+                            <tr>
+                                <td class="d-flex align-items-center justify-content-between">
+                                    <div>
+                                        <span class="fw-bold"><?= htmlspecialchars($review['BusinessName']) ?></span>
+                                        <span class="fs-6 text-muted">(<?= number_format($review['Rating'], 1) ?> ⭐)</span>
+                                    </div>
+                                    <img class="rounded ms-3" src="<?= htmlspecialchars($review['Image']) ?>" alt="Business Image" height="50" width="50" style="object-fit: cover;">
+                                </td>
+                                <td><?= nl2br(htmlspecialchars($review['Comment'])) ?></td>
+                                <td><?= $review['Response'] ? htmlspecialchars($review['Response']) : '<em>No response</em>' ?></td>
+                                <td><?= date('F j, Y', strtotime($review['CreatedAt'])) ?></td>
+                                <td><?= nl2br(htmlspecialchars($review['FirstName']) . " " . htmlspecialchars($review['LastName'])) ?></td>
+                            </tr>
+                        <?php endforeach; ?>
+                    </tbody>
+                </table>
+            <?php else: ?>
+                <p class="text-muted">No reviews found.</p>
+            <?php endif; ?>
         </div>
+
     </div>
 </body>
+<html>

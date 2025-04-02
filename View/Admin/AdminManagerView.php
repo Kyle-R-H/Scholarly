@@ -29,10 +29,6 @@
                         <img src="Public\Images\default_pfp_128.png" class="border" height="34" width="34" alt="pfp" style="border-radius: 50%;">
                     </a>
                     <ul class="dropdown-menu text-small">
-                        <li><a class="dropdown-item" href="?controller=business&action=profile">Profile</a></li>
-                        <li>
-                            <hr class="dropdown-divider">
-                        </li>
                         <li><a class="dropdown-item" href="?controller=auth&action=logout">Sign out</a></li>
                     </ul>
                 </div>
@@ -66,8 +62,7 @@
                             <td><?= htmlspecialchars($business['Rating'])?></td>
                             <td><?= htmlspecialchars($business['Description'])?></td>
                             <td class="text-center">
-                                <button class="">-</button> // TODO: Make button red
-                                <!-- <?php echo "TODO" //htmlspecialchars($business)?> -->
+                                <button class="btn remove-business"> - </button>
                             </td>
                         </tr>
                     <?php endforeach; ?>

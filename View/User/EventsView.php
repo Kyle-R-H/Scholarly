@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 
+<html>
 <head>
     <title>Events</title>
     <meta charset="utf-8">
@@ -15,8 +16,8 @@
     <header class="py-3 ps-4 pe-5 border-bottom">
         <div class="container-fluid">
             <div class="d-flex flex-wrap align-items-center justify-content-center">
-            <img class="pt-1 px-3" src="Public\Images\scholarly logo.png" alt="Scholarly Logo" height="40" width="auto">
-            <ul class="nav col-12 col-lg-auto me-lg-auto justify-content-center mb-md-0">
+                <img class="pt-1 px-3" src="Public\Images\scholarly logo.png" alt="Scholarly Logo" height="40" width="auto">
+                <ul class="nav col-12 col-lg-auto me-lg-auto justify-content-center mb-md-0">
                     <li><a href="?controller=user&action=restaurantView" class="nav-link px-2 link-body-emphasis">Restaurants</a></li>
                     <li><a href="?controller=user&action=servicesView" class="nav-link px-2 link-body-emphasis">Services</a></li>
                     <li><a href="?controller=user&action=eventsView" class="nav-link px-2 link-secondary">Events</a></li>
@@ -44,11 +45,11 @@
                 <!-- Profile and Dropdown Section -->
                 <div class="dropdown text-end">
                     <a href="#" class="d-block link-body-emphasis text-decoration-none dropdown-toggle p-2 ms-1" data-bs-toggle="dropdown" aria-expanded="false">
-                    <img src="Public\Images\default_pfp_128.png" class="border" height="34" width="34" alt="pfp" style="border-radius: 50%;">
+                        <img src="Public\Images\default_pfp_128.png" class="border" height="34" width="34" alt="pfp" style="border-radius: 50%;">
                     </a>
                     <ul class="dropdown-menu text-small">
-                        <li><a class="dropdown-item" href="?controller=user&action=profile" >Profile</a></li>
-                        <li><a class="dropdown-item" href="?controller=user&action=settings" >Settings</a></li>
+                        <li><a class="dropdown-item" href="?controller=user&action=profile">Profile</a></li>
+                        <li><a class="dropdown-item" href="?controller=user&action=settings">Settings</a></li>
                         <li>
                             <hr class="dropdown-divider">
                         </li>
@@ -86,10 +87,13 @@
             <?php foreach ($events as $event): ?>
                 <div class="row px-4 pe-lg-0 align-items-center rounded-3 border shadow-lg">
                     <div class="col-lg-7 p-5 p-lg-5">
-                        <h1 class="display-5 fw-bold lh-1 text-body-emphasis"><?= htmlspecialchars($event['BusinessName']) ?></h1>
+                        <h1 class="display-5 fw-bold lh-1 text-body-emphasis">
+                            <?= htmlspecialchars($event['BusinessName']) ?>
+                            <span class="fs-4 text-muted text-muted d-inline-block" style="white-space: nowrap;"><?= number_format($event['Rating'], 1) ?> ⭐</span>
+                        </h1>
                         <p class="lead"><?= htmlspecialchars($event['Description']) ?></p>
                         <div class="d-grid gap-2 d-md-flex justify-content-md-start mb-4 mb-lg-3">
-                            <a href="<?= '?controller=user&action=bookingView&businessName=' . htmlspecialchars($event['BusinessName'])?>">
+                            <a href="<?= '?controller=user&action=bookingView&businessName=' . htmlspecialchars($event['BusinessName']) ?>">
                                 <button type="button" class="btn btn-lg px-4">Menu</button>
                             </a>
                         </div>
@@ -129,14 +133,9 @@
                     alt="" height="320" >
                 </div>
             </div> -->
-        
-        
+
+
         </div>
     </div>
-
 </body>
-
-<!-- Search Bar Funcitonality -->
-<!-- <form class="col-12 col-lg-auto mb-3 mb-lg-0 me-lg-3" role="search">
-    <input type="search" class="form-control" placeholder="Search..." aria-label="Search">
-</form> -->
+</html>

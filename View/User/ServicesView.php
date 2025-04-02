@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 
+<html>
 <head>
     <title>Services</title>
     <meta charset="utf-8">
@@ -86,7 +87,10 @@
             <?php foreach ($services as $service): ?>
                 <div class="row px-4 pe-lg-0 align-items-center rounded-3 border shadow-lg">
                     <div class="col-lg-7 p-5 p-lg-5">
-                        <h1 class="display-5 fw-bold lh-1 text-body-emphasis"><?= htmlspecialchars($service['BusinessName']) ?></h1>
+                        <h1 class="display-5 fw-bold lh-1 text-body-emphasis">
+                            <?= htmlspecialchars($service['BusinessName']) ?>
+                            <span class="fs-4 text-muted text-muted d-inline-block" style="white-space: nowrap;"><?= number_format($service['Rating'], 1) ?> ⭐</span>
+                        </h1>
                         <p class="lead"><?= htmlspecialchars($service['Description']) ?></p>
                         <div class="d-grid gap-2 d-md-flex justify-content-md-start mb-4 mb-lg-3">
                             <a href="<?= '?controller=user&action=bookingView&businessName=' . htmlspecialchars($service['BusinessName']) ?>">
@@ -136,8 +140,4 @@
     </div>
 
 </body>
-
-<!-- Search Bar Funcitonality -->
-<!-- <form class="col-12 col-lg-auto mb-3 mb-lg-0 me-lg-3" role="search">
-    <input type="search" class="form-control" placeholder="Search..." aria-label="Search">
-</form> -->
+</html>

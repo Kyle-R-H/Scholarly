@@ -19,7 +19,7 @@
                 <img class="pt-1 px-3" src="Public\Images\scholarly logo.png" alt="Scholarly Logo" height="40" width="auto">
                 <ul class="nav col-12 col-lg-auto me-lg-auto justify-content-center mb-md-0">
                     <li><a href="?controller=business&action=dashboard" class="nav-link px-2 link-body-emphasis">Dashboard</a></li>
-                    <li><a href="?controller=business&action=businessManager" class="nav-link px-2 link-secondary">Business Management</a></li>
+                    <li><a href="?controller=business&action=businessManager" class="nav-link px-2 link-body-emphasis">Business Management</a></li>
                 </ul>
 
                 <!-- Messages and Reviews Section -->
@@ -58,36 +58,31 @@
     <!-- Main Content -->
     <main class="container-fluid px-5 py-3">
         <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-            <h1 class="h2"><?php echo "Items | " . $businessName  ?></h1>
-            <a href="?controller=business&action=addItemView">
-                <button class="btn">Add</button>
-            </a>
+            <h1 class="h2">Add Item</h1>
         </div>
+        <form method="POST" action="?controller=business&action=addItem">
+            <div class="form-floating mb-4">
+                <input name="ItemName" id="nameInput" type="text" class="form-control" placeholder="Item Name" value="<?php echo isset($_POST['ItemName']) ? htmlspecialchars($_POST['ItemName']) : ''; ?>" required>
+                <label for="nameInput">Item Name</label>
+            </div>
 
-        <div class="table-responsive small">
-            <table class="table table-striped table-sm">
+            <div class="form-floating mb-4">
+                <input name="ItemDescription" id="descriptionInput" class="form-control" placeholder="Description" value="<?php echo isset($_POST['ItemDescription']) ? htmlspecialchars($_POST['ItemDescription']) : ''; ?>" required>
+                <label for="descriptionInput">Description</label>
+            </div>
 
-                <thead>
-                    <tr>
-                        <th scope="col">Item Name</th>
-                        <th scope="col">Description</th>
-                        <th scope="col">Item Price</th>
-                        <th scope="col">Remove</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <?php foreach ($items as $item): ?>
-                        <tr>
-                            <td><?= htmlspecialchars($item['ItemName']) ?></td>
-                            <td><?= htmlspecialchars($item['Description']) ?></td>
-                            <td><?= htmlspecialchars($item['ItemPrice']) ?></td>
-                            <td class="text-center">
-                                <button class="">-</button> // TODO: Make button red
-                            </td>
-                        </tr>
-                    <?php endforeach; ?>
-                </tbody>
-            </table>
-        </div>
+            <div class="form-floating mb-4">
+                <input name="ItemPrice" id="priceInput" class="form-control"
+                    placeholder="Price" value="<?php echo isset($_POST['ItemPrice']) ? htmlspecialchars($_POST['ItemPrice']) : ''; ?>"
+                    required pattern="^\d+(\.\d{1,2})?$"
+                    title="Enter a valid price (e.g., 10.99)">
+                <label for="priceInput">Item Price</label>
+            </div>
+
+            <div class="pt-4">
+                <button class="position-relative start-50 translate-middle btn" type="submit">Add</button>
+            </div>
+        </form>
+
     </main>
 </body>
