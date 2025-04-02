@@ -18,10 +18,6 @@ class UserModel extends Model
         return $this->db->query("SELECT * FROM Business WHERE BusinessName = ?", [$businessName])->fetchAll(PDO::FETCH_ASSOC);
     }
 
-
-    
-
-
     public function registerUser($firstName, $lastName, $email, $password)
     {
         // Generate UserID, max ID in user table + 1
@@ -78,6 +74,7 @@ class UserModel extends Model
         return $this->db->query($query, [$maxReviewID["MAX(ReviewID)"] + 1, $userID, $business, $rating, $comment, "", date("Y-m-d H:i:s"), $businessName]);
     }
 
+
     public function getBusinesses()
     {
         return $this->db->query("SELECT BusinessName FROM Business", [])->fetchAll(PDO::FETCH_ASSOC);
@@ -90,6 +87,7 @@ class UserModel extends Model
         $query = "INSERT INTO Messages (MessageID, Sender, Receiver, Message, TimeSent, Pending) VALUES (?, ?, ?, ?, ?, ?)";
         return $this->db->query($query, [$messageID, $senderID, $receiverID, $message, date("Y-m-d H:i:s"), "Pending" ])->fetchAll(PDO::FETCH_ASSOC);
     }
+
     
 }
 

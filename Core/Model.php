@@ -8,6 +8,7 @@ class Model
     public function __construct()
     {
         $this->db = new Database();
+        $this->updateAverageRatingByBusiness();
     }
 
     // Fetch user by email
@@ -61,6 +62,40 @@ class Model
               LEFT JOIN Users
                 ON Review.UserID = Users.UserID";
         return $this->db->query($query)->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    public function getBusinesses()
+    {
+        return $this->db->query("SELECT BusinessName FROM Business", [])->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    public function updateAverageRatingByBusiness()
+    {
+        $businesses = $this->getBusinesses();
+        foreach ($businesses as $business) {
+            $businessName = $business['BusinessName'];
+            // Calculate the average rating
+            $query = "SELECT AVG(Rating) as averageRating FROM Review WHERE BusinessName = ?";
+            $result = $this->db->query($query, [$businessName])->fetch(PDO::FETCH_ASSOC);
+
+            $averageRating = $result ? $result['averageRating'] : null;
+
+            if ($averageRating !== null) {
+                // Update the Rating column in the Business table
+                $updateQuery = "UPDATE Business SET Rating = ? WHERE BusinessName = ?";
+                $this->db->query($updateQuery, [$averageRating, $businessName]);
+            }
+            else {
+                $averageRating = 0;
+            }
+            $this->updateBusinessRatingByBusiness($businessName, $averageRating);
+        }
+    }
+
+    public function updateBusinessRatingByBusiness($businessName,$averageRating)
+    {
+        $updateQuery = "UPDATE Business SET Rating = ? WHERE BusinessName = ?";
+        $this->db->query($updateQuery, [$averageRating, $businessName]);
     }
 
     public function updateVerifiedCustomer($userID)
