@@ -19,26 +19,7 @@ class UserModel extends Model
     }
 
 
-    public function getReviewByReviewID()
-{
-    $query = "SELECT 
-                Review.ReviewID, 
-                Review.UserID, 
-                Users.FirstName, 
-                Users.LastName,
-                Review.BusinessName,
-                Business.Image, 
-                Review.Rating, 
-                Review.Comment, 
-                Review.Response, 
-                Review.CreatedAt
-              FROM Review
-              LEFT JOIN Business 
-                ON Review.Business = Business.UserID
-              LEFT JOIN Users
-                ON Review.UserID = Users.UserID";
-    return $this->db->query($query)->fetchAll(PDO::FETCH_ASSOC);
-}
+    
 
 
     public function registerUser($firstName, $lastName, $email, $password)
@@ -74,9 +55,6 @@ class UserModel extends Model
 
     public function createReview($userID, $business, $rating, $comment, $businessName) {
         $maxReviewID = $this->db->query("SELECT MAX(ReviewID) FROM Review")->fetch(PDO::FETCH_ASSOC);
-        if(!is_null($maxReviewID)) {
-            $maxReviewID = 1;
-        }
         print_r($maxReviewID);
         $query = "INSERT INTO Review (ReviewID, UserID, Business, Rating, Comment, Response, CreatedAt, BusinessName) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
         // Use your database query method with parameter binding

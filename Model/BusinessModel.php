@@ -40,4 +40,10 @@ class BusinessModel extends Model{
         
         return $this->db->lastInsertId();
     }
+
+    public function setResponseByReviewID($response, $reviewID){
+        $query = "UPDATE Review SET Response = ? WHERE ReviewID = ?";
+        return $this->db->query($query, [$response, $reviewID]);
+    }
+
 }
