@@ -63,6 +63,18 @@
 
     <!-- Main Layout -->
     <div class="container-fluid d-flex flex-grow-1">
+        <?php if (!empty($error)) : ?>
+            <div class="position-fixed top-0 end-0 p-3" style="z-index: 1050">
+                <div id="errorToast" class="toast align-items-center text-bg-danger border-0 show" role="alert" aria-live="assertive" aria-atomic="true">
+                    <div class="d-flex">
+                        <div class="toast-body">
+                            <?php echo $error; ?>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        <?php endif; ?>
+
         <!-- Sidebar -->
         <div class="border-end d-flex flex-column p-3" style="width: 280px; min-width: 160px;">
             <ul class="nav nav-pills flex-column ">
@@ -106,39 +118,6 @@
                 </div>
                 <hr>
             <?php endforeach; ?>
-
-
-
-
-
-            <!-- <div class="row px-4 pe-lg-0 align-items-center rounded-3 border shadow-lg">
-                <div class="col-lg-7 p-5 p-lg-5">
-                    <h1 class="display-5 fw-bold lh-1 text-body-emphasis">The Pavilion</h1>
-                    <p class="lead">The Pavilion is across the living bridge near the UL student accomodation Cappavilla and Quigley.</p>
-                    <div class="d-grid gap-2 d-md-flex justify-content-md-start mb-4 mb-lg-3">
-                        <button type="button" class="btn  btn-lg px-4">Menu</button>
-                    </div>
-                </div>
-                <div class="col-lg-4 offset-lg-1 p-0 overflow-hidden shadow-lg">
-                    <img class="rounded-lg-3" src="https://images.squarespace-cdn.com/content/v1/61796275318d4c3e85af1070/23f92d71-4877-4d00-a860-2b7f1d36388c/External_home_paviliom.jpg" 
-                    alt="" height="320">
-                </div>
-            </div>
-
-            <hr>
-            <div class="row px-4 pe-lg-0 align-items-center rounded-3 border shadow-lg">
-                <div class="col-lg-7 p-5 p-lg-5">
-                    <h1 class="display-5 fw-bold lh-1 text-body-emphasis">Stables</h1>
-                    <p class="lead">Stables is the go to student restaurant to get a meal and a drink in the center of campus.</p>
-                    <div class="d-grid gap-2 d-md-flex justify-content-md-start mb-4 mb-lg-3">
-                        <button type="button" class="btn  btn-lg px-4">Menu</button>
-                    </div>
-                </div>
-                <div class="col-lg-4 offset-lg-1 p-0 overflow-hidden shadow-lg" >
-                    <img class="rounded-lg-3 flex" src="https://lh4.googleusercontent.com/proxy/Jm2z6NXrTk3UcFlLCXk7FmrwfX8pEg1LYeEny4uj8P37FL2RwbRSOZiIGDQUTn03f-ucxfmuXxRxEfeKcfx6q7wBKnLNsFU" 
-                    alt="" height="320">
-                </div>
-            </div> -->
 
         </div>
     </div>
