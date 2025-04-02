@@ -239,9 +239,11 @@ class UserController extends Controller
             }
             $error = "Order Placed!";
         } else {
-          $error = "Cart is empty.";
+            $error = "Cart is empty.";
         }
-        $this->view('User/RestaurantView', isset($error) ? ['error' => $error] : []);
+        // $this->view('User/RestaurantView', isset($error) ? ['error' => $error] : []);
+        header("Location: ?controller=user&action=restaurantView");
+        exit();
     }
 
     public function addReviewView()
