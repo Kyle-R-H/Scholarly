@@ -62,4 +62,11 @@ class Model
                 ON Review.UserID = Users.UserID";
         return $this->db->query($query)->fetchAll(PDO::FETCH_ASSOC);
     }
+    public function updateVerifiedCustomer($userID)
+    {
+        $this->db->query(
+            "UPDATE Users SET VerifiedCustomer = ? WHERE UserID = ?",
+            [1, $userID]
+        );
+    }
 }
