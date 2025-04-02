@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 
+<html>
 <head>
     <title>Add Review</title>
     <meta charset="utf-8">
@@ -39,90 +40,95 @@
                             </svg>
                         </a></li>
                 </ul>
+                <div class="container mt-5">
+                    <h1 class="mb-4">Add Review</h1>
 
-                <body>
-                    <!-- Optional: Include your existing header/nav here -->
-
-                    <div class="container mt-5">
-                        <h1 class="mb-4">Add Review</h1>
-
-                        <!-- Display error message if it exists -->
-                        <?php if (isset($error)): ?>
-                            <div class="alert alert-danger">
-                                <?= htmlspecialchars($error) ?>
+                    <!-- Display error message if it exists -->
+                    <?php if (!empty($_SESSION['error'])) : ?>
+                        <div class="position-fixed top-0 end-0 p-3" style="z-index: 1050">
+                            <div id="errorToast" class="toast align-items-center text-bg-danger border-0 show" role="alert" aria-live="assertive" aria-atomic="true">
+                                <div class="d-flex">
+                                    <div class="toast-body">
+                                        <?php echo $_SESSION['error'] ?>
+                                    </div>
+                                    <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"><?php unset($_SESSION['error']) ?></button>
+                                </div>
                             </div>
-                        <?php endif; ?>
+                        </div>
+                    <?php endif; ?>
 
-                        <form action="?controller=user&action=addReview" method="POST" class="w-50">
-                            <!-- Show the logged-in user's name -->
-                            <div class="mb-3">
-                                <label class="form-label fw-bold">Name</label>
-                                <input
-                                    type="text"
-                                    class="form-control"
-                                    value="<?= htmlspecialchars($user['FirstName'] . ' ' . $user['LastName']) ?>"
-                                    disabled>
-                                <!-- Hidden user ID (needed for saving the review) -->
-                                <input
-                                    type="hidden"
-                                    name="userID"
-                                    value="<?= isset($_SESSION['userID']) ? htmlspecialchars($_SESSION['userID']) : '' ?>">
-                            </div>
+                    <form action="?controller=user&action=addReview" method="POST" class="w-50">
+                        <!-- Show the logged-in user's name -->
+                        <div class="mb-3">
+                            <label class="form-label fw-bold">Name</label>
+                            <input
+                                type="text"
+                                class="form-control"
+                                value="<?= htmlspecialchars($user['FirstName'] . ' ' . $user['LastName']) ?>"
+                                disabled>
+                            <!-- Hidden user ID (needed for saving the review) -->
+                            <input
+                                type="hidden"
+                                name="userID"
+                                value="<?= isset($_SESSION['userID']) ? htmlspecialchars($_SESSION['userID']) : '' ?>">
+                        </div>
 
 
-                            <div class="mb-3">
-                                <label for="business" class="form-label fw-bold">Name of Business</label>
-                                <select
-                                    name="business"
-                                    id="business"
-                                    class="form-select"
-                                    required>
+                        <div class="mb-3">
+                            <label for="business" class="form-label fw-bold">Name of Business</label>
+                            <select
+                                name="business"
+                                id="business"
+                                class="form-select"
+                                required>
 
-                                    <option value="" disabled selected>Select Business</option>
-                                    <?php foreach ($businesses as $biz): ?>
-                                        <option value="<?= htmlspecialchars($biz['BusinessName']) ?>">
-                                            <?= htmlspecialchars($biz['BusinessName']) ?>
-                                        </option>
-                                    <?php endforeach; ?>
-                                </select>
-                            </div>
+                                <option value="" disabled selected>Select Business</option>
+                                <?php foreach ($businesses as $biz): ?>
+                                    <option value="<?= htmlspecialchars($biz['BusinessName']) ?>">
+                                        <?= htmlspecialchars($biz['BusinessName']) ?>
+                                    </option>
+                                <?php endforeach; ?>
+                            </select>
+                        </div>
 
-                            <!-- Rating -->
-                            <div class="mb-3">
-                                <label for="rating" class="form-label fw-bold">Rating</label>
-                                <input
-                                    type="number"
-                                    step="0.1"
-                                    name="rating"
-                                    id="rating"
-                                    class="form-control"
-                                    placeholder="0.0"
-                                    min="0"
-                                    max="5"
-                                    required>
-                            </div>
+                        <!-- Rating -->
+                        <div class="mb-3">
+                            <label for="rating" class="form-label fw-bold">Rating</label>
+                            <input
+                                type="number"
+                                step="0.1"
+                                name="rating"
+                                id="rating"
+                                class="form-control"
+                                placeholder="0.0"
+                                min="0"
+                                max="5"
+                                required>
+                        </div>
 
-                            <!-- Comment -->
-                            <div class="mb-3">
-                                <label for="comment" class="form-label fw-bold">Comment</label>
-                                <textarea
-                                    name="comment"
-                                    id="comment"
-                                    rows="4"
-                                    class="form-control"
-                                    placeholder="Write your thoughts here..."
-                                    required></textarea>
-                            </div>
+                        <!-- Comment -->
+                        <div class="mb-3">
+                            <label for="comment" class="form-label fw-bold">Comment</label>
+                            <textarea
+                                name="comment"
+                                id="comment"
+                                rows="4"
+                                class="form-control"
+                                placeholder="Write your thoughts here..."
+                                required></textarea>
+                        </div>
 
-                            <!-- Submit Button -->
-                            <button type="submit" class="btn btn-success px-4">
-                                Submit
-                            </button>
-                        </form>
-                    </div>
+                        <!-- Submit Button -->
+                        <button type="submit" class="btn btn-success px-4">
+                            Submit
+                        </button>
+                    </form>
+                </div>
 
-                    <!-- Bootstrap JS (Optional, for interactive components) -->
-                    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-                </body>
-
-                </html>
+                <!-- Bootstrap JS (Optional, for interactive components) -->
+                <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+            </div>
+        </div>
+    </header>
+</body>
+</html>

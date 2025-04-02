@@ -8,8 +8,8 @@ class BusinessController extends Controller{
         $this->businessModel = $this->model('BusinessModel');
 
         if (!isset($_COOKIE['Login_Info']) || $this->businessModel->getUserByEmail($_COOKIE["Login_Info"])['PermissionLevel'] != 1){
-            $error = "Insufficient Permissions";
-            $this->view('Auth/LoginView', isset($error) ? ['error' => $error] : []);
+            $_SESSION['error'] = "Insufficient Permissions";
+            $this->view('Auth/LoginView', isset($_SESSION['error']) ? ['error' => $_SESSION['error']] : []);
         } else {
             // Get user table
             $user = $this->businessModel->getUserByEmail($_COOKIE['Login_Info']);
@@ -61,15 +61,15 @@ class BusinessController extends Controller{
         }
 
         // Check if name exists
-        $error = $this->businessModel->getSimilarItemNames($name);
+        $_SESSION['error'] = $this->businessModel->getSimilarItemNames($name);
 
-        if ($error == null) {
+        if ($_SESSION['error'] == null) {
             // Successful
             $this->businessModel->addItem($this->businessName, $description, $price, $name);
             header("Location: ?controller=business&action=businessManager");
             exit();
         } else {
-            $this->view('Admin/RegisterBusinessView', isset($error) ? ['error' => $error] : []);
+            $this->view('Admin/RegisterBusinessView', isset($_SESSION['error']) ? ['error' => $_SESSION['error']] : []);
         }
         $this->view('Business/AddItemView', ['businessType' => $this->businessType,'businessName'=>$this->businessName ]);
     }

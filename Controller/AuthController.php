@@ -60,8 +60,8 @@ class AuthController extends Controller
 
             // Check if user exists
             if (!$user) {
-                $error = "User not found.";
-                $this->view('Auth/LoginView', isset($error) ? ['error' => $error] : []);
+                $_SESSION['error'] = "User not found.";
+                $this->view('Auth/LoginView', isset($_SESSION['error']) ? ['error' => $_SESSION['error']] : []);
                 // header("Location: ?controller=auth&action=loginView");
                 // exit;
             } else {
@@ -100,8 +100,8 @@ class AuthController extends Controller
                     }
                 } else {
                     // echo "Invalid credentials, displaying error.<br>";
-                    $error = "Invalid email or password.";
-                    $this->view('Auth/LoginView', isset($error) ? ['error' => $error] : []);
+                    $_SESSION['error'] = "Invalid email or password.";
+                    $this->view('Auth/LoginView', isset($_SESSION['error']) ? ['error' => $_SESSION['error']] : []);
                 }
             }
         }
@@ -109,7 +109,7 @@ class AuthController extends Controller
 
     public function loginView()
     {
-        $this->view('Auth/LoginView', isset($error) ? ['error' => $error] : []);
+        $this->view('Auth/LoginView', isset($_SESSION['error']) ? ['error' => $_SESSION['error']] : []);
     }
 
     public function register()
@@ -149,26 +149,26 @@ class AuthController extends Controller
                     exit();
                 } else if (empty($password) || empty($confirmPassword)){
                     // Empty password or confirmPassword
-                    // $error = "Please enter Password(s)";
-                    $this->view('Auth/RegisterView', isset($error) ? ['error' => $error] : []);
+                    // $_SESSION['error'] = "Please enter Password(s)";
+                    $this->view('Auth/RegisterView', isset($_SESSION['error']) ? ['error' => $_SESSION['error']] : []);
                 } else {
-                    $error = "Passwords don't match.";
-                    $this->view('Auth/RegisterView', isset($error) ? ['error' => $error] : []);
+                    $_SESSION['error'] = "Passwords don't match.";
+                    $this->view('Auth/RegisterView', isset($_SESSION['error']) ? ['error' => $_SESSION['error']] : []);
                 }
             } else {
-                $error = "User with that email already exists.";
-                $this->view('Auth/RegisterView', isset($error) ? ['error' => $error] : []);
+                $_SESSION['error'] = "User with that email already exists.";
+                $this->view('Auth/RegisterView', isset($_SESSION['error']) ? ['error' => $_SESSION['error']] : []);
             }
         } else {
             // Empty email
-            $this->view('Auth/RegisterView', isset($error) ? ['error' => $error] : []);
+            $this->view('Auth/RegisterView', isset($_SESSION['error']) ? ['error' => $_SESSION['error']] : []);
         }
     }
 
 
     public function registerView()
     {
-        $this->view('Auth/RegisterView', isset($error) ? ['error' => $error] : []);
+        $this->view('Auth/RegisterView', isset($_SESSION['error']) ? ['error' => $_SESSION['error']] : []);
     }
 
 

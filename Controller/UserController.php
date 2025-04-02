@@ -10,8 +10,9 @@ class UserController extends Controller
         $this->userModel = new UserModel();
 
         if (!isset($_COOKIE['Login_Info']) || $this->userModel->getUserByEmail($_COOKIE["Login_Info"])['PermissionLevel'] != 0) {
-            $error = "Insufficient Permissions";
-            $this->view('Auth/LoginView', isset($error) ? ['error' => $error] : []);
+            $_SESSION['error'] = "Insufficient Permissions";
+            header("Location: ?controller=auth&action=login");
+            exit();
         } else {
             // print_r($_COOKIE);
         }
@@ -152,8 +153,8 @@ class UserController extends Controller
         if ($businessName) {
             $this->view('User/BookingView', ['items' => $items, 'business' => $business]);
         } else {
-            $error = "Couldn't find business";
-            $this->view('User/BookingView', isset($error) ? ['error' => $error] : []);
+            $_SESSION['error'] = "Couldn't find business";
+            $this->view('User/BookingView', isset($_SESSION['error']) ? ['error' => $_SESSION['error']] : []);
             echo "Business not found.";
         }
     }
@@ -194,7 +195,7 @@ class UserController extends Controller
     {
         $user = $this->userModel->getUserByEmail($_COOKIE["Login_Info"]);
         if (!$user || $user['VerifiedCustomer'] != 1) {
-            $error = "You must be a verified customer to view this page.";
+            $_SESSION['error'] = "You must be a verified customer to view this page.";
             header("Location: ?controller=user&action=restaurantView");
             exit();
         }
@@ -243,11 +244,11 @@ class UserController extends Controller
                     $this->userModel->placeOrder($businessName, $price, $userID, $orderID, $itemName);
                 }
             }
-            $error = "Order Placed!";
+            $_SESSION['error'] = "Order Placed!";
         } else {
-            $error = "Cart is empty.";
+            $_SESSION['error'] = "Cart is empty.";
         }
-        // $this->view('User/RestaurantView', isset($error) ? ['error' => $error] : []);
+        // $this->view('User/RestaurantView', isset($_SESSION['error']) ? ['error' => $_SESSION['error']] : []);
         header("Location: ?controller=user&action=restaurantView");
         exit();
     }

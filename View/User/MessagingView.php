@@ -63,9 +63,17 @@
 
     <!-- Main Layout -->
     <div class="container-fluid d-flex flex-grow-1">
-        <?php if (isset($_SESSION['error'])): ?>
-            <div class="alert alert-danger"><?= $_SESSION['error'] ?></div>
-            <?php unset($_SESSION['error']); ?>
+        <?php if (!empty($_SESSION['error'])) : ?>
+            <div class="position-fixed top-0 end-0 p-3" style="z-index: 1050">
+                <div id="errorToast" class="toast align-items-center text-bg-danger border-0 show" role="alert" aria-live="assertive" aria-atomic="true">
+                    <div class="d-flex">
+                        <div class="toast-body">
+                            <?php echo $_SESSION['error'] ?>
+                        </div>
+                        <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"><?php unset($_SESSION['error']) ?></button>
+                    </div>
+                </div>
+            </div>
         <?php endif; ?>
 
         <form method="POST" action="?controller=user&action=sendMessage">
