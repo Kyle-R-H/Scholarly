@@ -76,8 +76,6 @@
         </div>
 
         <!-- Main Content -->
-        <!-- query from databse output to array-->
-
         <div class="container my-5">
             <?php if (!empty($items)): ?>
                 <!-- Business Info Section (Smaller) -->
@@ -89,12 +87,6 @@
                     <div class="col-md-4 text-center">
                         <img src="<?= htmlspecialchars($business[0]['Image']) ?>" class="img-fluid rounded shadow" alt="Business Image">
                     </div>
-                    <div class="fixed-bottom bg-light py-3">
-                        <div class="container-fluid d-flex justify-content-end">
-                            <a href="#" class="btn btn-primary w-100">Basket</a>
-                        </div>
-                    </div>
-
                 </div>
             <?php endif; ?>
 
@@ -103,13 +95,20 @@
                 <?php foreach ($items as $item): ?>
                     <div class="col-md-6 mb-4">
                         <div class="card h-100 shadow-sm">
-                            <!-- Added extra right padding to card body to reserve space for the plus button -->
                             <div class="card-body position-relative" style="padding-right: 4rem;">
                                 <h4 class="card-title"><?= htmlspecialchars($item['ItemName']) ?></h4>
                                 <p class="card-text"><?= htmlspecialchars($item['Description']) ?></p>
                                 <p class="fw-bold">Price: $<?= number_format($item['ItemPrice'], 2) ?></p>
-                                <!-- Plus button positioned absolutely, no overlap due to reserved space -->
-                                <button type="button" class="btn btn-primary position-absolute top-0 end-0 m-3">+</button>
+
+                                <!-- Add to Cart Form -->
+                                <form method="POST">
+                                    <input type="hidden" name="item_name" value="<?= htmlspecialchars($item['ItemName']) ?>">
+                                    <input type="hidden" name="item_price" value="<?= htmlspecialchars($item['ItemPrice']) ?>">
+                                    <input type="hidden" name="item_image" value="<?= htmlspecialchars($item['ItemImage']) ?>">
+                                    <input type="hidden" name="form_token" value="<?= $_SESSION['form_token'] ?>">
+                                    <button type="submit" class="btn btn-primary position-absolute top-0 end-0 m-3">+</button>
+                                </form>
+                              
                                 <div class="mt-3">
                                     <img src="<?= htmlspecialchars($item['ItemImage']) ?>" class="img-fluid card-img-bottom" style="max-width: 200px; height: auto;" alt="Item Image">
                                 </div>
@@ -117,9 +116,30 @@
                         </div>
                     </div>
                 <?php endforeach; ?>
+
+            </div>
+
+            <!-- View Cart Section -->
+            <h2 class="mt-5">Shopping Cart</h2>
+            <?php if (!empty($_SESSION['cart'])): ?>
+                <ul class="list-group">
+                    <?php foreach ($_SESSION['cart'] as $cartItem): ?>
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            <img src="<?= htmlspecialchars($cartItem['image']) ?>" style="width: 50px; height: 50px;" alt="Item">
+                            <?= htmlspecialchars($cartItem['name']) ?> -
+                            $<?= number_format($cartItem['price'], 2) ?> × <?= $cartItem['quantity'] ?>
+                            = <strong>$<?= number_format($cartItem['price'] * $cartItem['quantity'], 2) ?></strong>
+                        </li>
+                    <?php endforeach; ?>
+                </ul>
+            <?php else: ?>
+                <p>Your cart is empty.</p>
+            <?php endif; ?>
+            <div class="sticky-bottom py-3">
+                <div class="container-fluid d-flex justify-content-end">
+                    <a href="#" class="btn btn-primary w-100">Confirm Order</a>
+                </div>
             </div>
         </div>
-
-
-
+      </body>
 </html>

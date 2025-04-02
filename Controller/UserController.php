@@ -105,31 +105,65 @@ class UserController extends Controller
 
     public function bookingView($businessName)
     {
-        // echo "Booking page for: " . htmlspecialchars($businessName);
-
+        // Check if business is already set
+        if (!isset($_SESSION['current_business']) || $_SESSION['current_business'] !== $businessName) {
+            $_SESSION['cart'] = []; 
+            $_SESSION['current_business'] = $businessName; 
+        }
+    
+        // Generate a unique CSRF token to prevent duplicate submissions
+        if (!isset($_SESSION['form_token'])) {
+            $_SESSION['form_token'] = bin2hex(random_bytes(32));
+        }
+    
+        // Handle Add to Cart Request
+        if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['item_name'])) {
+            // Validate CSRF token
+            if (!isset($_POST['form_token']) || $_POST['form_token'] !== $_SESSION['form_token']) {
+                die("Invalid form submission."); // TODO: Add error redirect
+            }
+    
+            $itemName = $_POST['item_name'];
+            $itemPrice = $_POST['item_price'];
+            $itemImage = $_POST['item_image'];
+    
+            // Check if item is already in the cart
+            if (isset($_SESSION['cart'][$itemName])) {
+                $_SESSION['cart'][$itemName]['quantity'] += 1;
+            } else {
+                $_SESSION['cart'][$itemName] = [
+                    'name' => $itemName,
+                    'price' => $itemPrice,
+                    'image' => $itemImage,
+                    'quantity' => 1
+                ];
+            }
+    
+            // Regenerate token to prevent re-submission on refresh
+            $_SESSION['form_token'] = bin2hex(random_bytes(32));
+    
+            // Redirect to the same page to clear POST data and prevent duplicate submissions
+            header("Location: ?controller=user&action=bookingView&businessName=" . urlencode($businessName));
+            exit();
+        }
+    
         // Fetch items from db
         $items = $this->userModel->getItemsByBusiness($businessName);
         $business = $this->userModel->getBusinessByBusinessName($businessName);
-        // echo "<br>Items:<br>";
-        // print_r($items);  
-
+    
         if ($businessName) {
             $this->view('User/BookingView', ['items' => $items, 'business' => $business]);
         } else {
+            $error = "Couldn't find business";
+            $this->view('User/BookingView', isset($error) ? ['error' => $error] : []);
             echo "Business not found.";
         }
-        // $this->view('User/BookingView', isset($error) ? ['error' => $error] : []);
     }
-
-
-    public function basketView()
-    {
-        require_once 'View/User/BasketView.php';
-    }
+    
 
     public function reviewView()
     {
-        $reviews = $this->userModel->getReviewByReviewID();
+        $reviews = $this->userModel->getReviewByReviewID("Review");
 
         // Get search query from Form POST
         $searchQuery = $_POST['search'] ?? '';
@@ -144,8 +178,8 @@ class UserController extends Controller
         require_once 'View/User/ReviewsView.php';
     }
 
-    public function historyView()
-    {
+
+    public function historyView() {
         $user = $this->userModel->getUserByEmail($_COOKIE["Login_Info"])['UserID'];
         // print_r($user);
         $restaurant = $this->userModel->getBusinessStatsByType("Restaurant", $user);
