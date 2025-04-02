@@ -15,8 +15,8 @@
     <header class="py-3 ps-4 pe-5 border-bottom">
         <div class="container-fluid">
             <div class="d-flex flex-wrap align-items-center justify-content-center">
-            <img class="pt-1 px-3" src="Public\Images\scholarly logo.png" alt="Scholarly Logo" height="40" width="auto">
-            <ul class="nav col-12 col-lg-auto me-lg-auto justify-content-center mb-md-0">
+                <img class="pt-1 px-3" src="Public\Images\scholarly logo.png" alt="Scholarly Logo" height="40" width="auto">
+                <ul class="nav col-12 col-lg-auto me-lg-auto justify-content-center mb-md-0">
                     <li><a href="?controller=user&action=restaurantView" class="nav-link px-2 link-secondary">Restaurants</a></li>
                     <li><a href="?controller=user&action=servicesView" class="nav-link px-2 link-body-emphasis">Services</a></li>
                     <li><a href="?controller=user&action=eventsView" class="nav-link px-2 link-body-emphasis">Events</a></li>
@@ -75,8 +75,8 @@
                 <form method="POST" role="search">
                     <input type="hidden" name="controller" value="user">
                     <input type="hidden" name="action" value="restaurantView">
-                    <input type="search" class="form-control" name="search" placeholder="Search..." 
-                            value="<?= isset($_POST['search']) ? htmlspecialchars($_POST['search']) : '' ?>">
+                    <input type="search" class="form-control" name="search" placeholder="Search..."
+                        value="<?= isset($_POST['search']) ? htmlspecialchars($_POST['search']) : '' ?>">
                 </form>
 
             </ul>
@@ -84,14 +84,16 @@
 
         <!-- Main Content -->
         <div class="px-5 py-3" style="width: 100%;">
-            
+
             <?php foreach ($restaurants as $restaurant): ?>
                 <div class="row px-4 pe-lg-0 align-items-center rounded-3 border shadow-lg">
                     <div class="col-lg-7 p-5 p-lg-5">
-                        <h1 class="display-5 fw-bold lh-1 text-body-emphasis"><?= htmlspecialchars($restaurant['BusinessName']) ?></h1>
+                        <h1 class="display-5 fw-bold lh-1 text-body-emphasis"><?= htmlspecialchars($restaurant['BusinessName']) ?>
+                            <span class="fs-4 text-muted text-muted d-inline-block" style="white-space: nowrap;"><?= number_format($restaurant['Rating'], 1) ?> ⭐</span>
+                        </h1>
                         <p class="lead"><?= htmlspecialchars($restaurant['Description']) ?></p>
                         <div class="d-grid gap-2 d-md-flex justify-content-md-start mb-4 mb-lg-3">
-                            <a href="<?= '?controller=user&action=bookingView&businessName=' . htmlspecialchars($restaurant['BusinessName'])?>">
+                            <a href="<?= '?controller=user&action=bookingView&businessName=' . htmlspecialchars($restaurant['BusinessName']) ?>">
                                 <button type="button" class="btn btn-lg px-4">Menu</button>
                             </a>
                         </div>
@@ -140,4 +142,3 @@
     </div>
 
 </body>
-

@@ -34,6 +34,7 @@ class UserController extends Controller
     {
         // Fetch all restaurants from the database
         $restaurants = $this->userModel->getBusinessByType("Restaurant");
+
         // print_r($restaurants);
 
         // Get search query from Form POST
