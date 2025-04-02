@@ -73,32 +73,24 @@ class AdminController extends Controller
         // echo "<br>Query executed, result: <pre>" . print_r($user, true) . "</pre>";
 
 
-        if (!empty($email)) {
-            if ($user) {
-                $userID = $user['UserID'];
-                // Check if name exists
-                $_SESSION['error'] = $this->adminModel->getSimilarBusinessNames($name);
+        if ($user) {
+            $userID = $user['UserID'];
+            // Check if name exists
+            $_SESSION['error'] = $this->adminModel->getSimilarBusinessNames($name);
 
-                if ($_SESSION['error'] == null) {
-                    // Successful registration
-                    $_SESSION['success'] = "Successful Business Registration";
-                    $this->adminModel->registerBusiness($userID, $name, $businessType, $description, $image);
-                    header("Location: ?controller=user&action=restaurantView");
-                    exit();
-                } else {
-                    $this->view('Admin/RegisterBusinessView', []);
-                }
-
+            if ($_SESSION['error'] == null) {
+                // Successful registration
+                $_SESSION['success'] = "Successful Business Registration";
+                $this->adminModel->registerBusiness($userID, $name, $businessType, $description, $image);
+                header("Location: ?controller=admin&action=adminManager");
+                exit();
             } else {
-                // User not found
-                $_SESSION['error'] = "User with that email does not exist.";
                 $this->view('Admin/RegisterBusinessView', []);
             }
         } else {
-            // Empty email
-            $_SESSION['error'] = "Please enter an email."; // cant reach due to required in input tag
+            // User not found
+            $_SESSION['error'] = "User with that email does not exist.";
             $this->view('Admin/RegisterBusinessView', []);
         }
-        // $this->view('Admin/AddBusinessView', []);
     }
 }
