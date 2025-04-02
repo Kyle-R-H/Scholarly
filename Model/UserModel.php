@@ -24,7 +24,9 @@ class UserModel extends Model
     $query = "SELECT 
                 Review.ReviewID, 
                 Review.UserID, 
-                Business.BusinessName,
+                Users.FirstName, 
+                Users.LastName,
+                Review.BusinessName,
                 Business.Image, 
                 Review.Rating, 
                 Review.Comment, 
@@ -32,7 +34,9 @@ class UserModel extends Model
                 Review.CreatedAt
               FROM Review
               LEFT JOIN Business 
-                ON Review.Business = Business.UserID";
+                ON Review.Business = Business.UserID
+              LEFT JOIN Users
+                ON Review.UserID = Users.UserID";
     return $this->db->query($query)->fetchAll(PDO::FETCH_ASSOC);
 }
 
@@ -66,5 +70,21 @@ class UserModel extends Model
         WHERE Business.BusinessType = ? AND BusinessStats.UserID = ?";
 
         return $this->db->query($query,[$businessType, $userID])->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    public function createReview($userID, $business, $rating, $comment, $businessName) {
+        $maxReviewID = $this->db->query("SELECT MAX(ReviewID) FROM Review")->fetch(PDO::FETCH_ASSOC);
+        if(!is_null($maxReviewID)) {
+            $maxReviewID = 1;
+        }
+        print_r($maxReviewID);
+        $query = "INSERT INTO Review (ReviewID, UserID, Business, Rating, Comment, Response, CreatedAt, BusinessName) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+        // Use your database query method with parameter binding
+        return $this->db->query($query, [$maxReviewID["MAX(ReviewID)"] + 1, $userID, $business, $rating, $comment, "", date("Y-m-d H:i:s"), $businessName]);
+    }
+
+    public function getBusinesses()
+    {
+        return $this->db->query("SELECT BusinessName FROM Business", [])->fetchAll(PDO::FETCH_ASSOC);
     }
 }

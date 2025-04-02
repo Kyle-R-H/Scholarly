@@ -161,13 +161,14 @@ class UserController extends Controller
         }
     }
 
-    public function orderConfirmView(){
+    public function orderConfirmView()
+    {
         require_once 'View/User/OrderConfirmView.php';
     }
 
     public function reviewView()
     {
-        $reviews = $this->userModel->getReviewByReviewID("Review");
+        $reviews = $this->userModel->getReviewByReviewID();
 
         // Get search query from Form POST
         $searchQuery = $_POST['search'] ?? '';
@@ -193,5 +194,42 @@ class UserController extends Controller
         $activities = $this->userModel->getBusinessStatsByType("Activity", $user);
 
         require_once 'View/User/HistoryView.php';
+    }
+
+    public function addReviewView()
+    {
+        $businesses = $this->userModel->getBusinesses();
+        // Fetch user details using the logged-in email from cookies
+        $user = $this->userModel->getUserByEmail($_COOKIE["Login_Info"]);
+
+        // Check if user exists
+        if (!$user) {
+            die("Error: User not found!");
+        }
+        require_once 'View/User/AddReviewView.php';
+    }
+
+    public function addReview()
+    {
+        // Fetch user details
+        $user = $this->userModel->getUserByEmail($_COOKIE["Login_Info"]);
+
+        if (!$user) {
+            die("Error: User not found.");
+        }
+
+        $userID = $user['UserID'];
+
+        // Get form data
+        $businessName = $_POST['business'] ?? 'EMPTY';
+        $rating = $_POST['rating'] ?? 'EMPTY';
+        $comment = $_POST['comment'] ?? 'EMPTY';
+        $business = $this->userModel->getBusinessByBusinessName($businessName)[0]['UserID'];
+        print_r($business);
+
+        // Add review
+        $this->userModel->createReview($userID, $business, $rating, $comment, $businessName);
+        header("Location: ?controller=user&action=reviewView");
+        exit();
     }
 }

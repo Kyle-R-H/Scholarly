@@ -65,7 +65,7 @@
         <div class="border-end d-flex flex-column p-3" style="width: 280px; min-width: 160px;">
             <ul class="nav nav-pills flex-column ">
                 <li class="nav-item">
-                    <a href="#" class="nav-link active" aria-current="page">Reviews</a>
+                    <a href="?controller=user&action=reviewView" class="nav-link active" aria-current="page">Reviews</a>
                 </li>
                 <li class="nav-item">
                     <a href="?controller=user&action=historyView" class="nav-link link-body-emphasis">Order History</a>
@@ -80,7 +80,7 @@
         <div class="flex-grow-1 p-4">
             <div class="d-flex justify-content-between align-items-center">
                 <h1>Reviews</h1>
-                <a href="#" class="btn btn-success">Add Review</a>
+                <a href="?controller=user&action=addReviewView" class="btn btn-success">Add Review</a>
             </div>
 
             <!-- Search Bar Functionality -->
@@ -99,6 +99,7 @@
                             <th>Comment</th>
                             <th>Response</th>
                             <th>Created At</th>
+                            <th>By</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -114,6 +115,7 @@
                                 <td><?= nl2br(htmlspecialchars($review['Comment'])) ?></td>
                                 <td><?= $review['Response'] ? htmlspecialchars($review['Response']) : '<em>No response</em>' ?></td>
                                 <td><?= date('F j, Y', strtotime($review['CreatedAt'])) ?></td>
+                                <td><?= nl2br(htmlspecialchars($review['FirstName']) . " " . htmlspecialchars($review['LastName'])) ?></td>
                             </tr>
                         <?php endforeach; ?>
                     </tbody>
