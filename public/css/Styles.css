@@ -18,6 +18,10 @@
     border-radius: 0.6rem;
 }
 
+.btn.remove-business {
+    background-color: red;
+}
+
 .nav-link {
     position: relative;
     transition: all 0.3s ease-in-out;
