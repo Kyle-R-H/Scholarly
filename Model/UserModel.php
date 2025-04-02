@@ -78,10 +78,7 @@ class UserModel extends Model
         return $this->db->query($query, [$maxReviewID["MAX(ReviewID)"] + 1, $userID, $business, $rating, $comment, "", date("Y-m-d H:i:s"), $businessName]);
     }
 
-    public function getBusinesses()
-    {
-        return $this->db->query("SELECT BusinessName FROM Business", [])->fetchAll(PDO::FETCH_ASSOC);
-    }
+
     
 }
 
