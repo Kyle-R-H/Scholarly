@@ -63,34 +63,88 @@
 
     <!-- Main Layout -->
     <div class="container-fluid d-flex flex-grow-1">
-        <!-- Sidebar -->
-        <div class="border-end d-flex flex-column p-3" style="width: 280px; min-width: 160px;">
-            <ul class="nav nav-pills flex-column ">
-                <li class="nav-item">
-                    <a href="#" class="nav-link active" aria-current="page">Restaurants</a>
-                </li>
-                <li class="nav-item">
-                    <a href="?controller=user&action=historyView" class="nav-link link-body-emphasis">Order History</a>
-                </li>
-                <hr>
-                <!-- Search Bar Functionality -->
-                <form method="POST" role="search">
-                    <input type="hidden" name="controller" value="user">
-                    <input type="hidden" name="action" value="restaurantView">
-                    <input type="search" class="form-control" name="search" placeholder="Search..."
-                        value="<?= isset($_POST['search']) ? htmlspecialchars($_POST['search']) : '' ?>">
-                </form>
-
-            </ul>
-        </div>
 
         <!-- Main Content -->
         <div class="px-5 py-3" style="width: 100%;">
-            
-    </div>
+
+        <div class="flex-grow-1 p-4">
+            <div class="d-flex justify-content-between align-items-center">
+                <h1>Messages</h1>
+            </div>
+
+            <!-- Search Bar Functionality -->
+            <form class="py-2" method="POST" role="search">
+                <input type="hidden" name="controller" value="user">
+                <input type="hidden" name="action" value="reviewView">
+                <input type="search" class="form-control" name="search" placeholder="Search..."
+                    value="<?= isset($_POST['search']) ? htmlspecialchars($_POST['search']) : '' ?>">
+            </form>
+
+
+            <!--    Normal users -->
+            <h2> Verified User </h2>
+            <?php if (isset($users) && count($users) > 0): ?>
+                <table class="table table-striped align-middle rounded-3 overflow-hidden">
+                    <thead class="table-dark">
+                        <tr>
+                            <th>UserID</th>
+                            <th>Email</th>
+                            <th>Name</th>
+                            <th>Message</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php foreach ($users as $user): ?>
+                            <tr>
+                                <td><?= htmlspecialchars($user['UserID']) ?></td>
+                                <td><?= $user['Email'] ?></td>
+                                <td><?= htmlspecialchars($user['FirstName']) . " " . htmlspecialchars($user['LastName']) ?></td>
+                                <td>
+                                    <Button class="btn">
+                                        <
+                                            </Button>
+                                </td>
+                            </tr>
+                        <?php endforeach; ?>
+                    </tbody>
+                </table>
+            <?php else: ?>
+                <p class="text-muted">No Users found.</p>
+            <?php endif; ?>
+
+            <!--    Business users -->
+                <h2> Business User </h2>
+            <?php if (isset($businessUsers) && count($businessUsers) > 0): ?>
+                <table class="table table-striped align-middle rounded-3 overflow-hidden">
+                    <thead class="table-dark">
+                        <tr>
+                            <th>UserID</th>
+                            <th>Email</th>
+                            <th>Name</th>
+                            <th>Message</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php foreach ($businessUsers as $user): ?>
+                            <tr>
+                                <td><?= htmlspecialchars($user['UserID']) ?></td>
+                                <td><?= $user['Email'] ?></td>
+                                <td><?= htmlspecialchars($user['FirstName']) . " " . htmlspecialchars($user['LastName']) ?></td>
+                                <td>
+                                    <Button class="btn">
+                                        <
+                                            </Button>
+                                </td>
+                            </tr>
+                        <?php endforeach; ?>
+                    </tbody>
+                </table>
+            <?php else: ?>
+                <p class="text-muted">No Users found.</p>
+            <?php endif; ?>
+        </div>
 
 
 </body>
 
 </html>
-

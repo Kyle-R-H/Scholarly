@@ -62,4 +62,10 @@ class Model
                 ON Review.UserID = Users.UserID";
         return $this->db->query($query)->fetchAll(PDO::FETCH_ASSOC);
     }
+
+    public function getUsersByVerifiedCustomer($permissionLevel)
+    {
+
+        return $this->db->query("SELECT * FROM users where VerifiedCustomer = '1' AND PermissionLevel = ?", [$permissionLevel])->fetchAll(PDO::FETCH_ASSOC);
+    }
 }

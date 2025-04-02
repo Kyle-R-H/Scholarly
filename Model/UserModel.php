@@ -81,5 +81,6 @@ class UserModel extends Model
     {
         return $this->db->query("SELECT BusinessName FROM Business", [])->fetchAll(PDO::FETCH_ASSOC);
     }
+    
 }
 
