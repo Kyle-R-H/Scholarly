@@ -82,6 +82,14 @@ class UserModel extends Model
     {
         return $this->db->query("SELECT BusinessName FROM Business", [])->fetchAll(PDO::FETCH_ASSOC);
     }
+
+    public function createMessage($senderID, $receiverID, $message)
+    {
+        // getNewMethodID from db
+        $messageID = 1;
+        $query = "INSERT INTO Messages (MessageID, Sender, Receiver, Message, TimeSent, Pending) VALUES (?, ?, ?, ?, ?, ?)";
+        return $this->db->query($query, [$messageID, $senderID, $receiverID, $message, date("Y-m-d H:i:s"), "Pending" ])->fetchAll(PDO::FETCH_ASSOC);
+    }
     
 }
 

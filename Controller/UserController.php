@@ -166,7 +166,6 @@ class UserController extends Controller
             if (isset($_POST['item_name'], $_POST['quantity'])) {
                 $itemName = $_POST['item_name'];
                 $quantity = $_POST['quantity'];
-
             } elseif (isset($_POST['remove_item_name'])) {
                 $removeItemName = $_POST['remove_item_name'];
 
@@ -289,17 +288,52 @@ class UserController extends Controller
         $businessUsers = $this->userModel->getUsersByVerifiedCustomer(1); // business user
 
         // Get search query from Form POST
-        $searchQuery = $_POST['search'] ?? '';
+        $searchUserQuery = $_POST['searchUser'] ?? '';
+        $searchBusinessQuery = $_POST['searchBusiness'] ?? '';
         // echo "<br> Search Q: "; print_r($searchQuery);
 
         // Filter Reviews based on the search query
-        if (!empty($searchQuery)) {
-            $users = array_filter($users, function ($users) use ($searchQuery) {
-                return stripos($users['Email'], $searchQuery) !== false;
+        if (!empty($searchUserQuery)) {
+            $users = array_filter($users, function ($users) use ($searchUserQuery) {
+                return stripos($users['Email'], $searchUserQuery) !== false;
+            });
+        }
+
+        if (!empty($searchBusinessQuery)) {
+            $businessUsers = array_filter($businessUsers, function ($businessUsers) use ($searchBusinessQuery) {
+                return stripos($businessUsers['Email'], $searchBusinessQuery) !== false;
             });
         }
 
         require_once 'View/User/userMessagesView.php';
     }
 
+    public function sendMessage()
+    {
+        require_once 'View/User/MessagingView.php';
+    }
+
+    public function sendMessageView($receiverID) {
+        // Get sender and receiver details
+        $senderID = $_COOKIE['Login_Info'];
+        $receiverID = $_GET['receiverID'];
+
+        if ($_SERVER["REQUEST_METHOD"] == "POST") {
+
+            $senderID = $_COOKIE['Login_Info'];
+            $receiverID = $_POST['receiverID'];
+            $message = trim($_POST['messageText']);
+
+            if (empty($message)) {
+                $_SESSION['error'] = "Message cannot be empty.";
+                header("Location: ?controller=user&action=sendMessage&receiverID=$receiverID");
+                exit;
+            }
+            $this -> userModel -> createMessage($senderID, $receiverID, $message);
+            $_SESSION['success'] = "Message sent successfully!";
+            header("Location: ?controller=user&action=userMessagesView");
+        }
+
+        require_once 'View/User/MessagingView.php';
+    }
 }
