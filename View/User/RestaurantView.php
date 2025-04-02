@@ -89,7 +89,7 @@
                 <div class="row px-4 pe-lg-0 align-items-center rounded-3 border shadow-lg">
                     <div class="col-lg-7 p-5 p-lg-5">
                         <h1 class="display-5 fw-bold lh-1 text-body-emphasis"><?= htmlspecialchars($restaurant['BusinessName']) ?>
-                            <span class="fs-4 text-muted"><?= number_format($restaurant['Rating'], 1) ?> ⭐</span>
+                            <span class="fs-4 text-muted text-muted d-inline-block" style="white-space: nowrap;"><?= number_format($restaurant['Rating'], 1) ?> ⭐</span>
                         </h1>
                         <p class="lead"><?= htmlspecialchars($restaurant['Description']) ?></p>
                         <div class="d-grid gap-2 d-md-flex justify-content-md-start mb-4 mb-lg-3">

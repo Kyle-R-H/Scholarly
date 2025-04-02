@@ -165,7 +165,6 @@ class UserController extends Controller
     public function reviewView()
     {
         $reviews = $this->userModel->getReviewByReviewID("Review");
-        $restaurant = $this->userModel->getBusinessByType("Restaurant");
 
         // Get search query from Form POST
         $searchQuery = $_POST['search'] ?? '';
