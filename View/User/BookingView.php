@@ -89,14 +89,10 @@
                                 <form method="POST">
                                     <input type="hidden" name="item_name" value="<?= htmlspecialchars($item['ItemName']) ?>">
                                     <input type="hidden" name="item_price" value="<?= htmlspecialchars($item['ItemPrice']) ?>">
-                                    <input type="hidden" name="item_image" value="<?= htmlspecialchars($item['ItemImage']) ?>">
                                     <input type="hidden" name="form_token" value="<?= $_SESSION['form_token'] ?>">
                                     <button type="submit" class="btn btn-primary position-absolute top-0 end-0 m-3">+</button>
                                 </form>
-                              
-                                <div class="mt-3">
-                                    <img src="<?= htmlspecialchars($item['ItemImage']) ?>" class="img-fluid card-img-bottom" style="max-width: 200px; height: auto;" alt="Item Image">
-                                </div>
+                            
                             </div>
                         </div>
                     </div>
