@@ -232,4 +232,9 @@ class UserController extends Controller
         header("Location: ?controller=user&action=reviewView");
         exit();
     }
+
+    public function userMessagesView()
+    {
+        require_once 'View/User/userMessagesView.php';
+    }
 }

@@ -1,13 +1,16 @@
 <!DOCTYPE html>
+
 <html>
 
 <head>
-    <title><?= htmlspecialchars($items[0]["BusinessName"]) ?></title>
+    <title>Restaurants</title>
+    <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="public/css/Styles.css" rel="stylesheet">
+    <link rel="stylesheet" href="public\css\Styles.css">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </head>
+
 
 <body class="d-flex flex-column min-vh-100">
     <!-- Header -->
@@ -16,7 +19,7 @@
             <div class="d-flex flex-wrap align-items-center justify-content-center">
                 <img class="pt-1 px-3" src="Public\Images\scholarly logo.png" alt="Scholarly Logo" height="40" width="auto">
                 <ul class="nav col-12 col-lg-auto me-lg-auto justify-content-center mb-md-0">
-                    <li><a href="?controller=user&action=restaurantView" class="nav-link px-2 link-body-emphasis">Restaurants</a></li>
+                    <li><a href="?controller=user&action=restaurantView" class="nav-link px-2 link-secondary">Restaurants</a></li>
                     <li><a href="?controller=user&action=servicesView" class="nav-link px-2 link-body-emphasis">Services</a></li>
                     <li><a href="?controller=user&action=eventsView" class="nav-link px-2 link-body-emphasis">Events</a></li>
                     <li><a href="?controller=user&action=activitiesView" class="nav-link px-2 link-body-emphasis">Activities</a></li>
@@ -51,7 +54,7 @@
                         <li>
                             <hr class="dropdown-divider">
                         </li>
-                        <li><a class="dropdown-item" href="#">Sign out</a></li>
+                        <li><a class="dropdown-item" href="?controller=auth&action=logout">Sign out</a></li>
                     </ul>
                 </div>
             </div>
@@ -60,67 +63,34 @@
 
     <!-- Main Layout -->
     <div class="container-fluid d-flex flex-grow-1">
-        <!-- Main Content -->
-        <div class="container my-5">
-            <?php if (!empty($items)): ?>
-                <!-- Business Info Section (Smaller) -->
-                <div class="row align-items-center bg-light rounded shadow-sm p-3 mb-4">
-                    <div class="col-md-4">
-                        <h3 class="fw-bold"><?= htmlspecialchars($items[0]['BusinessName']) ?></h3>
-                        <p class="small"><?= htmlspecialchars($business[0]['Description']) ?></p>
-                    </div>
-                    <div class="col-md-4 text-center">
-                        <img src="<?= htmlspecialchars($business[0]['Image']) ?>" class="img-fluid rounded shadow" alt="Business Image">
-                    </div>
-                </div>
-            <?php endif; ?>
+        <!-- Sidebar -->
+        <div class="border-end d-flex flex-column p-3" style="width: 280px; min-width: 160px;">
+            <ul class="nav nav-pills flex-column ">
+                <li class="nav-item">
+                    <a href="#" class="nav-link active" aria-current="page">Restaurants</a>
+                </li>
+                <li class="nav-item">
+                    <a href="?controller=user&action=historyView" class="nav-link link-body-emphasis">Order History</a>
+                </li>
+                <hr>
+                <!-- Search Bar Functionality -->
+                <form method="POST" role="search">
+                    <input type="hidden" name="controller" value="user">
+                    <input type="hidden" name="action" value="restaurantView">
+                    <input type="search" class="form-control" name="search" placeholder="Search..."
+                        value="<?= isset($_POST['search']) ? htmlspecialchars($_POST['search']) : '' ?>">
+                </form>
 
-            <!-- Menu Items Section -->
-            <div class="row">
-                <?php foreach ($items as $item): ?>
-                    <div class="col-md-6 mb-4">
-                        <div class="card h-100 shadow-sm">
-                            <div class="card-body position-relative" style="padding-right: 4rem;">
-                                <h4 class="card-title"><?= htmlspecialchars($item['ItemName']) ?></h4>
-                                <p class="card-text"><?= htmlspecialchars($item['Description']) ?></p>
-                                <p class="fw-bold">Price: $<?= number_format($item['ItemPrice'], 2) ?></p>
-
-                                <!-- Add to Cart Form -->
-                                <form method="POST">
-                                    <input type="hidden" name="item_name" value="<?= htmlspecialchars($item['ItemName']) ?>">
-                                    <input type="hidden" name="item_price" value="<?= htmlspecialchars($item['ItemPrice']) ?>">
-                                    <input type="hidden" name="form_token" value="<?= $_SESSION['form_token'] ?>">
-                                    <button type="submit" class="btn btn-primary position-absolute top-0 end-0 m-3">+</button>
-                                </form>
-                            
-                            </div>
-                        </div>
-                    </div>
-                <?php endforeach; ?>
-
-            </div>
-
-            <!-- View Cart Section -->
-            <h2 class="mt-5">Shopping Cart</h2>
-            <?php if (!empty($_SESSION['cart'])): ?>
-                <ul class="list-group">
-                    <?php foreach ($_SESSION['cart'] as $cartItem): ?>
-                        <li class="list-group-item d-flex justify-content-between align-items-center">
-                            <img src="<?= htmlspecialchars($cartItem['image']) ?>" style="width: 50px; height: 50px;" alt="Item">
-                            <?= htmlspecialchars($cartItem['name']) ?> -
-                            $<?= number_format($cartItem['price'], 2) ?> × <?= $cartItem['quantity'] ?>
-                            = <strong>$<?= number_format($cartItem['price'] * $cartItem['quantity'], 2) ?></strong>
-                        </li>
-                    <?php endforeach; ?>
-                </ul>
-            <?php else: ?>
-                <p>Your cart is empty.</p>
-            <?php endif; ?>
-            <div class="sticky-bottom py-3">
-                <div class="container-fluid d-flex justify-content-end">
-                    <a href="?controller=user&action=orderConfirmView" class="btn btn-primary w-100">Confirm Order</a>
-                </div>
-            </div>
+            </ul>
         </div>
-    </body>
+
+        <!-- Main Content -->
+        <div class="px-5 py-3" style="width: 100%;">
+            
+    </div>
+
+
+</body>
+
 </html>
+
