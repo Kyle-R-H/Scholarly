@@ -193,6 +193,13 @@ class UserController extends Controller
 
     public function reviewView()
     {
+        $user = $this->userModel->getUserByEmail($_COOKIE["Login_Info"]);
+        if (!$user || $user['VerifiedCustomer'] != 1) {
+            $error = "You must be a verified customer to view this page.";
+            header("Location: ?controller=user&action=restaurantView");
+            exit();
+        }
+
         $reviews = $this->userModel->getReviewByReviewID();
 
         // Get search query from Form POST
