@@ -40,11 +40,6 @@ class AdminController extends Controller
         );
     }
 
-    public function profile()
-    {
-        $this->view('Admin/AdminProfileView', []);
-    }
-
     public function adminManager()
     {
         $businesses = $this->adminModel->getBusinessesWithOwners();
@@ -63,9 +58,6 @@ class AdminController extends Controller
 
     public function registerBusiness()
     {
-
-        // echo "<br>Register function called.<br>";
-
         // Debugging input values
         $name = $_POST['RegisterName'] ?? 'EMPTY';
         $email = $_POST['RegisterEmail'] ?? 'EMPTY';
@@ -92,8 +84,11 @@ class AdminController extends Controller
                 if ($error == null) {
                     // Successful registration
                     $this->adminModel->registerBusiness($userID, $name, $businessType, $description, $image);
+                    header("Location: ?controller=user&action=restaurantView");
+                    exit();
+                } else {
+                    $this->view('Admin/RegisterBusinessView', isset($error) ? ['error' => $error] : []);
                 }
-                $this->view('Admin/RegisterBusinessView', isset($error) ? ['error' => $error] : []);
 
             } else {
                 // User not found

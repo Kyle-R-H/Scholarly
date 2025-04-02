@@ -2,7 +2,7 @@
 <html>
 
 <head>
-    <title><?= htmlspecialchars($items["BusinessName"]) ?></title>
+    <title><?= htmlspecialchars($items[0]["BusinessName"]) ?></title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="public/css/Styles.css" rel="stylesheet">
@@ -60,21 +60,6 @@
 
     <!-- Main Layout -->
     <div class="container-fluid d-flex flex-grow-1">
-        <!-- Sidebar -->
-        <div class="border-end d-flex flex-column p-3" style="width: 280px; min-width: 160px;">
-            <ul class="nav nav-pills flex-column mb-auto ">
-                <li class="nav-item">
-                    <a href="#" class="nav-link active" aria-current="page">Order Again</a>
-                </li>
-                <li class="nav-item">
-                    <a href="#" class="nav-link link-body-emphasis">Chefs favourites</a>
-                </li>
-                <li>
-                    <a href="#" class="nav-link link-body-emphasis">Current Order</a>
-                </li>
-            </ul>
-        </div>
-
         <!-- Main Content -->
         <div class="container my-5">
             <?php if (!empty($items)): ?>
@@ -141,5 +126,5 @@
                 </div>
             </div>
         </div>
-      </body>
+    </body>
 </html>

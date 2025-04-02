@@ -1,5 +1,7 @@
 <!DOCTYPE html>
 
+<html>
+
 <head>
     <title>Restaurants</title>
     <meta charset="utf-8">
@@ -141,4 +143,8 @@
         </div>
     </div>
 
+
 </body>
+
+</html>
+

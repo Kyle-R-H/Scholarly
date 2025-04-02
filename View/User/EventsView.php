@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 
+<html>
 <head>
     <title>Events</title>
     <meta charset="utf-8">
@@ -136,10 +137,5 @@
 
         </div>
     </div>
-
 </body>
-
-<!-- Search Bar Funcitonality -->
-<!-- <form class="col-12 col-lg-auto mb-3 mb-lg-0 me-lg-3" role="search">
-    <input type="search" class="form-control" placeholder="Search..." aria-label="Search">
-</form> -->
+</html>
