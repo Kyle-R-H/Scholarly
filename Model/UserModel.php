@@ -66,6 +66,7 @@ class UserModel extends Model
             "INSERT INTO BusinessStats (BusinessName, OrderPrice, TimeOfOrder, UserID, OrderStatus, Order_ID,ItemName,ItemID) VALUES (?, ?, ?, ?, ?, ?, ?,?)",
             [$businessName, $price,date("Y-m-d H:i:s")  , $userID, "Pending", $orderID, $itemName,$itemID["MAX(ItemID)"] + 1]
         );
+        $this->updateVerifiedCustomer($userID);
         return $this->db->lastInsertId();
     }
 

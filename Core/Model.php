@@ -63,9 +63,17 @@ class Model
         return $this->db->query($query)->fetchAll(PDO::FETCH_ASSOC);
     }
 
+    public function updateVerifiedCustomer($userID)
+    {
+        $this->db->query(
+            "UPDATE Users SET VerifiedCustomer = ? WHERE UserID = ?",
+            [1, $userID]
+        );
+    }
+
+
     public function getUsersByVerifiedCustomer($permissionLevel)
     {
-
         return $this->db->query("SELECT * FROM users where VerifiedCustomer = '1' AND PermissionLevel = ?", [$permissionLevel])->fetchAll(PDO::FETCH_ASSOC);
     }
 }

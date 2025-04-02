@@ -20,7 +20,12 @@ class AdminModel extends Model
              VALUES (?, ?, ?, ?, ?, ?)"
             ,[$userID, $businessName, $businessType, 0.0, $description, $image]
         );
-        
+
+        $this->db->query(
+            "UPDATE Users SET PermissionLevel = ? WHERE UserID = ?",
+            [1, $userID]
+        );
+        $this->updateVerifiedCustomer($userID);
         return $this->db->lastInsertId();
     }
     
