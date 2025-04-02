@@ -122,7 +122,7 @@
             <?php endif; ?>
             <div class="sticky-bottom py-3">
                 <div class="container-fluid d-flex justify-content-end">
-                    <a href="#" class="btn btn-primary w-100">Confirm Order</a>
+                    <a href="?controller=user&action=orderConfirmView" class="btn btn-primary w-100">Confirm Order</a>
                 </div>
             </div>
         </div>

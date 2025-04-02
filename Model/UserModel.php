@@ -18,10 +18,23 @@ class UserModel extends Model
         return $this->db->query("SELECT * FROM Business WHERE BusinessName = ?", [$businessName])->fetchAll(PDO::FETCH_ASSOC);
     }
 
-    public function getReviewByReviewID($ReviewID)
-    {
-        return $this->db->query("SELECT * FROM Review WHERE ReviewID = ?", [$ReviewID])->fetchAll(PDO::FETCH_ASSOC);
-    }
+
+    public function getReviewByReviewID()
+{
+    $query = "SELECT 
+                Review.ReviewID, 
+                Review.UserID, 
+                Business.BusinessName,
+                Business.Image, 
+                Review.Rating, 
+                Review.Comment, 
+                Review.Response, 
+                Review.CreatedAt
+              FROM Review
+              LEFT JOIN Business 
+                ON Review.Business = Business.UserID";
+    return $this->db->query($query)->fetchAll(PDO::FETCH_ASSOC);
+}
 
 
     public function registerUser($firstName, $lastName, $email, $password)
