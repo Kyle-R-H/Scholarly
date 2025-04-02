@@ -5,7 +5,6 @@ require_once 'Core/Database.php'; // If Database.php is used
 class UserController extends Controller
 {
     private $userModel;
-
     public function __construct()
     {
         $this->userModel = new UserModel();
@@ -125,7 +124,7 @@ class UserController extends Controller
 
             $itemName = $_POST['item_name'];
             $itemPrice = $_POST['item_price'];
-            $itemImage = $_POST['item_image'];
+
 
             // Check if item is already in the cart
             if (isset($_SESSION['cart'][$itemName])) {
@@ -134,14 +133,12 @@ class UserController extends Controller
                 $_SESSION['cart'][$itemName] = [
                     'name' => $itemName,
                     'price' => $itemPrice,
-                    'image' => $itemImage,
                     'quantity' => 1
                 ];
             }
 
             // Regenerate token to prevent re-submission on refresh
             $_SESSION['form_token'] = bin2hex(random_bytes(32));
-
             // Redirect to the same page to clear POST data and prevent duplicate submissions
             header("Location: ?controller=user&action=bookingView&businessName=" . urlencode($businessName));
             exit();
@@ -160,7 +157,35 @@ class UserController extends Controller
         }
     }
 
-    public function orderConfirmView(){
+    public function orderConfirmView()
+    {
+        $cartItems = isset($_SESSION['cart']) ? $_SESSION['cart'] : [];
+
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            if (isset($_POST['item_name'], $_POST['quantity'])) {
+                $itemName = $_POST['item_name'];
+                $quantity = $_POST['quantity'];
+
+            } elseif (isset($_POST['remove_item_name'])) {
+                $removeItemName = $_POST['remove_item_name'];
+
+                // Remove the item from the session
+                foreach ($cartItems as $key => $item) {
+                    if ($item['name'] === $removeItemName) {
+                        unset($cartItems[$key]);
+                        break;
+                    }
+                }
+            }
+            $_SESSION['cart'] = $cartItems;
+        }
+
+// Calculate the total price
+        $totalPrice = 0;
+        foreach ($cartItems as $item) {
+            $totalPrice += $item['price'] * $item['quantity'];
+        }
+
         require_once 'View/User/OrderConfirmView.php';
     }
 
@@ -192,5 +217,29 @@ class UserController extends Controller
         $activities = $this->userModel->getBusinessStatsByType("Activity", $user);
 
         require_once 'View/User/HistoryView.php';
+    }
+
+    public function placeOrder()
+    {
+        $cartItems = isset($_SESSION['cart']) ? $_SESSION['cart'] : [];
+        if (!is_null($cartItems)) {
+            $orderID = $this->userModel->getOrderID();
+            foreach ($cartItems as $item) {
+                $quantity = $item['quantity'];
+                for ($i = 0; $i < $quantity; $i++) {
+                    $itemName = $item['name'];
+                    $price = $item['price'];
+                    $businessName = $_SESSION['current_business'];
+                    $userID = $this->userModel->getUserByEmail($_COOKIE["Login_Info"])['UserID'];
+                    $this->userModel->placeOrder($businessName, $price, $userID, $orderID, $itemName);
+                }
+            }
+            $error = "Order Placed!";
+        }
+    else {$error = "Cart is empty.";
+        }
+        $this->view('User/RestaurantView', isset($error) ? ['error' => $error] : []);
+        //header("Location: ?controller=user&action=restaurantView");
+        //exit();
     }
 }

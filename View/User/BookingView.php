@@ -104,14 +104,11 @@
                                 <form method="POST">
                                     <input type="hidden" name="item_name" value="<?= htmlspecialchars($item['ItemName']) ?>">
                                     <input type="hidden" name="item_price" value="<?= htmlspecialchars($item['ItemPrice']) ?>">
-                                    <input type="hidden" name="item_image" value="<?= htmlspecialchars($item['ItemImage']) ?>">
                                     <input type="hidden" name="form_token" value="<?= $_SESSION['form_token'] ?>">
                                     <button type="submit" class="btn btn-primary position-absolute top-0 end-0 m-3">+</button>
                                 </form>
                               
-                                <div class="mt-3">
-                                    <img src="<?= htmlspecialchars($item['ItemImage']) ?>" class="img-fluid card-img-bottom" style="max-width: 200px; height: auto;" alt="Item Image">
-                                </div>
+
                             </div>
                         </div>
                     </div>
@@ -125,7 +122,6 @@
                 <ul class="list-group">
                     <?php foreach ($_SESSION['cart'] as $cartItem): ?>
                         <li class="list-group-item d-flex justify-content-between align-items-center">
-                            <img src="<?= htmlspecialchars($cartItem['image']) ?>" style="width: 50px; height: 50px;" alt="Item">
                             <?= htmlspecialchars($cartItem['name']) ?> -
                             $<?= number_format($cartItem['price'], 2) ?> × <?= $cartItem['quantity'] ?>
                             = <strong>$<?= number_format($cartItem['price'] * $cartItem['quantity'], 2) ?></strong>
