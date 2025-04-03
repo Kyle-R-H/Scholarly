@@ -25,7 +25,7 @@
                 <!-- Messages and Reviews Section -->
                 <ul class="nav col-lg-auto justify-content-center">
                     <li>
-                        <a href="#" class="nav-link link-body-emphasis">
+                        <a href="?controller=business&action=businessMessages" class="nav-link link-body-emphasis">
                             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512" width="22" height="22" fill="currentColor"><!--!Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2025 Fonticons, Inc.-->
                                 <path d="M160 32a104 104 0 1 1 0 208 104 104 0 1 1 0-208zm320 0a104 104 0 1 1 0 208 104 104 0 1 1 0-208zM0 416c0-70.7 57.3-128 128-128l64 0c70.7 0 128 57.3 128 128l0 16c0 26.5-21.5 48-48 48L48 480c-26.5 0-48-21.5-48-48l0-16zm448 64c-38.3 0-72.7-16.8-96.1-43.5c.1-1.5 .1-3 .1-4.5l0-16c0-34.9-11.2-67.1-30.1-93.4c5.8-20 24.2-34.6 46.1-34.6l224 0c26.5 0 48 21.5 48 48l0 16c0 70.7-57.3 128-128 128l-64 0z" />
                             </svg>
@@ -56,9 +56,9 @@
     </header>
 
     <!-- Main Content -->
-    <main class="container-fluid px-5 py-3">
+    <main class="container-fluid px-3 d-flex flex-grow-1">
         <!-- Main Layout -->
-        <?php if (!empty($_SESSION['error'])) : ?>
+        <?php if (!empty($_SESSION['error']) && !isset($_POST['searchUser'])) : ?>
             <div class="position-fixed top-0 end-0 p-3" style="z-index: 1050">
                 <div id="errorToast" class="toast align-items-center text-bg-danger border-0 show" role="alert" aria-live="assertive" aria-atomic="true">
                     <div class="d-flex">
@@ -71,7 +71,7 @@
             </div>
         <?php endif; ?>
 
-        <?php if (!empty($_SESSION['success'])) : ?>
+        <?php if (!empty($_SESSION['success']) && !isset($_POST['searchUser'])) : ?>
             <div class="position-fixed top-0 end-0 p-3" style="z-index: 1050">
                 <div id="successToast" class="toast align-items-center text-bg-success border-0 show" role="alert" aria-live="assertive" aria-atomic="true">
                     <div class="d-flex">
@@ -84,22 +84,62 @@
             </div>
         <?php endif; ?>
 
-        <!-- Sidebar // TODO: Make query to get all users that sent a message to current user($_COOKIE['Login_Info'])
-        <div class="border-end d-flex flex-column p-3" style="width: 30rem; min-width: 160px;">
-            <ul class="nav nav-pills flex-column ">
-                <h2>Unread Messages</h2>
-                <hr>
-                <tbody>
-                    <?php foreach ($users as $user): ?>
-                        <tr>
-                            <td><?= htmlspecialchars($user['FirstName']) . " " . htmlspecialchars($user['LastName']) ?></td>
-                            <td>
-                                <a href="?controller=user&action=sendMessageView&receiverIDView=<?= $user['UserID'] ?>" class="btn btn-primary">Message</a>
-                            </td>
-                        </tr>
-                    <?php endforeach; ?>
-            </ul>
-        </div> -->
+
+        <!-- Sidebar -->
+        <?php if (isset($_GET['receiverID'])): ?>
+            <div class="border-end d-flex flex-column p-4" style="width: 50rem; min-width: 160px;">
+                <ul class="nav nav-pills flex-column ">
+                    <!-- Main Messaging Layout -->
+                    <div class="container my-4 flex-grow-1 d-flex flex-column">
+                        <div class="row">
+                            <div class="col-12">
+                                <h3 class="mb-3">Conversation with User #<?= htmlspecialchars($receiverID) ?></h3>
+                            </div>
+                        </div>
+
+                        <!-- Conversation Container -->
+                        <div class="card flex-grow-1 mb-3">
+                            <div class="card-body chat-area d-flex flex-column">
+                                <?php if (!empty($previousMessages)): ?>
+                                    <?php foreach ($previousMessages as $msg): ?>
+                                        <?php
+
+                                        $isSender = ($msg['Sender'] == $_COOKIE['Login_Info']);
+                                        $senderLabel = $isSender ? "You" : "User #" . htmlspecialchars($msg['Sender']);
+                                        ?>
+                                        <div class="mb-3">
+                                            <div class="<?= $isSender ? 'text-end' : 'text-start' ?>">
+                                                <span class="fw-bold"><?= $senderLabel ?>:</span>
+                                                <span class="chat-bubble <?= $isSender ? 'sent' : 'received' ?>">
+                                                    <?= htmlspecialchars($msg['Message']) ?>
+                                                </span>
+                                                <br>
+                                                <small class="text-muted"><?= htmlspecialchars($msg['TimeSent']) ?></small>
+                                            </div>
+                                        </div>
+                                    <?php endforeach; ?>
+                                <?php else: ?>
+                                    <p class="text-muted">No messages yet. Start the conversation below!</p>
+                                <?php endif; ?>
+                            </div>
+                        </div>
+
+                        <!-- Message Input Form -->
+                        <div class="card">
+                            <div class="card-body">
+                                <form method="POST" action="?controller=business&action=sendMessage">
+                                    <input type="hidden" name="receiverID" value="<?= htmlspecialchars($receiverID) ?>">
+                                    <div class="input-group" style="border: 1px solid #ddd; border-radius: 5px; overflow: hidden;">
+                                        <textarea class="form-control border-0" name="messageText" placeholder="Type your message here..." rows="2" required style="resize: none;"></textarea>
+                                        <button class="btn btn-success border-0" type="submit" style="border-top-right-radius: 5px; border-bottom-right-radius: 5px;">Send</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </ul>
+            </div>
+        <?php endif; ?>
 
         <!-- Main Content -->
         <div class="px-5 py-3" style="width: 100%;">
@@ -109,47 +149,48 @@
                     <h1>Messages</h1>
                 </div>
 
-                <div class="row">
-                    <!-- Normal Users -->
-                    <div class="col-md-6">
+                <!-- <div class="row"> -->
+                <!-- Normal Users -->
+                <div class="">
 
-                        <!-- Search Bar Functionality normal users -->
-                        <form class="py-2 mb-4" method="POST" role="search">
-                            <input type="hidden" name="controller" value="user">
-                            <input type="hidden" name="action" value="reviewView">
-                            <input type="search" class="form-control" name="searchUser" placeholder="Search Name"
-                                value="<?= isset($_POST['searchUser']) ? htmlspecialchars($_POST['searchUser']) : '' ?>">
-                        </form>
+                    <!-- Search Bar Functionality normal users -->
+                    <form class="py-2 mb-4" method="POST" role="search">
+                        <input type="hidden" name="controller" value="user">
+                        <input type="hidden" name="action" value="reviewView">
+                        <input type="search" class="form-control" name="searchUser" placeholder="Search Name"
+                            value="<?= isset($_POST['searchUser']) ? htmlspecialchars($_POST['searchUser']) : '' ?>">
+                    </form>
 
-                        <h2 class="text-center">Verified Users</h2>
-                        <?php if (isset($users) && count($users) > 0): ?>
-                            <table class="table table-striped align-middle rounded-3 overflow-hidden">
-                                <thead class="table-dark">
+                    <h2 class="text-center">Verified Users</h2>
+                    <?php if (isset($users) && count($users) > 0): ?>
+                        <table class="table table-striped align-middle rounded-3 overflow-hidden">
+                            <thead class="table-dark">
+                                <tr>
+                                    <th>Name</th>
+                                    <th>Message</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <?php foreach ($users as $user): ?>
                                     <tr>
-                                        <th>Name</th>
-                                        <th>Message</th>
+                                        <td><?= htmlspecialchars($user['FirstName']) . " " . htmlspecialchars($user['LastName']) ?></td>
+                                        <td>
+                                            <a href="?controller=business&action=businessMessagesView&receiverID=<?= $user['UserID'] ?>" class="btn btn-primary">Message</a>
+                                        </td>
                                     </tr>
-                                </thead>
-                                <tbody>
-                                    <?php foreach ($users as $user): ?>
-                                        <tr>
-                                            <td><?= htmlspecialchars($user['FirstName']) . " " . htmlspecialchars($user['LastName']) ?></td>
-                                            <td>
-                                                <a href="?controller=business&action=sendMessageView&receiverID=<?= $user['UserID'] ?>" class="btn btn-primary">Message</a>
-                                            </td>
-                                        </tr>
-                                    <?php endforeach; ?>
-                                </tbody>
-                            </table>
-                        <?php else: ?>
-                            <p class="text-muted text-center">No Users found.</p>
-                        <?php endif; ?>
-                    </div>
+                                <?php endforeach; ?>
+                            </tbody>
+                        </table>
+                    <?php else: ?>
+                        <p class="text-muted text-center">No Users found.</p>
+                    <?php endif; ?>
+                </div>
 
-                    <!-- Business Users -->
+                <!-- 
+                    Business Users
                     <div class="col-md-6">
 
-                        <!-- Search Bar Functionality Business -->
+                        Search Bar Functionality Business
                         <form class="py-2 mb-4" method="POST" role="search">
                             <input type="hidden" name="controller" value="user">
                             <input type="hidden" name="action" value="reviewView">
@@ -183,10 +224,10 @@
                             </table>
                         <?php else: ?>
                             <p class="text-muted text-center">No Business Users found.</p>
-                        <?php endif; ?>
-                    </div>
-                </div>
+                        <?php endif; ?> -->
             </div>
+            <!-- </div> -->
+        </div>
         </div>
     </main>
 </body>

@@ -43,7 +43,7 @@ class Model
         return $this->db->query("SELECT * FROM businessstats WHERE BusinessName = ?", [$businessName])->fetchAll(PDO::FETCH_ASSOC);
     }
 
-    public function getStatsByBusinessAndStatus($businessName,$orderStatus)
+    public function getStatsByBusinessAndStatus($businessName, $orderStatus)
     {
         return $this->db->query("SELECT * FROM BusinessStats WHERE BusinessName = ? AND OrderStatus = ?", [$businessName, $orderStatus])->fetchAll(PDO::FETCH_ASSOC);
     }
@@ -89,15 +89,14 @@ class Model
                 // Update the Rating column in the Business table
                 $updateQuery = "UPDATE Business SET Rating = ? WHERE BusinessName = ?";
                 $this->db->query($updateQuery, [$averageRating, $businessName]);
-            }
-            else {
+            } else {
                 $averageRating = 0;
             }
             $this->updateBusinessRatingByBusiness($businessName, $averageRating);
         }
     }
 
-    public function updateBusinessRatingByBusiness($businessName,$averageRating)
+    public function updateBusinessRatingByBusiness($businessName, $averageRating)
     {
         $updateQuery = "UPDATE Business SET Rating = ? WHERE BusinessName = ?";
         $this->db->query($updateQuery, [$averageRating, $businessName]);
@@ -113,14 +112,38 @@ class Model
 
 
     public function getUsersByVerifiedCustomer($permissionLevel)
-{
-    return $this->db->query("
+    {
+        return $this->db->query(
+            "
         SELECT users.*, business.BusinessName 
         FROM users 
         LEFT JOIN business ON users.UserID = business.UserID 
         WHERE users.VerifiedCustomer = '1' 
-        AND users.PermissionLevel = ?", 
-        [$permissionLevel]
-    )->fetchAll(PDO::FETCH_ASSOC);
-}
+        AND users.PermissionLevel = ?",
+            [$permissionLevel]
+        )->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    public function getUserMessages($senderID, $receiverID,)
+    {
+        // echo "sender: " . $senderID;
+        // echo " <br> receiver: " . $receiverID;
+        $query = "SELECT * FROM Messages 
+                WHERE (Sender = ? AND Receiver = ?) 
+                OR (Sender = ? AND Receiver = ?) 
+                ORDER BY TimeSent ASC";
+
+        return $this->db->query($query, [$senderID, $receiverID, $receiverID, $senderID])->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    public function createMessage($senderID, $receiverID, $message)
+    {
+        // echo "Sender: " . $senderID . "<br>Reciever: " . $receiverID;
+        $maxMessageID = $this->db->query("SELECT MAX(MessageID) AS maxID FROM Messages")->fetch(PDO::FETCH_ASSOC);
+        if ($maxMessageID == null) {
+            $maxMessageID = 1;
+        }
+        $query = "INSERT INTO Messages (MessageID, Sender, Receiver, Message, TimeSent, Pending) VALUES (?, ?, ?, ?, ?, ?)";
+        return $this->db->query($query, [$maxMessageID["maxID"] + 1, $senderID, $receiverID, $message, date("Y-m-d H:i:s"), "Pending"]);
+    }
 }

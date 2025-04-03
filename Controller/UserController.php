@@ -332,34 +332,34 @@ class UserController extends Controller
             $_SESSION['error'] = "Message failed to send";
         }
         // Stops view redirect and keeps user on current view
-            header("Location: " . $_SERVER['HTTP_REFERER'] ?? '?controller=user&action=sendMessagesView');
-            exit();
+        header("Location: " . $_SERVER['HTTP_REFERER'] ?? '?controller=user&action=sendMessagesView');
+        exit();
     }
 
     public function sendMessageView($receiverID)
-{
-    
-    // Sender is the logged-in user
-    $senderID = $this->userModel-> getUserByEmail($_COOKIE['Login_Info'])['UserID'];
-    $previousMessages = $this->userModel->getUserMessages($senderID, $receiverID);
+    {
 
-    if ($_SERVER["REQUEST_METHOD"] === "POST") {
-        // The user submitted a message
-        $message = trim($_POST['messageText']);
-        
-        // Insert the new message in the DB (pending, etc.)
-        // e.g. $this->userModel->createMessage($messageID, $senderID, $receiverID, $message);
+        // Sender is the logged-in user
+        $senderID = $this->userModel->getUserByEmail($_COOKIE['Login_Info'])['UserID'];
+        $previousMessages = $this->userModel->getUserMessages($senderID, $receiverID);
 
-        $_SESSION['success'] = "Message sent successfully!";
-        // Optional: redirect or stay on the same page
-        // header("Location: ?controller=user&action=sendMessageView&receiverID=$receiverID");
-        // exit();
+        print_r($previousMessages);
+        if ($_SERVER["REQUEST_METHOD"] === "POST") {
+            // The user submitted a message
+            $message = trim($_POST['messageText']);
+
+            // Insert the new message in the DB (pending, etc.)
+            // e.g. $this->userModel->createMessage($messageID, $senderID, $receiverID, $message);
+
+            $_SESSION['success'] = "Message sent successfully!";
+            // Optional: redirect or stay on the same page
+            // header("Location: ?controller=user&action=sendMessageView&receiverID=$receiverID");
+            // exit();
+        }
+
+        // Always fetch previous messages so the user can see the conversation
+
+        // Pass $previousMessages, $receiverID, etc. to the view
+        require_once 'View/User/MessagingView.php';
     }
-
-    // Always fetch previous messages so the user can see the conversation
-
-    // Pass $previousMessages, $receiverID, etc. to the view
-    require_once 'View/User/MessagingView.php';
-}
-
 }

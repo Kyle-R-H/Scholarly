@@ -9,34 +9,6 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="public/css/Styles.css">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-    <style>
-        /* Chat bubble styles */
-        .chat-bubble {
-            display: inline-block;
-            padding: 10px 15px;
-            border-radius: 20px;
-            margin-bottom: 10px;
-            max-width: 75%;
-        }
-
-        .chat-bubble.sent {
-            background-color: #d1e7dd;
-        }
-
-        .chat-bubble.received {
-            background-color: #f8d7da;
-        }
-
-        /* Scrollable chat area */
-        .chat-area {
-            height: 400px;
-            overflow-y: auto;
-            padding: 15px;
-            background-color: #f1f1f1;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-        }
-    </style>
 </head>
 
 <body class="d-flex flex-column min-vh-100">
@@ -88,14 +60,30 @@
 
     <!-- Main Messaging Layout -->
     <div class="container my-4 flex-grow-1 d-flex flex-column">
-        <!-- Toast Messages -->
-        <?php if (!empty($_SESSION['error'])): ?>
-            <div class="alert alert-danger"><?= htmlspecialchars($_SESSION['error']) ?></div>
-            <?php unset($_SESSION['error']); ?>
+        <?php if (!empty($_SESSION['error']) && !isset($_POST['searchUser'])) : ?>
+            <div class="position-fixed top-0 end-0 p-3" style="z-index: 1050">
+                <div id="errorToast" class="toast align-items-center text-bg-danger border-0 show" role="alert" aria-live="assertive" aria-atomic="true">
+                    <div class="d-flex">
+                        <div class="toast-body">
+                            <?php echo $_SESSION['error'] ?>
+                        </div>
+                        <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"><?php unset($_SESSION['error']) ?></button>
+                    </div>
+                </div>
+            </div>
         <?php endif; ?>
-        <?php if (!empty($_SESSION['success'])): ?>
-            <div class="alert alert-success"><?= htmlspecialchars($_SESSION['success']) ?></div>
-            <?php unset($_SESSION['success']); ?>
+
+        <?php if (!empty($_SESSION['success']) && !isset($_POST['searchUser'])) : ?>
+            <div class="position-fixed top-0 end-0 p-3" style="z-index: 1050">
+                <div id="successToast" class="toast align-items-center text-bg-success border-0 show" role="alert" aria-live="assertive" aria-atomic="true">
+                    <div class="d-flex">
+                        <div class="toast-body">
+                            <?php echo $_SESSION['success'] ?>
+                        </div>
+                        <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"><?php unset($_SESSION['success']) ?></button>
+                    </div>
+                </div>
+            </div>
         <?php endif; ?>
 
         <div class="row">
@@ -110,7 +98,7 @@
                 <?php if (!empty($previousMessages)): ?>
                     <?php foreach ($previousMessages as $msg): ?>
                         <?php
-                        
+
                         $isSender = ($msg['Sender'] == $_COOKIE['Login_Info']);
                         $senderLabel = $isSender ? "You" : "User #" . htmlspecialchars($msg['Sender']);
                         ?>

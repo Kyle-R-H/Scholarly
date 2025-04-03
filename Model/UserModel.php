@@ -35,7 +35,7 @@ class UserModel extends Model
 
     public function getBusinessByType($businessType)
     {
-        return $this->db->query("SELECT * FROM Business Where BusinessType = ?", [$businessType])->fetchAll(PDO::FETCH_ASSOC);
+        return $this->db->query("SELECT * FROM Business Where BusinessType = ? ORDER BY Rating DESC", [$businessType])->fetchAll(PDO::FETCH_ASSOC);
     }
 
     public function getBusinessStatsByType($businessType, $userID)
@@ -81,26 +81,4 @@ class UserModel extends Model
         return $this->db->query("SELECT BusinessName FROM Business", [])->fetchAll(PDO::FETCH_ASSOC);
     }
 
-    public function createMessage($senderID, $receiverID, $message)
-    {
-        echo "Sender: " . $senderID . "<br>Reciever: " . $receiverID;
-        // TODO: get MethodID +1 from db
-        $maxMessageID = $this->db->query("SELECT MAX(MessageID) AS maxID FROM Messages")->fetch(PDO::FETCH_ASSOC);
-        if ($maxMessageID == null) {
-            $maxMessageID = 1;
-        }
-        $query = "INSERT INTO Messages (MessageID, Sender, Receiver, Message, TimeSent, Pending) VALUES (?, ?, ?, ?, ?, ?)";
-        return $this->db->query($query, [$maxMessageID["maxID"] + 1, $senderID, $receiverID, $message, date("Y-m-d H:i:s"), "Pending"]);
-    }
-
-    public function getUserMessages($senderID, $receiverID,)
-    {
-      //  echo "sender: " . $senderID;
-     // echo " <br> receiver: " . $receiverID;
-        $query = "SELECT * FROM Messages 
-                WHERE (Sender = ? AND Receiver = ?) 
-                ORDER BY TimeSent ASC";
-
-        return $this->db->query($query, [$senderID, $receiverID])-> fetchAll(PDO::FETCH_ASSOC);
-    }
 }
