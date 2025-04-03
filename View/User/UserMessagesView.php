@@ -137,12 +137,14 @@
                                 </thead>
                                 <tbody>
                                     <?php foreach ($users as $user): ?>
+                                        <?php if($user['Email'] !== $_COOKIE['Login_Info']): ?>
                                         <tr>
                                             <td><?= htmlspecialchars($user['FirstName']) . " " . htmlspecialchars($user['LastName']) ?></td>
                                             <td>
                                                 <a href="?controller=user&action=sendMessageView&receiverID=<?= $user['UserID'] ?>" class="btn btn-primary">Message</a>
                                             </td>
                                         </tr>
+                                        <?php endif; ?>
                                     <?php endforeach; ?>
                                 </tbody>
                             </table>
@@ -188,6 +190,7 @@
                         <?php endif; ?>
                     </div>
                 </div>
+                
             </div>
         </div>
     </div>

@@ -113,6 +113,90 @@ class BusinessController extends Controller
         }
     }
 
+
+    public function businessMessages()
+    {
+        $users = $this->businessModel->getUsersByVerifiedCustomer(0); // 0 = normal user
+        // $businessUsers = $this->businessModel->getUsersByVerifiedCustomer(1); // 1 = business user
+
+        // Get search query from Form POST
+        $searchUserQuery = $_POST['searchUser'] ?? '';
+        // $searchBusinessQuery = $_POST['searchBusiness'] ?? '';
+        // echo "<br> Search Q: "; print_r($searchQuery);
+
+        // Filter Reviews based on the search query
+        if (!empty($searchUserQuery)) {
+            $users = array_filter($users, function ($users) use ($searchUserQuery) {
+                return stripos($users['Email'], $searchUserQuery) !== false;
+            });
+        }
+
+        // if (!empty($searchBusinessQuery)) {
+        //     $businessUsers = array_filter($businessUsers, function ($businessUsers) use ($searchBusinessQuery) {
+        //         return stripos($businessUsers['Email'], $searchBusinessQuery) !== false;
+        //     });
+        // }
+
+        require_once 'View/Business/businessMessagesView.php';
+    }
+
+
+    // Messages Funcitonality
+    public function businessMessagesView($receiverID)
+    {
+        $users = $this->businessModel->getUsersByVerifiedCustomer(0); // 0 = normal user
+
+        // Sender is the logged-in user
+        $senderID = $this->businessModel->getUserByEmail($_COOKIE['Login_Info'])['UserID'];
+        $previousMessages = $this->businessModel->getUserMessages($senderID, $receiverID);
+
+        // Get search query from Form POST
+        $searchUserQuery = $_POST['searchUser'] ?? '';
+        // $searchBusinessQuery = $_POST['searchBusiness'] ?? '';
+        // echo "<br> Search Q: "; print_r($searchQuery);
+
+        // Filter Reviews based on the search query
+        if (!empty($searchUserQuery)) {
+            unset($_SESSION['success']);
+            unset($_SESSION['error']);
+            $users = array_filter($users, function ($users) use ($searchUserQuery) {
+                return stripos($users['Email'], $searchUserQuery) !== false;
+            });
+        }
+
+        if ($_SERVER["REQUEST_METHOD"] === "POST") {
+            // The user submitted a message
+            $message = trim($_POST['messageText']);
+
+            // Insert the new message in the DB (pending, etc.)
+            // e.g. $this->businessModel->createMessage($messageID, $senderID, $receiverID, $message);
+
+            $_SESSION['success'] = "Message sent successfully!";
+            // Optional: redirect or stay on the same page
+            // header("Location: ?controller=user&action=sendMessageView&receiverID=$receiverID");
+            // exit();
+        }
+
+        require_once 'View/Business/BusinessMessagesView.php';
+    }
+
+    public function sendMessage()
+    {
+        if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST['messageText']) && !empty($_POST['messageText'])) {
+            $senderID = $this->businessModel->getUserByEmail($_COOKIE['Login_Info'])['UserID'];
+            $receiverID = $_POST['receiverID'];
+            $message = trim($_POST['messageText']);
+
+            $this->businessModel->createMessage($senderID, $receiverID, $message);
+            $_SESSION['success'] = "Message sent successfully!";
+        } else {
+            $_SESSION['error'] = "Message failed to send";
+        }
+        // Stops view redirect and keeps user on current view
+        header("Location: " . $_SERVER['HTTP_REFERER'] ?? '?controller=user&action=sendMessagesView');
+        exit();
+    }
+
     public function updateOrderPrice()
     {
         // Get data from POST request
