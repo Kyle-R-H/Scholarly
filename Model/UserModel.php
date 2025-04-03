@@ -20,21 +20,21 @@ class UserModel extends Model
 
 
     public function getReviewByReviewID()
-{
-    $query = "SELECT 
-                Review.ReviewID, 
-                Review.UserID, 
-                Business.BusinessName,
-                Business.Image, 
-                Review.Rating, 
-                Review.Comment, 
-                Review.Response, 
-                Review.CreatedAt
-              FROM Review
-              LEFT JOIN Business 
-                ON Review.Business = Business.UserID";
-    return $this->db->query($query)->fetchAll(PDO::FETCH_ASSOC);
-}
+    {
+        $query = "SELECT 
+                    Review.ReviewID, 
+                    Review.UserID, 
+                    Business.BusinessName,
+                    Business.Image, 
+                    Review.Rating, 
+                    Review.Comment, 
+                    Review.Response, 
+                    Review.CreatedAt
+                FROM Review
+                LEFT JOIN Business 
+                    ON Review.Business = Business.UserID";
+        return $this->db->query($query)->fetchAll(PDO::FETCH_ASSOC);
+    }
 
 
     public function registerUser($firstName, $lastName, $email, $password)
@@ -50,6 +50,22 @@ class UserModel extends Model
         );
 
         return $this->db->lastInsertId();
+    }
+
+    public function updateUserDetails($email, $firstName, $lastName)
+    {
+        echo "In UpdateUserDetails<br>";
+        $this->db->query(
+            "UPDATE Users
+
+            SET
+                FirstName = ?
+                ,LastName = ?
+
+            WHERE
+                Email = ?"
+            ,[$firstName, $lastName, $email]
+        );
     }
 
     public function getBusinessByType($businessType)

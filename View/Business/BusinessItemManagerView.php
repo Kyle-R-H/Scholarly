@@ -77,7 +77,7 @@
                             <td><?= htmlspecialchars($item['Description'])?></td>
                             <td><?= htmlspecialchars($item['ItemPrice'])?></td>
                             <td class="text-center">
-                                <button class="">-</button> // TODO: Make button red
+                                <button class="btn remove"> - </button>
                             </td>
                         </tr>
                     <?php endforeach; ?>

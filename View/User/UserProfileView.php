@@ -79,7 +79,24 @@
         <div class="p-3">
             <?php if ($user): ?>
                 <h1><?php echo htmlspecialchars($user['FirstName'] . ' ' . $user['LastName']); ?></h1>
-                <p>Email: <?php echo htmlspecialchars($user['Email']); ?></p>
+
+                <p class="py-3"> Email: <?php echo htmlspecialchars($user['Email']); ?> </p>
+
+                <form method="POST" action="?controller=user&action=updateProfile">
+                    <div class="row pb-4">
+                        <div class="col form pr-3">
+                            <label class="labels"> First name </label>
+                            <input name="FirstName" type="text" class="form-control" placeholder="<?php echo htmlspecialchars($user['FirstName'])?>">
+                        </div>
+
+                        <div class="col form">
+                            <label class="labels"> Last name </label>
+                            <input name="LastName" type="text" class="form-control" placeholder="<?php echo htmlspecialchars($user['LastName'])?>">
+                        </div>
+                    </div>
+
+                    <button type="submit" class="btn"> Save changes </button>
+                </form>
             <?php else: ?>
                 <p>User not found.</p>
             <?php endif; ?>

@@ -62,7 +62,7 @@
                             <td><?= htmlspecialchars($business['Rating'])?></td>
                             <td><?= htmlspecialchars($business['Description'])?></td>
                             <td class="text-center">
-                                <button class="btn remove-business"> - </button>
+                                <button class="btn remove"> - </button>
                             </td>
                         </tr>
                     <?php endforeach; ?>
