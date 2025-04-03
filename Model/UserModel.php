@@ -54,7 +54,6 @@ class UserModel extends Model
 
     public function updateUserDetails($email, $firstName, $lastName)
     {
-        echo "In UpdateUserDetails<br>";
         $this->db->query(
             "UPDATE Users
 
@@ -65,6 +64,22 @@ class UserModel extends Model
             WHERE
                 Email = ?"
             ,[$firstName, $lastName, $email]
+        );
+    }
+
+    public function updatePassword($email, $password)
+    {
+        $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
+
+        $this->db->query(
+            "UPDATE Users
+
+            SET
+                Password = ?
+
+            WHERE
+                Email = ?"
+            ,[$hashedPassword, $email]
         );
     }
 

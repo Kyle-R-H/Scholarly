@@ -34,7 +34,8 @@ class BusinessController extends Controller{
     }
     
     public function profile(){
-        $this->view('Business/BusinessProfileView', ['businessType' => $this->businessType,'businessName'=>$this->businessName ]);
+        $business = $this->businessModel->getBusinessByEmail($_COOKIE["Login_Info"]);
+        $this->view('Business/BusinessProfileView', ['businessType' => $this->businessType,'businessName'=>$this->businessName, 'business'=>$business]);
     }
 
     public function addItemView(){
@@ -64,5 +65,14 @@ class BusinessController extends Controller{
             $this->view('Admin/RegisterBusinessView', isset($error) ? ['error' => $error] : []);
         }
         $this->view('Business/AddItemView', ['businessType' => $this->businessType,'businessName'=>$this->businessName ]);
+    }
+
+    public function removeItem()
+    {
+        $itemName = $_POST['ItemName'];
+        
+        $this->businessModel->removeItem($itemName);
+
+        header("Location: ?controller=business&action=businessManager");
     }
 }

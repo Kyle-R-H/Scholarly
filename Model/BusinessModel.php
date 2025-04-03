@@ -15,6 +15,13 @@ class BusinessModel extends Model{
         return $this->db->query("SELECT * FROM Business WHERE UserId = ?", [$userId])->fetch(PDO::FETCH_ASSOC);
     }
 
+    public function getBusinessByEmail($email) {
+        // echo "In getBusinessByEmail<br>";
+        $userID = $this->db->query("SELECT UserId FROM Users WHERE Email = ?", [$email])->fetch(PDO::FETCH_ASSOC);
+        // echo $userID['UserId'];
+        return $this->getBusinessByUserID($userID['UserId']);
+    }
+
     public function getStatsByBusiness($businessName) {
         return $this->db->query("SELECT * FROM BusinessStats WHERE BusinessName = ?", [$businessName])->fetchAll(PDO::FETCH_ASSOC);
     }
@@ -39,5 +46,14 @@ class BusinessModel extends Model{
         );
         
         return $this->db->lastInsertId();
+    }
+
+    public function removeItem($itemName)
+    {
+        $this->db->query(
+            "DELETE FROM Item
+            WHERE ItemName = ?"
+            ,[$itemName]
+        );
     }
 }
