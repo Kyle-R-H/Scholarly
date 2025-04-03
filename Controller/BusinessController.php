@@ -28,7 +28,9 @@ class BusinessController extends Controller
     public function dashboard()
     {
         $stats = $this->businessModel->getStatsByBusiness($this->businessName);
-        $this->view('Business/BusinessDashboardView', ['businessType' => $this->businessType, 'businessName' => $this->businessName, 'stats' => $stats]);
+        $completedStats = $this->businessModel->getStatsByBusinessAndStatus($this->businessName, "Completed");
+        $pendingStats = $this->businessModel->getStatsByBusinessAndStatus($this->businessName, "Pending");
+        $this->view('Business/BusinessDashboardView', ['businessType' => $this->businessType, 'businessName' => $this->businessName, 'completedStats' => $completedStats, 'pendingStats' => $pendingStats, 'stats' => $stats]);
     }
 
     public function businessManager()
@@ -109,5 +111,29 @@ class BusinessController extends Controller
         } else {
             die("Failed to save response.");
         }
+    }
+
+    public function updateOrderPrice()
+    {
+        // Get data from POST request
+        $userID = $_POST['userID'] ?? null;
+        $orderPrice = $_POST['orderPrice'] ?? null;
+
+        // Validate input
+        if (!$userID || !$orderPrice || !is_numeric($orderPrice)) {
+            die("Invalid input data.");
+        }
+
+        // Update the database
+        $success = $this->businessModel->updateOrderPriceByUserID($userID, $orderPrice);
+
+        // Redirect back to the dashboard
+        if ($success) {
+            $_SESSION['success'] = "Order price updated successfully.";
+        } else {
+            $_SESSION['error'] = "Failed to update order price.";
+        }
+        header("Location: ?controller=business&action=dashboard");
+        exit;
     }
 }
