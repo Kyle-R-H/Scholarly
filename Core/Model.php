@@ -43,11 +43,6 @@ class Model
         return $this->db->query("SELECT * FROM businessstats WHERE BusinessName = ?", [$businessName])->fetchAll(PDO::FETCH_ASSOC);
     }
 
-    public function getStatsByBusinessAndStatus($businessName,$orderStatus)
-    {
-        return $this->db->query("SELECT * FROM BusinessStats WHERE BusinessName = ? AND OrderStatus = ?", [$businessName, $orderStatus])->fetchAll(PDO::FETCH_ASSOC);
-    }
-
     public function getReviewByReviewID()
     {
         $query = "SELECT 

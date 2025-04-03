@@ -15,20 +15,15 @@ class BusinessModel extends Model{
         return $this->db->query("SELECT * FROM Business WHERE UserId = ?", [$userId])->fetch(PDO::FETCH_ASSOC);
     }
 
-    public function updateOrderPriceByUserID($userID, $orderPrice)
-    {
-        return $this->db->query("UPDATE businessstats 
-SET OrderPrice = ?, OrderStatus = 'Completed' 
-WHERE UserID = ? AND OrderStatus = 'Pending';",
-            [$orderPrice, $userID]
-        );
+    public function getStatsByBusiness($businessName) {
+        return $this->db->query("SELECT * FROM BusinessStats WHERE BusinessName = ?", [$businessName])->fetchAll(PDO::FETCH_ASSOC);
     }
 
     public function getSimilarItemNames($itemName){
         $existingNames = $this->db->query(
             "SELECT ItemName FROM Item WHERE ItemName LIKE ?"
             ,[$itemName])->fetchAll(PDO::FETCH_COLUMN);
-
+    
         if (!empty($existingNames)) {
             return "Business Name already exists";
         }
