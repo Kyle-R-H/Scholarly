@@ -198,7 +198,7 @@ class UserController extends Controller
             $_SESSION['error'] = "You must be a verified customer to view this page.";
 
             // Stops view redirect and keeps user on current view
-            header("Location: " . $_SERVER['HTTP_REFERER'] ?? '?controller=user&action=restaurantView');
+            header("Location: " . $_SERVER['HTTP_REFERER'] ?? '?controller=user&action=sendMessagesView');
             exit();
         }
 

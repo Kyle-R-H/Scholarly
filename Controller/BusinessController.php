@@ -110,4 +110,66 @@ class BusinessController extends Controller
             die("Failed to save response.");
         }
     }
+
+    // Messages Funcitonality
+    public function businessMessagesView()
+    {
+        $users = $this->businessModel->getUsersByVerifiedCustomer(0); // 0 = normal user
+        $businessUsers = $this->businessModel->getUsersByVerifiedCustomer(1); // 1 = business user
+
+        // Get search query from Form POST
+        $searchUserQuery = $_POST['searchUser'] ?? '';
+        $searchBusinessQuery = $_POST['searchBusiness'] ?? '';
+        // echo "<br> Search Q: "; print_r($searchQuery);
+
+        // Filter Reviews based on the search query
+        if (!empty($searchUserQuery)) {
+            $users = array_filter($users, function ($users) use ($searchUserQuery) {
+                return stripos($users['Email'], $searchUserQuery) !== false;
+            });
+        }
+
+        if (!empty($searchBusinessQuery)) {
+            $businessUsers = array_filter($businessUsers, function ($businessUsers) use ($searchBusinessQuery) {
+                return stripos($businessUsers['Email'], $searchBusinessQuery) !== false;
+            });
+        }
+
+        require_once 'View/Business/businessMessagesView.php';
+    }
+
+    public function sendMessage()
+    {
+        if ($_SERVER["REQUEST_METHOD"] == "POST") {
+
+            $senderID = $this->businessModel->getUserByEmail($_COOKIE['Login_Info'])['UserID'];
+            $receiverID = $_POST['receiverID'];
+            $message = trim($_POST['messageText']);
+
+            $this->businessModel->createMessage($senderID, $receiverID, $message);
+            $_SESSION['success'] = "Message sent successfully!";
+        } else {
+            $_SESSION['error'] = "Message failed to send";
+        }
+        header("Location: ?controller=business&action=userMessagesView");
+    }
+
+    public function sendMessageView($receiverID)
+    {
+        // Get sender and receiver details
+        $senderID = $_COOKIE['Login_Info'];
+        $receiverID = $_GET['receiverID'];
+
+        if ($_SERVER["REQUEST_METHOD"] == "POST") {
+
+            $senderID = $_COOKIE['Login_Info'];
+            $receiverID = $_POST['receiverID'];
+            $message = trim($_POST['messageText']);
+
+            $_SESSION['success'] = "Message sent successfully!";
+            header("Location: ?controller=user&action=userMessagesView");
+        }
+
+        require_once 'View/User/MessagingView.php';
+    }
 }
