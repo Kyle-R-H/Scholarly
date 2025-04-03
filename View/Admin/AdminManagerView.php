@@ -61,8 +61,12 @@
                             <td><?= htmlspecialchars($business['Email'])?></td>
                             <td><?= htmlspecialchars($business['Rating'])?></td>
                             <td><?= htmlspecialchars($business['Description'])?></td>
+
                             <td class="text-center">
-                                <button class="btn remove"> - </button>
+                                <form id="RemoveBusinessForm" action="?controller=admin&action=removeBusiness" method="post">
+                                    <input type="hidden" name="RemoveBusinessName" value="<?= $business['BusinessName'] ?>">
+                                    <button class="btn remove" type="submit"> - </button>
+                                </form>
                             </td>
                         </tr>
                     <?php endforeach; ?>

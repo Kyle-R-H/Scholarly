@@ -79,7 +79,7 @@
                             
                             <td class="text-center">
                                 <form id="RemoveItemForm" action="?controller=business&action=removeItem" method="post">
-                                    <input type="hidden" name="ItemName" value="<?= $item['ItemName'] ?>">
+                                    <input type="hidden" name="RemoveItemName" value="<?= $item['ItemName'] ?>">
                                     <button class="btn remove" type="submit"> - </button>
                                 </form>
                             </td>

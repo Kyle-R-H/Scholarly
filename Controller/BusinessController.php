@@ -69,7 +69,7 @@ class BusinessController extends Controller{
 
     public function removeItem()
     {
-        $itemName = $_POST['ItemName'];
+        $itemName = $_POST['RemoveItemName'];
         
         $this->businessModel->removeItem($itemName);
 

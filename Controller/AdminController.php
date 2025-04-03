@@ -58,6 +58,8 @@ class AdminController extends Controller
 
     public function registerBusiness()
     {
+        $businesses = $this->adminModel->getBusinessesWithOwners();
+
         // Debugging input values
         $name = $_POST['RegisterName'] ?? 'EMPTY';
         $email = $_POST['RegisterEmail'] ?? 'EMPTY';
@@ -84,8 +86,7 @@ class AdminController extends Controller
                 if ($error == null) {
                     // Successful registration
                     $this->adminModel->registerBusiness($userID, $name, $businessType, $description, $image);
-                    header("Location: ?controller=user&action=restaurantView");
-                    exit();
+                    $this->view('Admin/AdminManagerView', ['businesses' => $businesses]);
                 } else {
                     $this->view('Admin/RegisterBusinessView', isset($error) ? ['error' => $error] : []);
                 }
@@ -101,5 +102,14 @@ class AdminController extends Controller
             $this->view('Admin/RegisterBusinessView', isset($error) ? ['error' => $error] : []);
         }
         // $this->view('Admin/AddBusinessView', isset($error) ? ['error' => $error] : []);
+    }
+
+    public function removeBusiness()
+    {
+        $businessName = $_POST['RemoveBusinessName'];
+        
+        $this->adminModel->removeBusiness($businessName);
+
+        header("Location: ?controller=admin&action=adminManager");
     }
 }
