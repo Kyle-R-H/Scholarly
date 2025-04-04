@@ -39,11 +39,13 @@ class BusinessController extends Controller
         $this->view('Business/BusinessItemManagerView', ['businessType' => $this->businessType, 'businessName' => $this->businessName, 'items' => $items]);
     }
 
+    
     public function profile()
     {
-        $this->view('Business/BusinessProfileView', ['businessType' => $this->businessType, 'businessName' => $this->businessName]);
+        $business = $this->businessModel->getBusinessByEmail($_COOKIE["Login_Info"]);
+        $this->view('Business/BusinessProfileView', ['businessType' => $this->businessType,'businessName'=>$this->businessName, 'business'=>$business]);
     }
-
+  
     public function addItemView()
     {
         $this->view('Business/AddItemView', ['businessType' => $this->businessType, 'businessName' => $this->businessName]);
@@ -219,5 +221,14 @@ class BusinessController extends Controller
         }
         header("Location: ?controller=business&action=dashboard");
         exit;
+    }
+
+    public function removeItem()
+    {
+        $itemName = $_POST['RemoveItemName'];
+        
+        $this->businessModel->removeItem($itemName);
+
+        header("Location: ?controller=business&action=businessManager");
     }
 }

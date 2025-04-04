@@ -15,6 +15,17 @@ class BusinessModel extends Model{
         return $this->db->query("SELECT * FROM Business WHERE UserId = ?", [$userId])->fetch(PDO::FETCH_ASSOC);
     }
 
+    public function getBusinessByEmail($email) {
+        // echo "In getBusinessByEmail<br>";
+        $userID = $this->db->query("SELECT UserId FROM Users WHERE Email = ?", [$email])->fetch(PDO::FETCH_ASSOC);
+        // echo $userID['UserId'];
+        return $this->getBusinessByUserID($userID['UserId']);
+    }
+
+    public function getStatsByBusiness($businessName) {
+        return $this->db->query("SELECT * FROM BusinessStats WHERE BusinessName = ?", [$businessName])->fetchAll(PDO::FETCH_ASSOC);
+    }
+      
     public function updateOrderPriceByUserID($userID, $orderPrice)
     {
         return $this->db->query("UPDATE businessstats 
@@ -45,10 +56,18 @@ WHERE UserID = ? AND OrderStatus = 'Pending';",
         
         return $this->db->lastInsertId();
     }
+      
+    public function removeItem($itemName)
+    {
+        $this->db->query(
+            "DELETE FROM Item
+            WHERE ItemName = ?"
+            ,[$itemName]
+        );
+    }
 
     public function setResponseByReviewID($response, $reviewID){
         $query = "UPDATE Review SET Response = ? WHERE ReviewID = ?";
         return $this->db->query($query, [$response, $reviewID]);
     }
-
 }

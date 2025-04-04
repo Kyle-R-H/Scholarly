@@ -25,6 +25,48 @@ class UserController extends Controller
         require_once 'View/User/UserProfileView.php';
     }
 
+    public function updateProfile()
+    {
+        $user = $this->userModel->getUserByEmail($_COOKIE["Login_Info"]);
+
+        // Check if userModel is set
+        if (!$this->userModel) {
+            die("Error: userModel is NULL! Check if it is being initialized correctly.");
+        }
+
+        $this->userModel->updateUserDetails(
+            $user['Email']
+            ,empty($_POST['FirstName']) ? $user['FirstName'] : $_POST['FirstName']
+            ,empty($_POST['LastName']) ? $user['LastName'] : $_POST['LastName']
+        );
+
+        header("Location: ?controller=user&action=profile");
+    }
+
+    public function changePasswordView()
+    {
+        $user = $this->userModel->getUserByEmail($_COOKIE["Login_Info"]);
+
+        $this->view('User/ChangePasswordView', ['user'=>$user]);
+    }
+
+    public function changePassword()
+    {
+        $user = $this->userModel->getUserByEmail($_COOKIE["Login_Info"]);
+
+        // Check if userModel is set
+        if (!$this->userModel) {
+            die("Error: userModel is NULL! Check if it is being initialized correctly.");
+        }
+
+        $this->userModel->updatePassword(
+            $user['Email']
+            ,empty($_POST['NewPassword']) ? $user['Password'] : $_POST['NewPassword']
+        );
+
+        $this->view('User/ChangePasswordView', ['user'=>$user]);
+    }
+
     public function settings()
     {
         require_once 'View/User/UserSettingsView.php';

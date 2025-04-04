@@ -18,6 +18,23 @@ class UserModel extends Model
         return $this->db->query("SELECT * FROM Business WHERE BusinessName = ?", [$businessName])->fetchAll(PDO::FETCH_ASSOC);
     }
 
+    public function getReviewByReviewID()
+    {
+        $query = "SELECT 
+                    Review.ReviewID, 
+                    Review.UserID, 
+                    Business.BusinessName,
+                    Business.Image, 
+                    Review.Rating, 
+                    Review.Comment, 
+                    Review.Response, 
+                    Review.CreatedAt
+                FROM Review
+                LEFT JOIN Business 
+                    ON Review.Business = Business.UserID";
+        return $this->db->query($query)->fetchAll(PDO::FETCH_ASSOC);
+    }
+
     public function registerUser($firstName, $lastName, $email, $password)
     {
         // Generate UserID, max ID in user table + 1
@@ -31,6 +48,37 @@ class UserModel extends Model
         );
 
         return $this->db->lastInsertId();
+    }
+
+    public function updateUserDetails($email, $firstName, $lastName)
+    {
+        $this->db->query(
+            "UPDATE Users
+
+            SET
+                FirstName = ?
+                ,LastName = ?
+
+            WHERE
+                Email = ?"
+            ,[$firstName, $lastName, $email]
+        );
+    }
+
+    public function updatePassword($email, $password)
+    {
+        $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
+
+        $this->db->query(
+            "UPDATE Users
+
+            SET
+                Password = ?
+
+            WHERE
+                Email = ?"
+            ,[$hashedPassword, $email]
+        );
     }
 
     public function getBusinessByType($businessType)

@@ -107,8 +107,12 @@
                             <td><?= htmlspecialchars($item['ItemName']) ?></td>
                             <td><?= htmlspecialchars($item['Description']) ?></td>
                             <td><?= htmlspecialchars($item['ItemPrice']) ?></td>
+
                             <td class="text-center">
-                                <button class="">-</button> // TODO: Make button red
+                                <form id="RemoveItemForm" action="?controller=business&action=removeItem" method="post">
+                                    <input type="hidden" name="RemoveItemName" value="<?= $item['ItemName'] ?>">
+                                    <button class="btn remove" type="submit"> - </button>
+                                </form>
                             </td>
                         </tr>
                     <?php endforeach; ?>
