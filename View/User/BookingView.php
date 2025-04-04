@@ -25,7 +25,7 @@
                 <!-- Messages and Reviews Section -->
                 <ul class="nav col-lg-auto justify-content-center">
                     <li>
-                        <a href="#" class="nav-link link-body-emphasis">
+                        <a href="?controller=user&action=userMessagesView" class="nav-link link-body-emphasis">
                             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512" width="22" height="22" fill="currentColor"><!--!Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2025 Fonticons, Inc.-->
                                 <path d="M160 32a104 104 0 1 1 0 208 104 104 0 1 1 0-208zm320 0a104 104 0 1 1 0 208 104 104 0 1 1 0-208zM0 416c0-70.7 57.3-128 128-128l64 0c70.7 0 128 57.3 128 128l0 16c0 26.5-21.5 48-48 48L48 480c-26.5 0-48-21.5-48-48l0-16zm448 64c-38.3 0-72.7-16.8-96.1-43.5c.1-1.5 .1-3 .1-4.5l0-16c0-34.9-11.2-67.1-30.1-93.4c5.8-20 24.2-34.6 46.1-34.6l224 0c26.5 0 48 21.5 48 48l0 16c0 70.7-57.3 128-128 128l-64 0z" />
                             </svg>
@@ -60,6 +60,32 @@
 
     <!-- Main Layout -->
     <div class="container-fluid d-flex flex-grow-1">
+        <?php if (!empty($_SESSION['error'])) : ?>
+            <div class="position-fixed top-0 end-0 p-3" style="z-index: 1050">
+                <div id="errorToast" class="toast align-items-center text-bg-danger border-0 show" role="alert" aria-live="assertive" aria-atomic="true">
+                    <div class="d-flex">
+                        <div class="toast-body">
+                            <?php echo $_SESSION['error'] ?>
+                        </div>
+                        <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"><?php unset($_SESSION['error']) ?></button>
+                    </div>
+                </div>
+            </div>
+        <?php endif; ?>
+
+        <?php if (!empty($_SESSION['success'])) : ?>
+            <div class="position-fixed top-0 end-0 p-3" style="z-index: 1050">
+                <div id="successToast" class="toast align-items-center text-bg-success border-0 show" role="alert" aria-live="assertive" aria-atomic="true">
+                    <div class="d-flex">
+                        <div class="toast-body">
+                            <?php echo $_SESSION['success'] ?>
+                        </div>
+                        <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"><?php unset($_SESSION['success']) ?></button>
+                    </div>
+                </div>
+            </div>
+        <?php endif; ?>
+        
         <!-- Main Content -->
         <div class="container my-5">
             <?php if (!empty($items)): ?>
@@ -89,14 +115,10 @@
                                 <form method="POST">
                                     <input type="hidden" name="item_name" value="<?= htmlspecialchars($item['ItemName']) ?>">
                                     <input type="hidden" name="item_price" value="<?= htmlspecialchars($item['ItemPrice']) ?>">
-                                    <input type="hidden" name="item_image" value="<?= htmlspecialchars($item['ItemImage']) ?>">
                                     <input type="hidden" name="form_token" value="<?= $_SESSION['form_token'] ?>">
                                     <button type="submit" class="btn btn-primary position-absolute top-0 end-0 m-3">+</button>
                                 </form>
-                              
-                                <div class="mt-3">
-                                    <img src="<?= htmlspecialchars($item['ItemImage']) ?>" class="img-fluid card-img-bottom" style="max-width: 200px; height: auto;" alt="Item Image">
-                                </div>
+
                             </div>
                         </div>
                     </div>
@@ -110,7 +132,6 @@
                 <ul class="list-group">
                     <?php foreach ($_SESSION['cart'] as $cartItem): ?>
                         <li class="list-group-item d-flex justify-content-between align-items-center">
-                            <img src="<?= htmlspecialchars($cartItem['image']) ?>" style="width: 50px; height: 50px;" alt="Item">
                             <?= htmlspecialchars($cartItem['name']) ?> -
                             $<?= number_format($cartItem['price'], 2) ?> × <?= $cartItem['quantity'] ?>
                             = <strong>$<?= number_format($cartItem['price'] * $cartItem['quantity'], 2) ?></strong>
@@ -126,5 +147,6 @@
                 </div>
             </div>
         </div>
-    </body>
+</body>
+
 </html>

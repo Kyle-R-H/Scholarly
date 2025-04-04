@@ -18,7 +18,6 @@ class UserModel extends Model
         return $this->db->query("SELECT * FROM Business WHERE BusinessName = ?", [$businessName])->fetchAll(PDO::FETCH_ASSOC);
     }
 
-
     public function getReviewByReviewID()
     {
         $query = "SELECT 
@@ -35,7 +34,6 @@ class UserModel extends Model
                     ON Review.Business = Business.UserID";
         return $this->db->query($query)->fetchAll(PDO::FETCH_ASSOC);
     }
-
 
     public function registerUser($firstName, $lastName, $email, $password)
     {
@@ -85,7 +83,7 @@ class UserModel extends Model
 
     public function getBusinessByType($businessType)
     {
-        return $this->db->query("SELECT * FROM Business Where BusinessType = ?", [$businessType])->fetchAll(PDO::FETCH_ASSOC);
+        return $this->db->query("SELECT * FROM Business Where BusinessType = ? ORDER BY Rating DESC", [$businessType])->fetchAll(PDO::FETCH_ASSOC);
     }
 
     public function getBusinessStatsByType($businessType, $userID)
@@ -96,6 +94,39 @@ class UserModel extends Model
         ON BusinessStats.BusinessName = Business.BusinessName
         WHERE Business.BusinessType = ? AND BusinessStats.UserID = ?";
 
-        return $this->db->query($query,[$businessType, $userID])->fetchAll(PDO::FETCH_ASSOC);
+        return $this->db->query($query, [$businessType, $userID])->fetchAll(PDO::FETCH_ASSOC);
     }
+
+    public function getOrderID()
+    {
+        $maxOrderID = $this->db->query("SELECT MAX(Order_ID) FROM BusinessStats")->fetch(PDO::FETCH_ASSOC);
+        return $maxOrderID["MAX(Order_ID)"] + 1;
+    }
+
+    public function placeOrder($businessName, $price, $userID, $orderID, $itemName)
+    {
+        $itemID = $this->db->query("SELECT MAX(ItemID) FROM BusinessStats ", [])->fetch(PDO::FETCH_ASSOC);
+        $this->db->query(
+            "INSERT INTO BusinessStats (BusinessName, OrderPrice, TimeOfOrder, UserID, OrderStatus, Order_ID,ItemName,ItemID) VALUES (?, ?, ?, ?, ?, ?, ?,?)",
+            [$businessName, $price, date("Y-m-d H:i:s"), $userID, "Pending", $orderID, $itemName, $itemID["MAX(ItemID)"] + 1]
+        );
+        $this->updateVerifiedCustomer($userID);
+        return $this->db->lastInsertId();
+    }
+
+    public function createReview($userID, $business, $rating, $comment, $businessName)
+    {
+        $maxReviewID = $this->db->query("SELECT MAX(ReviewID) FROM Review")->fetch(PDO::FETCH_ASSOC);
+        print_r($maxReviewID);
+        $query = "INSERT INTO Review (ReviewID, UserID, Business, Rating, Comment, Response, CreatedAt, BusinessName) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+        // Use your database query method with parameter binding
+        return $this->db->query($query, [$maxReviewID["MAX(ReviewID)"] + 1, $userID, $business, $rating, $comment, "", date("Y-m-d H:i:s"), $businessName]);
+    }
+
+
+    public function getBusinesses()
+    {
+        return $this->db->query("SELECT BusinessName FROM Business", [])->fetchAll(PDO::FETCH_ASSOC);
+    }
+
 }

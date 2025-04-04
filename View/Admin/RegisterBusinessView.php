@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 
 <head>
-    <title>Dashboard</title>
+    <title>Register Business</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -19,7 +19,7 @@
             <div class="d-flex flex-wrap align-items-center justify-content-center">
                 <img class="pt-1 px-3" src="Public\Images\scholarly logo.png" alt="Scholarly Logo" height="40" width="auto">
                 <ul class="nav col-12 col-lg-auto me-lg-auto justify-content-center mb-md-0">
-                    <li><a href="?controller=admin&action=dashboard" class="nav-link px-2 link-secondary">Dashboard</a></li>
+                    <li><a href="?controller=admin&action=dashboard" class="nav-link px-2 link-body-emphasis">Dashboard</a></li>
                     <li><a href="?controller=admin&action=adminManager" class="nav-link px-2 link-body-emphasis">Business Management</a></li>
                 </ul>
 
@@ -39,30 +39,56 @@
 
     <!-- Main Content -->
     <main class="container-fluid px-5 py-3">
-        <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-            <h1 class="h2">Add a Business</h1>
-        </div>
-
-        <?php if (!empty($error)) : ?>
+        <?php if (!empty($_SESSION['error'])) : ?>
             <div class="position-fixed top-0 end-0 p-3" style="z-index: 1050">
                 <div id="errorToast" class="toast align-items-center text-bg-danger border-0 show" role="alert" aria-live="assertive" aria-atomic="true">
                     <div class="d-flex">
                         <div class="toast-body">
-                            <?php echo htmlspecialchars($error); ?>
+                            <?php echo $_SESSION['error'] ?>
                         </div>
-                        <!-- <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button> -->
+                        <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"><?php unset($_SESSION['error']) ?></button>
+                    </div>
+                </div>
+            </div>
+        <?php endif; ?>
+
+        <?php if (!empty($_SESSION['success'])) : ?>
+            <div class="position-fixed top-0 end-0 p-3" style="z-index: 1050">
+                <div id="successToast" class="toast align-items-center text-bg-success border-0 show" role="alert" aria-live="assertive" aria-atomic="true">
+                    <div class="d-flex">
+                        <div class="toast-body">
+                            <?php echo $_SESSION['success'] ?>
+                        </div>
+                        <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"><?php unset($_SESSION['success']) ?></button>
+                    </div>
+                </div>
+            </div>
+        <?php endif; ?>
+        
+        <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+            <h1 class="h2">Add a Business</h1>
+        </div>
+
+        <?php if (!empty($_SESSION['error'])) : ?>
+            <div class="position-fixed top-0 end-0 p-3" style="z-index: 1050">
+                <div id="errorToast" class="toast align-items-center text-bg-danger border-0 show" role="alert" aria-live="assertive" aria-atomic="true">
+                    <div class="d-flex">
+                        <div class="toast-body">
+                            <?php echo htmlspecialchars($_SESSION['error']); ?>
+                        </div>
+                        <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"><?php unset($_SESSION['error']) ?></button>
                     </div>
                 </div>
             </div>
         <?php endif; ?>
 
         <form method="POST" action="?controller=admin&action=registerBusiness">
-        <div class="form-floating mb-4">
-            <input name="RegisterName" id="nameInput" type="text" class="form-control" placeholder="Business Name" value="<?php echo isset($_POST['RegisterName']) ? htmlspecialchars($_POST['RegisterName']) : ''; ?>" required>
-            <label for="nameInput">Business Name</label>
-        </div>
+            <div class="form-floating mb-4">
+                <input name="RegisterName" id="nameInput" type="text" class="form-control" placeholder="Business Name" value="<?php echo isset($_POST['RegisterName']) ? htmlspecialchars($_POST['RegisterName']) : ''; ?>" required>
+                <label for="nameInput">Business Name</label>
+            </div>
 
-            
+
             <div class="form-floating mb-4">
                 <input name="RegisterEmail" id="emailInput" type="email" class="form-control" placeholder="name@ul.ie" value="<?php echo isset($_POST['RegisterEmail']) ? htmlspecialchars($_POST['RegisterEmail']) : ''; ?>" required>
                 <label for="emailInput">Business Email Address</label>

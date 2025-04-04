@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 
 <html>
+
 <head>
     <title>Services</title>
     <meta charset="utf-8">
@@ -27,7 +28,7 @@
                 <!-- Messages and Reviews Section -->
                 <ul class="nav col-lg-auto justify-content-center">
                     <li>
-                        <a href="#" class="nav-link link-body-emphasis">
+                        <a href="?controller=user&action=userMessagesView" class="nav-link link-body-emphasis">
                             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512" width="22" height="22" fill="currentColor"><!--!Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2025 Fonticons, Inc.-->
                                 <path d="M160 32a104 104 0 1 1 0 208 104 104 0 1 1 0-208zm320 0a104 104 0 1 1 0 208 104 104 0 1 1 0-208zM0 416c0-70.7 57.3-128 128-128l64 0c70.7 0 128 57.3 128 128l0 16c0 26.5-21.5 48-48 48L48 480c-26.5 0-48-21.5-48-48l0-16zm448 64c-38.3 0-72.7-16.8-96.1-43.5c.1-1.5 .1-3 .1-4.5l0-16c0-34.9-11.2-67.1-30.1-93.4c5.8-20 24.2-34.6 46.1-34.6l224 0c26.5 0 48 21.5 48 48l0 16c0 70.7-57.3 128-128 128l-64 0z" />
                             </svg>
@@ -62,6 +63,32 @@
 
     <!-- Main Layout -->
     <div class="container-fluid d-flex flex-grow-1">
+        <?php if (!empty($_SESSION['error'])) : ?>
+            <div class="position-fixed top-0 end-0 p-3" style="z-index: 1050">
+                <div id="errorToast" class="toast align-items-center text-bg-danger border-0 show" role="alert" aria-live="assertive" aria-atomic="true">
+                    <div class="d-flex">
+                        <div class="toast-body">
+                            <?php echo $_SESSION['error'] ?>
+                        </div>
+                        <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"><?php unset($_SESSION['error']) ?></button>
+                    </div>
+                </div>
+            </div>
+        <?php endif; ?>
+
+        <?php if (!empty($_SESSION['success'])) : ?>
+            <div class="position-fixed top-0 end-0 p-3" style="z-index: 1050">
+                <div id="successToast" class="toast align-items-center text-bg-success border-0 show" role="alert" aria-live="assertive" aria-atomic="true">
+                    <div class="d-flex">
+                        <div class="toast-body">
+                            <?php echo $_SESSION['success'] ?>
+                        </div>
+                        <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"><?php unset($_SESSION['success']) ?></button>
+                    </div>
+                </div>
+            </div>
+        <?php endif; ?>
+
         <!-- Sidebar -->
         <div class="border-end d-flex flex-column p-3" style="width: 280px;">
             <ul class="nav nav-pills flex-column mb-auto">
@@ -104,40 +131,9 @@
                 </div>
                 <hr>
             <?php endforeach; ?>
-
-
-
-            <!-- TODO: Create Services Info
-            <div class="row px-4 pe-lg-0 align-items-center rounded-3 border shadow-lg">
-                <div class="col-lg-7 p-5 p-lg-5">
-                    <h1 class="display-5 fw-bold lh-1 text-body-emphasis">House Cleaning</h1>
-                    <p class="lead">UL House Cleaning allows the quick booking of a range of cleaning services to make the predrinks look like they never happened.</p>
-                    <div class="d-grid gap-2 d-md-flex justify-content-md-start mb-4 mb-lg-3">
-                        <button type="button" class="btn  btn-lg px-4">Book</button>
-                    </div>
-                </div>
-                <div class="col-lg-4 offset-lg-1 p-0 overflow-hidden shadow-lg">
-                    <img class="rounded-lg-3" src="https://studyireland.ie/wp-content/uploads/2024/04/living-room-thomond-2.jpg" 
-                    alt="" height="320" width="auto" >
-                </div>
-            </div>
-
-            <hr>
-            <div class="row px-4 pe-lg-0 align-items-center rounded-3 border shadow-lg">
-                <div class="col-lg-7 p-5 p-lg-5">
-                    <h1 class="display-5 fw-bold lh-1 text-body-emphasis">Bike Hire</h1>
-                    <p class="lead">Places to go? Get there with UL Bike Hire. Book a bike and explore.</p>
-                    <div class="d-grid gap-2 d-md-flex justify-content-md-start mb-4 mb-lg-3">
-                        <button type="button" class="btn  btn-lg px-4">Book</button>
-                    </div>
-                </div>
-                <div class="col-lg-4 offset-lg-1 p-0 overflow-hidden shadow-lg" >
-                    <img class="rounded-lg-3 flex" src="https://assets-eu-01.kc-usercontent.com/aa24ba70-9a12-01ae-259b-7ef588a0b2ef/1083fb38-ecbb-4411-8ad3-8eff07c2ffa8/carlingford-greenway-bicycle-hire-shop-front.jpg?w=1332&q=66&h=750&fit=crop&fm=jpg" 
-                    alt="" height="320" >
-                </div>
-            </div> -->
         </div>
     </div>
 
 </body>
+
 </html>

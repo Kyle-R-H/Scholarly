@@ -5,14 +5,14 @@ require_once 'Core/Database.php'; // If Database.php is used
 class UserController extends Controller
 {
     private $userModel;
-
     public function __construct()
     {
         $this->userModel = new UserModel();
 
         if (!isset($_COOKIE['Login_Info']) || $this->userModel->getUserByEmail($_COOKIE["Login_Info"])['PermissionLevel'] != 0) {
-            $error = "Insufficient Permissions";
-            $this->view('Auth/LoginView', isset($error) ? ['error' => $error] : []);
+            $_SESSION['error'] = "Insufficient Permissions";
+            header("Location: ?controller=auth&action=login");
+            exit();
         } else {
             // print_r($_COOKIE);
         }
@@ -168,7 +168,7 @@ class UserController extends Controller
 
             $itemName = $_POST['item_name'];
             $itemPrice = $_POST['item_price'];
-            $itemImage = $_POST['item_image'];
+
 
             // Check if item is already in the cart
             if (isset($_SESSION['cart'][$itemName])) {
@@ -177,14 +177,12 @@ class UserController extends Controller
                 $_SESSION['cart'][$itemName] = [
                     'name' => $itemName,
                     'price' => $itemPrice,
-                    'image' => $itemImage,
                     'quantity' => 1
                 ];
             }
 
             // Regenerate token to prevent re-submission on refresh
             $_SESSION['form_token'] = bin2hex(random_bytes(32));
-
             // Redirect to the same page to clear POST data and prevent duplicate submissions
             header("Location: ?controller=user&action=bookingView&businessName=" . urlencode($businessName));
             exit();
@@ -197,19 +195,56 @@ class UserController extends Controller
         if ($businessName) {
             $this->view('User/BookingView', ['items' => $items, 'business' => $business]);
         } else {
-            $error = "Couldn't find business";
-            $this->view('User/BookingView', isset($error) ? ['error' => $error] : []);
+            $_SESSION['error'] = "Could not find business";
+            $this->view('User/BookingView', []);
             echo "Business not found.";
         }
     }
 
-    public function orderConfirmView(){
+    public function orderConfirmView()
+    {
+        $cartItems = isset($_SESSION['cart']) ? $_SESSION['cart'] : [];
+
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            if (isset($_POST['item_name'], $_POST['quantity'])) {
+                $itemName = $_POST['item_name'];
+                $quantity = $_POST['quantity'];
+            } elseif (isset($_POST['remove_item_name'])) {
+                $removeItemName = $_POST['remove_item_name'];
+
+                // Remove the item from the session
+                foreach ($cartItems as $key => $item) {
+                    if ($item['name'] === $removeItemName) {
+                        unset($cartItems[$key]);
+                        break;
+                    }
+                }
+            }
+            $_SESSION['cart'] = $cartItems;
+        }
+
+        // Calculate the total price
+        $totalPrice = 0;
+        foreach ($cartItems as $item) {
+            $totalPrice += $item['price'] * $item['quantity'];
+        }
+
+
         require_once 'View/User/OrderConfirmView.php';
     }
 
     public function reviewView()
     {
-        $reviews = $this->userModel->getReviewByReviewID("Review");
+        $user = $this->userModel->getUserByEmail($_COOKIE["Login_Info"]);
+        if (!$user || $user['VerifiedCustomer'] != 1) {
+            $_SESSION['error'] = "You must be a verified customer to view this page.";
+
+            // Stops view redirect and keeps user on current view
+            header("Location: " . $_SERVER['HTTP_REFERER'] ?? '?controller=user&action=sendMessagesView');
+            exit();
+        }
+
+        $reviews = $this->userModel->getReviewByReviewID();
 
         // Get search query from Form POST
         $searchQuery = $_POST['search'] ?? '';
@@ -235,5 +270,138 @@ class UserController extends Controller
         $activities = $this->userModel->getBusinessStatsByType("Activity", $user);
 
         require_once 'View/User/HistoryView.php';
+    }
+
+
+    public function placeOrder()
+    {
+        $cartItems = isset($_SESSION['cart']) ? $_SESSION['cart'] : [];
+        if (!is_null($cartItems)) {
+            $orderID = $this->userModel->getOrderID();
+            foreach ($cartItems as $item) {
+                $quantity = $item['quantity'];
+                for ($i = 0; $i < $quantity; $i++) {
+                    $itemName = $item['name'];
+                    $price = $item['price'];
+                    $businessName = $_SESSION['current_business'];
+                    $userID = $this->userModel->getUserByEmail($_COOKIE["Login_Info"])['UserID'];
+                    $this->userModel->placeOrder($businessName, $price, $userID, $orderID, $itemName);
+                }
+            }
+            $_SESSION['success'] = "Order Placed!";
+        } else {
+            $_SESSION['error'] = "Cart is empty.";
+        }
+        // $this->view('User/RestaurantView', []);
+        header("Location: ?controller=user&action=restaurantView");
+        exit();
+    }
+
+    public function addReviewView()
+    {
+        $businesses = $this->userModel->getBusinesses();
+        // Fetch user details using the logged-in email from cookies
+        $user = $this->userModel->getUserByEmail($_COOKIE["Login_Info"]);
+
+        // Check if user exists
+        if (!$user) {
+            die("Error: User not found!");
+        }
+        require_once 'View/User/AddReviewView.php';
+    }
+
+    public function addReview()
+    {
+        // Fetch user details
+        $user = $this->userModel->getUserByEmail($_COOKIE["Login_Info"]);
+
+        if (!$user) {
+            die("Error: User not found.");
+        }
+
+        $userID = $user['UserID'];
+
+        // Get form data
+        $businessName = $_POST['business'] ?? 'EMPTY';
+        $rating = $_POST['rating'] ?? 'EMPTY';
+        $comment = $_POST['comment'] ?? 'EMPTY';
+        $business = $this->userModel->getBusinessByBusinessName($businessName)[0]['UserID'];
+        print_r($business);
+
+        // Add review
+        $this->userModel->createReview($userID, $business, $rating, $comment, $businessName);
+        header("Location: ?controller=user&action=reviewView");
+        exit();
+    }
+
+    public function userMessagesView()
+    {
+        $users = $this->userModel->getUsersByVerifiedCustomer(0); // 0 = normal user
+        $businessUsers = $this->userModel->getUsersByVerifiedCustomer(1); // business user
+
+        // Get search query from Form POST
+        $searchUserQuery = $_POST['searchUser'] ?? '';
+        $searchBusinessQuery = $_POST['searchBusiness'] ?? '';
+        // echo "<br> Search Q: "; print_r($searchQuery);
+
+        // Filter Reviews based on the search query
+        if (!empty($searchUserQuery)) {
+            $users = array_filter($users, function ($users) use ($searchUserQuery) {
+                return stripos($users['Email'], $searchUserQuery) !== false;
+            });
+        }
+
+        if (!empty($searchBusinessQuery)) {
+            $businessUsers = array_filter($businessUsers, function ($businessUsers) use ($searchBusinessQuery) {
+                return stripos($businessUsers['Email'], $searchBusinessQuery) !== false;
+            });
+        }
+
+        require_once 'View/User/userMessagesView.php';
+    }
+
+    public function sendMessage()
+    {
+        if ($_SERVER["REQUEST_METHOD"] == "POST") {
+
+            $senderID = $this->userModel->getUserByEmail($_COOKIE['Login_Info'])['UserID'];
+            $receiverID = $_POST['receiverID'];
+            $message = trim($_POST['messageText']);
+
+            $this->userModel->createMessage($senderID, $receiverID, $message);
+            $_SESSION['success'] = "Message sent successfully!";
+        } else {
+            $_SESSION['error'] = "Message failed to send";
+        }
+        // Stops view redirect and keeps user on current view
+        header("Location: " . $_SERVER['HTTP_REFERER'] ?? '?controller=user&action=sendMessagesView');
+        exit();
+    }
+
+    public function sendMessageView($receiverID)
+    {
+
+        // Sender is the logged-in user
+        $senderID = $this->userModel->getUserByEmail($_COOKIE['Login_Info'])['UserID'];
+        $previousMessages = $this->userModel->getUserMessages($senderID, $receiverID);
+
+        print_r($previousMessages);
+        if ($_SERVER["REQUEST_METHOD"] === "POST") {
+            // The user submitted a message
+            $message = trim($_POST['messageText']);
+
+            // Insert the new message in the DB (pending, etc.)
+            // e.g. $this->userModel->createMessage($messageID, $senderID, $receiverID, $message);
+
+            $_SESSION['success'] = "Message sent successfully!";
+            // Optional: redirect or stay on the same page
+            // header("Location: ?controller=user&action=sendMessageView&receiverID=$receiverID");
+            // exit();
+        }
+
+        // Always fetch previous messages so the user can see the conversation
+
+        // Pass $previousMessages, $receiverID, etc. to the view
+        require_once 'View/User/MessagingView.php';
     }
 }

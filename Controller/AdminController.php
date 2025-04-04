@@ -8,10 +8,8 @@ class AdminController extends Controller
         $this->adminModel = $this->model('AdminModel');
 
         if (!isset($_COOKIE['Login_Info']) || $this->adminModel->getUserByEmail($_COOKIE["Login_Info"])['PermissionLevel'] != 2) {
-            $error = "Insufficient Permissions";
-            $this->view('Auth/LoginView', isset($error) ? ['error' => $error] : []);
-        } else {
-            // print_r($_COOKIE);
+            $_SESSION['error'] ="Insufficient Permissions";
+            $this->view('Auth/LoginView', []);
         }
     }
 
@@ -53,7 +51,7 @@ class AdminController extends Controller
 
     public function registerBusinessView()
     {
-        $this->view('Admin/RegisterBusinessView', isset($error) ? ['error' => $error] : []);
+        $this->view('Admin/RegisterBusinessView', []);
     }
 
     public function registerBusiness()
@@ -76,32 +74,25 @@ class AdminController extends Controller
         $user = $this->adminModel->getUserByEmail($email);
         // echo "<br>Query executed, result: <pre>" . print_r($user, true) . "</pre>";
 
+        if ($user) {
+            $userID = $user['UserID'];
+            // Check if name exists
+            $_SESSION['error'] = $this->adminModel->getSimilarBusinessNames($name);
 
-        if (!empty($email)) {
-            if ($user) {
-                $userID = $user['UserID'];
-                // Check if name exists
-                $error = $this->adminModel->getSimilarBusinessNames($name);
-
-                if ($error == null) {
-                    // Successful registration
-                    $this->adminModel->registerBusiness($userID, $name, $businessType, $description, $image);
-                    $this->view('Admin/AdminManagerView', ['businesses' => $businesses]);
-                } else {
-                    $this->view('Admin/RegisterBusinessView', isset($error) ? ['error' => $error] : []);
-                }
-
+            if ($_SESSION['error'] == null) {
+                // Successful registration
+                $_SESSION['success'] = "Successful Business Registration";
+                $this->adminModel->registerBusiness($userID, $name, $businessType, $description, $image);
+                header("Location: ?controller=admin&action=adminManager");
+                exit();
             } else {
-                // User not found
-                $error = "User with that email does not exist.";
-                $this->view('Admin/RegisterBusinessView', isset($error) ? ['error' => $error] : []);
+                $this->view('Admin/RegisterBusinessView', []);
             }
         } else {
-            // Empty email
-            $error = "Please enter an email."; // cant reach due to required in input tag
-            $this->view('Admin/RegisterBusinessView', isset($error) ? ['error' => $error] : []);
+            // User not found
+            $_SESSION['error'] = "User with that email does not exist.";
+            $this->view('Admin/RegisterBusinessView', []);
         }
-        // $this->view('Admin/AddBusinessView', isset($error) ? ['error' => $error] : []);
     }
 
     public function removeBusiness()

@@ -1,8 +1,9 @@
 <!DOCTYPE html>
+
 <html>
 
 <head>
-    <title>Activities</title>
+    <title>User Messages</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -21,7 +22,7 @@
                     <li><a href="?controller=user&action=restaurantView" class="nav-link px-2 link-body-emphasis">Restaurants</a></li>
                     <li><a href="?controller=user&action=servicesView" class="nav-link px-2 link-body-emphasis">Services</a></li>
                     <li><a href="?controller=user&action=eventsView" class="nav-link px-2 link-body-emphasis">Events</a></li>
-                    <li><a href="?controller=user&action=activitiesView" class="nav-link px-2 link-secondary">Activities</a></li>
+                    <li><a href="?controller=user&action=activitiesView" class="nav-link px-2 link-body-emphasis">Activities</a></li>
                 </ul>
 
                 <!-- Messages and Reviews Section -->
@@ -88,52 +89,111 @@
             </div>
         <?php endif; ?>
 
-        <!-- Sidebar -->
-        <div class="border-end d-flex flex-column p-3" style="width: 280px;">
-            <ul class="nav nav-pills flex-column mb-auto">
-                <li class="nav-item">
-                    <a href="#" class="nav-link active" aria-current="page">Activities</a>
-                </li>
-                <li class="nav-item">
-                    <a href="?controller=user&action=historyView" class="nav-link link-body-emphasis">Order History</a>
-                </li>
+        <!-- Sidebar // TODO: Make query to get all users that sent a message to current user($_COOKIE['Login_Info'])
+        <div class="border-end d-flex flex-column p-3" style="width: 30rem; min-width: 160px;">
+            <ul class="nav nav-pills flex-column ">
+                <h2>Unread Messages</h2>
                 <hr>
-                <!-- Search Bar Functionality -->
-                <form method="POST" role="search">
-                    <input type="hidden" name="controller" value="user">
-                    <input type="hidden" name="action" value="restaurantView">
-                    <input type="search" class="form-control" name="search" placeholder="Search..."
-                        value="<?= isset($_POST['search']) ? htmlspecialchars($_POST['search']) : '' ?>">
-                </form>
+                <tbody>
+                    <?php foreach ($users as $user): ?>
+                        <tr>
+                            <td><?= htmlspecialchars($user['FirstName']) . " " . htmlspecialchars($user['LastName']) ?></td>
+                            <td>
+                                <a href="?controller=user&action=sendMessageView&receiverIDView=<?= $user['UserID'] ?>" class="btn btn-primary">Message</a>
+                            </td>
+                        </tr>
+                    <?php endforeach; ?>
             </ul>
-        </div>
+        </div> -->
 
         <!-- Main Content -->
         <div class="px-5 py-3" style="width: 100%;">
-            <?php foreach ($activities as $activity): ?>
-                <div class="row px-4 pe-lg-0 align-items-center rounded-3 border shadow-lg">
-                    <div class="col-lg-7 p-5 p-lg-5">
-                        <h1 class="display-5 fw-bold lh-1 text-body-emphasis">
-                            <?= htmlspecialchars($activity['BusinessName']) ?>
-                            <span class="fs-4 text-muted text-muted d-inline-block" style="white-space: nowrap;"><?= number_format($activity['Rating'], 1) ?> ⭐</span>
-                        </h1>
-                        <p class="lead"><?= htmlspecialchars($activity['Description']) ?></p>
-                        <div class="d-grid gap-2 d-md-flex justify-content-md-start mb-4 mb-lg-3">
-                            <a href="<?= '?controller=user&action=bookingView&businessName=' . htmlspecialchars($activity['BusinessName']) ?>">
-                                <button type="button" class="btn btn-lg px-4">Menu</button>
-                            </a>
-                        </div>
+
+            <div class="flex-grow-1 p-4">
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <h1>Messages</h1>
+                </div>
+
+                <div class="row">
+                    <!-- Normal Users -->
+                    <div class="col-md-6">
+
+                        <!-- Search Bar Functionality normal users -->
+                        <form class="py-2 mb-4" method="POST" role="search">
+                            <input type="hidden" name="controller" value="user">
+                            <input type="hidden" name="action" value="reviewView">
+                            <input type="search" class="form-control" name="searchUser" placeholder="Search Name"
+                                value="<?= isset($_POST['searchUser']) ? htmlspecialchars($_POST['searchUser']) : '' ?>">
+                        </form>
+
+                        <h2 class="text-center">Verified Users</h2>
+                        <?php if (isset($users) && count($users) > 0): ?>
+                            <table class="table table-striped align-middle rounded-3 overflow-hidden">
+                                <thead class="table-dark">
+                                    <tr>
+                                        <th>Name</th>
+                                        <th>Message</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <?php foreach ($users as $user): ?>
+                                        <?php if($user['Email'] !== $_COOKIE['Login_Info']): ?>
+                                        <tr>
+                                            <td><?= htmlspecialchars($user['FirstName']) . " " . htmlspecialchars($user['LastName']) ?></td>
+                                            <td>
+                                                <a href="?controller=user&action=sendMessageView&receiverID=<?= $user['UserID'] ?>" class="btn btn-primary">Message</a>
+                                            </td>
+                                        </tr>
+                                        <?php endif; ?>
+                                    <?php endforeach; ?>
+                                </tbody>
+                            </table>
+                        <?php else: ?>
+                            <p class="text-muted text-center">No Users found.</p>
+                        <?php endif; ?>
                     </div>
-                    <div class="col-lg-4 offset-lg-1 p-0 overflow-hidden shadow-lg">
-                        <img class="rounded-lg-3" src="<?= htmlspecialchars($activity['Image']) ?>" alt="" height="320">
+
+                    <!-- Business Users -->
+                    <div class="col-md-6">
+
+                        <!-- Search Bar Functionality Business -->
+                        <form class="py-2 mb-4" method="POST" role="search">
+                            <input type="hidden" name="controller" value="user">
+                            <input type="hidden" name="action" value="reviewView">
+                            <input type="search" class="form-control" name="searchBusiness" placeholder="Search Business"
+                                value="<?= isset($_POST['searchBusiness']) ? htmlspecialchars($_POST['searchBusiness']) : '' ?>">
+                        </form>
+
+                        <h2 class="text-center">Business Users</h2>
+                        <?php if (isset($businessUsers) && count($businessUsers) > 0): ?>
+                            <table class="table table-striped align-middle rounded-3 overflow-hidden">
+                                <thead class="table-dark">
+                                    <tr>
+                                        <th>Business</th>
+                                        <th>Message</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <?php foreach ($businessUsers as $user): ?>
+                                        <tr>
+                                            <td><?= htmlspecialchars($user['BusinessName']) ?></td>
+                                            <td>
+                                                <a href="?controller=user&action=sendMessageView&receiverID=<?= $user['UserID'] ?>" class="btn btn-primary">Message</a>
+
+                                            </td>
+                                        </tr>
+                                    <?php endforeach; ?>
+                                </tbody>
+                            </table>
+                        <?php else: ?>
+                            <p class="text-muted text-center">No Business Users found.</p>
+                        <?php endif; ?>
                     </div>
                 </div>
-                <hr>
-            <?php endforeach; ?>
-
+                
+            </div>
         </div>
     </div>
-
 </body>
 
 </html>
