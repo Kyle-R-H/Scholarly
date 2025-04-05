@@ -77,6 +77,7 @@
                         <th scope="col">Owner</th>
                         <th scope="col">Rating</th>
                         <th scope="col">Description</th>
+                        <th scope="col">Banned</th>
                         <th scope="col">Remove</th>
                     </tr>
                 </thead>
@@ -90,9 +91,16 @@
                             <td><?= htmlspecialchars($business['Description']) ?></td>
 
                             <td class="text-center">
+                                <form id="RemoveBusinessForm" action="?controller=admin&action=banBusiness" method="post">
+                                    <input type="hidden" name="BanBusinessName" value="<?= $business['BusinessName'] ?>">
+                                    <input type="checkbox" name="Banned">
+                                </form>
+                            </td>
+
+                            <td class="text-center">
                                 <form id="RemoveBusinessForm" action="?controller=admin&action=removeBusiness" method="post">
                                     <input type="hidden" name="RemoveBusinessName" value="<?= $business['BusinessName'] ?>">
-                                    <button class="btn remove" type="submit"> - </button>
+                                    <button class="btn red" type="submit"> - </button>
                                 </form>
                             </td>
                         </tr>

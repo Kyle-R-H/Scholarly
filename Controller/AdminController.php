@@ -95,6 +95,15 @@ class AdminController extends Controller
         }
     }
 
+    public function banBusiness()
+    {
+        $businessName = $_POST['BanBusinessName'];
+
+        $this->adminModel->banBusiness($businessName);
+
+        header("Location: ?controller=admin&action=adminManager");
+    }
+
     public function removeBusiness()
     {
         $businessName = $_POST['RemoveBusinessName'];

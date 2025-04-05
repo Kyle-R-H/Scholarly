@@ -39,6 +39,28 @@ class AdminModel extends Model
         }
     }
 
+    // Remove business
+    public function removeBusiness($businessName)
+    {
+        // echo "In removeBusiness<br>";
+        $this->db->query(
+            "DELETE FROM Business
+            WHERE BusinessName = ?"
+            ,[$businessName]
+        );
+    }
+
+    // Ban business
+    public function setBusinessBanStatus($businessName, $banStatus)
+    {
+        $this->db->query(
+            "UPDATE Business
+            SET BanStatus = ?
+            WHERE BusinessName = ?"
+            ,[$banStatus, $businessName]
+        );
+    }
+
 
     // Main Data Methods 
     public function getBusinessesWithOwners()
@@ -133,15 +155,5 @@ class AdminModel extends Model
                   LIMIT 1";
 
         return $this->db->query($query)->fetch(PDO::FETCH_ASSOC);
-    }
-
-    public function removeBusiness($businessName)
-    {
-        echo "In removeBusiness<br>";
-        $this->db->query(
-            "DELETE FROM Business
-            WHERE BusinessName = ?"
-            ,[$businessName]
-        );
     }
 }
