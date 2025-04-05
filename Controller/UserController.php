@@ -11,7 +11,7 @@ class UserController extends Controller
 
         if (!isset($_COOKIE['Login_Info']) || $this->userModel->getUserByEmail($_COOKIE["Login_Info"])['PermissionLevel'] != 0) {
             $_SESSION['error'] = "Insufficient Permissions";
-            header("Location: ?controller=auth&action=login");
+            header("Location: ?controller=auth&action=loginView");
             exit();
         } else {
             // print_r($_COOKIE);
@@ -369,12 +369,17 @@ class UserController extends Controller
             $message = trim($_POST['messageText']);
 
             if ($this->userModel->getUserById($receiverID)['PermissionLevel'] == 1) {
-                $this->userModel->createInquiry($senderID, $receiverID, $message);
+                $_SESSION['error'] = $this->userModel->createInquiry($senderID, $receiverID, $message);
+                if($_SESSION['error'] == null){
+                    $_SESSION['success'] = "Message sent successfully!";
+                }
+                
             } else {
+                echo $senderID . $receiverID . $message;
                 $this->userModel->createMessage($senderID, $receiverID, $message);
+                $_SESSION['success'] = "Message sent successfully!";
             }
 
-            $_SESSION['success'] = "Message sent successfully!";
         } else {
             $_SESSION['error'] = "Message failed to send";
         }
@@ -385,30 +390,19 @@ class UserController extends Controller
 
     public function sendMessageView($receiverID)
     {
-
+        if ($this->userModel->getUserById($receiverID)['PermissionLevel'] == 0) {
+            $isUser = true;
+        } else {
+            $isUser = false;
+        }
         // Sender is the logged-in user
         $senderID = $this->userModel->getUserByEmail($_COOKIE['Login_Info'])['UserID'];
+        $request = $this->userModel->getUserById($receiverID)['PermissionLevel'] == 1 && count($this->userModel->getAllInquiryMessages($senderID, $receiverID)) <= 1? true : false; 
         if ($this->userModel->getUserById($receiverID)['PermissionLevel'] == 1) {
             $previousMessages = $this->userModel->getUserInquiries($senderID, $receiverID);
         } else {
             $previousMessages = $this->userModel->getUserMessages($senderID, $receiverID);
         }
-
-        print_r($previousMessages);
-        if ($_SERVER["REQUEST_METHOD"] === "POST") {
-            // The user submitted a message
-            $message = trim($_POST['messageText']);
-
-            // Insert the new message in the DB (pending, etc.)
-            // e.g. $this->userModel->createMessage($messageID, $senderID, $receiverID, $message);
-
-            $_SESSION['success'] = "Message sent successfully!";
-            // Optional: redirect or stay on the same page
-            // header("Location: ?controller=user&action=sendMessageView&receiverID=$receiverID");
-            // exit();
-        }
-
-        // Always fetch previous messages so the user can see the conversation
 
         // Pass $previousMessages, $receiverID, etc. to the view
         require_once 'View/User/MessagingView.php';

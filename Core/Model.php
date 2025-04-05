@@ -152,41 +152,70 @@ class Model
     {
         // check what user recieiver is
 
-        // if business account use inquiry method (should be allowed)
+        // if business account use inquiry method (shouldn't be allowed)
 
         // echo "Sender: " . $senderID . "<br>Reciever: " . $receiverID;
         $maxMessageID = $this->db->query("SELECT MAX(MessageID) AS maxID FROM Messages")->fetch(PDO::FETCH_ASSOC);
         if ($maxMessageID == null) {
             $maxMessageID = 1;
-        }        
-        $query = "INSERT INTO Messages (MessageID, Sender, Receiver, Message, TimeSent, Pending) VALUES (?, ?, ?, ?, ?, ?)";
-        return $this->db->query($query, [$maxMessageID["maxID"] + 1, $senderID, $receiverID, $message, date("Y-m-d H:i:s"), "1"]);
+        }
+        $query = "INSERT INTO Messages (MessageID, Sender, Receiver, Message, TimeSent) VALUES (?, ?, ?, ?, ?)";
+        return $this->db->query($query, [$maxMessageID["maxID"] + 1, $senderID, $receiverID, $message, date("Y-m-d H:i:s")]);
     }
 
     public function createInquiry($senderID, $receiverID, $message)
     {
-        // echo "Sender: " . $senderID . "<br>Reciever: " . $receiverID;
+        // Init pending to invalid number
+        $pending = -1; // shouldnt be -1 ever
+
+        // Set new InquiriesID + 1
         $maxID = $this->db->query("SELECT MAX(InquiriesID) AS maxID FROM Inquiries")->fetch(PDO::FETCH_ASSOC);
         if ($maxID == null) {
             $maxID = 1;
         }
-        // Check what $reciever user it is
 
-        // If business: check if any previous messages:
-            // if previous messages: Pending is false
-            // if no previous messsages: check what type of user $sender is:
-                // if user is business:
-                    // Pending is false
-                // if user is normal:
-                    // Pending is true
-        
-        // If User send error;
-        $messageable = $this->getUserInquiries($senderID, $receiverID);
+        /* Get Pending Value for inquiry
+        1 == Pending;
+        0 == Accepted;
+        */
+
+        // get all the messages
+        $allMessages = $this->getAllInquiryMessages($senderID, $receiverID);
+
+        //? Check if current user is business or user
+        if ($this->getUserById($senderID)['PermissionLevel'] == 1) { // if current user is a 1 / business
+            //* Current User ($senderID) is a business
+            //^ Business Users dont need to wait on Users
+            $pending = 0;
+        } else { // if the current user is 0 /  user
+            //* Current User ($senderID) is a user
+
+            //? Check the count of messages
+            if (count($allMessages) > 1) {
+                //^ not pending, has messaged before
+                $pending = 0;
+            } else if (count($allMessages) == 1) {
+                //^ Request already sent 
+                //!user must wait, disable message button
+                return "Please wait for request response.";
+            } else {
+                // count < 1 aka. 0
+                //^ Message is an inquiry request
+                $pending = 1; // sends a request to business
+                //! Disables Message Button
+            }
+        }
 
 
         $query = "INSERT INTO Inquiries (InquiriesID, Sender, Receiver, Message, TimeSent, Pending) VALUES (?, ?, ?, ?, ?, ?)";
-        return $this->db->query($query, [$maxID["maxID"] + 1, $senderID, $receiverID, $message, date("Y-m-d H:i:s"), "1"]);
+        $this->db->query($query, [$maxID["maxID"] + 1, $senderID, $receiverID, $message, date("Y-m-d H:i:s"), $pending]);
     }
 
-    
+    public function getAllInquiryMessages($senderID, $receiverID)
+    {
+        $query = "SELECT Message FROM Inquiries 
+                  WHERE (Sender = ? AND Receiver = ?)
+                  OR (Sender = ? AND Receiver = ?)";
+        return $this->db->query($query, [$senderID, $receiverID, $receiverID, $senderID])->fetchAll(PDO::FETCH_ASSOC);
+    }
 }

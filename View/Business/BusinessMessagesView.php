@@ -110,9 +110,13 @@
                                         <div class="mb-3">
                                             <div class="<?= $isSender ? 'text-end' : 'text-start' ?>">
                                                 <span class="fw-bold"><?= $senderLabel ?>:</span>
-                                                <span class="chat-bubble <?= $isSender ? 'sent' : 'received' ?>">
-                                                    <?= htmlspecialchars($msg['Message']) ?>
-                                                </span>
+                                                <?php if ($msg['Message'] !== ''): ?>
+                                                    <span class="chat-bubble <?= $isSender ? 'sent' : 'received' ?>">
+                                                        <?= htmlspecialchars($msg['Message']) ?>
+                                                    </span>
+                                                <?php else: ?>
+                                                    User Request
+                                                <?php endif; ?>
                                                 <br>
                                                 <small class="text-muted"><?= htmlspecialchars($msg['TimeSent']) ?></small>
                                             </div>

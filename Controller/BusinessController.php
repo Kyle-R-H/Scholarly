@@ -169,19 +169,6 @@ class BusinessController extends Controller
             });
         }
 
-        if ($_SERVER["REQUEST_METHOD"] === "POST") {
-            // The user submitted a message
-            $message = trim($_POST['messageText']);
-
-            // Insert the new message in the DB (pending, etc.)
-            // e.g. $this->businessModel->createMessage($messageID, $senderID, $receiverID, $message);
-
-            $_SESSION['success'] = "Message sent successfully!";
-            // Optional: redirect or stay on the same page
-            // header("Location: ?controller=user&action=sendMessageView&receiverID=$receiverID");
-            // exit();
-        }
-
         require_once 'View/Business/BusinessMessagesView.php';
     }
 
