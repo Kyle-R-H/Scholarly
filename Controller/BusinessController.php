@@ -11,7 +11,10 @@ class BusinessController extends Controller
 
         if (!isset($_COOKIE['Login_Info']) || $this->businessModel->getUserByEmail($_COOKIE["Login_Info"])['PermissionLevel'] != 1) {
             $_SESSION['error'] = "Insufficient Permissions";
-            $this->view('Auth/LoginView', []);
+            // $this->view('Auth/LoginView', []);
+            header("Location: ?controller=auth&action=loginView");
+            exit();
+
         } else {
             // Get user table
             $user = $this->businessModel->getUserByEmail($_COOKIE['Login_Info']);
@@ -150,7 +153,7 @@ class BusinessController extends Controller
 
         // Sender is the logged-in user
         $senderID = $this->businessModel->getUserByEmail($_COOKIE['Login_Info'])['UserID'];
-        $previousMessages = $this->businessModel->getUserMessages($senderID, $receiverID);
+        $previousMessages = $this->businessModel->getUserInquiries($senderID, $receiverID);
 
         // Get search query from Form POST
         $searchUserQuery = $_POST['searchUser'] ?? '';
@@ -189,7 +192,7 @@ class BusinessController extends Controller
             $receiverID = $_POST['receiverID'];
             $message = trim($_POST['messageText']);
 
-            $this->businessModel->createMessage($senderID, $receiverID, $message);
+            $this->businessModel->createInquiry($senderID, $receiverID, $message);
             $_SESSION['success'] = "Message sent successfully!";
         } else {
             $_SESSION['error'] = "Message failed to send";

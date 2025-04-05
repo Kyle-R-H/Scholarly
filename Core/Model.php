@@ -115,11 +115,11 @@ class Model
     {
         return $this->db->query(
             "
-        SELECT Users.*, business.BusinessName 
+        SELECT Users.*, Business.BusinessName 
         FROM Users 
         LEFT JOIN Business ON Users.UserID = Business.UserID 
         WHERE Users.VerifiedCustomer = '1' 
-        AND U sers.PermissionLevel = ?",
+        AND Users.PermissionLevel = ?",
             [$permissionLevel]
         )->fetchAll(PDO::FETCH_ASSOC);
     }
@@ -136,25 +136,57 @@ class Model
         return $this->db->query($query, [$senderID, $receiverID, $receiverID, $senderID])->fetchAll(PDO::FETCH_ASSOC);
     }
 
+    public function getUserInquiries($senderID, $receiverID,)
+    {
+        // echo "sender: " . $senderID;
+        // echo " <br> receiver: " . $receiverID;
+        $query = "SELECT * FROM Inquiries 
+                WHERE (Sender = ? AND Receiver = ?) 
+                OR (Sender = ? AND Receiver = ?) 
+                ORDER BY TimeSent ASC";
+
+        return $this->db->query($query, [$senderID, $receiverID, $receiverID, $senderID])->fetchAll(PDO::FETCH_ASSOC);
+    }
+
     public function createMessage($senderID, $receiverID, $message)
     {
+        // check what user recieiver is
+
+        // if business account use inquiry method (should be allowed)
+
         // echo "Sender: " . $senderID . "<br>Reciever: " . $receiverID;
         $maxMessageID = $this->db->query("SELECT MAX(MessageID) AS maxID FROM Messages")->fetch(PDO::FETCH_ASSOC);
         if ($maxMessageID == null) {
             $maxMessageID = 1;
-        }
+        }        
         $query = "INSERT INTO Messages (MessageID, Sender, Receiver, Message, TimeSent, Pending) VALUES (?, ?, ?, ?, ?, ?)";
-        return $this->db->query($query, [$maxMessageID["maxID"] + 1, $senderID, $receiverID, $message, date("Y-m-d H:i:s"), "Pending"]);
+        return $this->db->query($query, [$maxMessageID["maxID"] + 1, $senderID, $receiverID, $message, date("Y-m-d H:i:s"), "1"]);
     }
 
     public function createInquiry($senderID, $receiverID, $message)
     {
         // echo "Sender: " . $senderID . "<br>Reciever: " . $receiverID;
-        $maxID = $this->db->query("SELECT MAX(InquiryID) AS maxID FROM Inquiries")->fetch(PDO::FETCH_ASSOC);
-        if ($maxMessageID == null) {
-            $maxMessageID = 1;
+        $maxID = $this->db->query("SELECT MAX(InquiriesID) AS maxID FROM Inquiries")->fetch(PDO::FETCH_ASSOC);
+        if ($maxID == null) {
+            $maxID = 1;
         }
-        $query = "INSERT INTO Messages (MessageID, Sender, Receiver, Message, TimeSent, Pending) VALUES (?, ?, ?, ?, ?, ?)";
-        return $this->db->query($query, [$maxMessageID["maxID"] + 1, $senderID, $receiverID, $message, date("Y-m-d H:i:s"), "Pending"]);
+        // Check what $reciever user it is
+
+        // If business: check if any previous messages:
+            // if previous messages: Pending is false
+            // if no previous messsages: check what type of user $sender is:
+                // if user is business:
+                    // Pending is false
+                // if user is normal:
+                    // Pending is true
+        
+        // If User send error;
+        $messageable = $this->getUserInquiries($senderID, $receiverID);
+
+
+        $query = "INSERT INTO Inquiries (InquiriesID, Sender, Receiver, Message, TimeSent, Pending) VALUES (?, ?, ?, ?, ?, ?)";
+        return $this->db->query($query, [$maxID["maxID"] + 1, $senderID, $receiverID, $message, date("Y-m-d H:i:s"), "1"]);
     }
+
+    
 }

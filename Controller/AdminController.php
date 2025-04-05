@@ -9,7 +9,9 @@ class AdminController extends Controller
 
         if (!isset($_COOKIE['Login_Info']) || $this->adminModel->getUserByEmail($_COOKIE["Login_Info"])['PermissionLevel'] != 2) {
             $_SESSION['error'] ="Insufficient Permissions";
-            $this->view('Auth/LoginView', []);
+            // $this->view('Auth/LoginView', []);
+            header("Location: ?controller=auth&action=loginView");
+            exit();
         }
     }
 

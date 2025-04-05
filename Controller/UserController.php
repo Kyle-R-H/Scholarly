@@ -368,7 +368,12 @@ class UserController extends Controller
             $receiverID = $_POST['receiverID'];
             $message = trim($_POST['messageText']);
 
-            $this->userModel->createMessage($senderID, $receiverID, $message);
+            if ($this->userModel->getUserById($receiverID)['PermissionLevel'] == 1) {
+                $this->userModel->createInquiry($senderID, $receiverID, $message);
+            } else {
+                $this->userModel->createMessage($senderID, $receiverID, $message);
+            }
+
             $_SESSION['success'] = "Message sent successfully!";
         } else {
             $_SESSION['error'] = "Message failed to send";
@@ -383,7 +388,11 @@ class UserController extends Controller
 
         // Sender is the logged-in user
         $senderID = $this->userModel->getUserByEmail($_COOKIE['Login_Info'])['UserID'];
-        $previousMessages = $this->userModel->getUserMessages($senderID, $receiverID);
+        if ($this->userModel->getUserById($receiverID)['PermissionLevel'] == 1) {
+            $previousMessages = $this->userModel->getUserInquiries($senderID, $receiverID);
+        } else {
+            $previousMessages = $this->userModel->getUserMessages($senderID, $receiverID);
+        }
 
         print_r($previousMessages);
         if ($_SERVER["REQUEST_METHOD"] === "POST") {
