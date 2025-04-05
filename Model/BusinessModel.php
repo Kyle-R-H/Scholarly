@@ -28,7 +28,7 @@ class BusinessModel extends Model{
       
     public function updateOrderPriceByUserID($userID, $orderPrice)
     {
-        return $this->db->query("UPDATE businessstats 
+        return $this->db->query("UPDATE BusinessStats 
 SET OrderPrice = ?, OrderStatus = 'Completed' 
 WHERE UserID = ? AND OrderStatus = 'Pending';",
             [$orderPrice, $userID]

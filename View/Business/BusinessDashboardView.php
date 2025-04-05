@@ -125,7 +125,7 @@
         <!-- Add filters? -->
 
 
-        <div class = "row"
+        <div class = "row">
         <!-- Pending Orders -->
         <div class="col-md-6">
             <!-- Search Bar Functionality normal users -->
@@ -171,6 +171,8 @@
                 <p class="text-muted text-center">No Users found.</p>
             <?php endif; ?>
         </div>
+
+
         <!-- Completed Orders -->
         <div class="col-md-6">
 

@@ -129,4 +129,16 @@ class UserModel extends Model
         return $this->db->query("SELECT BusinessName FROM Business", [])->fetchAll(PDO::FETCH_ASSOC);
     }
 
+
+
+    public function storeInquiry($senderID, $receiverID, $message)
+    {
+        $maxInquiryID = $this->db->query("SELECT MAX(InquiriesID) AS maxID FROM Inquiries")->fetch(PDO::FETCH_ASSOC);
+        if ($maxInquiryID == null) {
+            $maxInquiryID = 1;
+        }
+        $query = "INSERT INTO Inquiries (InquiriesID, Sender, Receiver, Message, TimeSent, Pending) VALUES (?, ?, ?, ?, ?, ?)";
+        return $this->db->query($query, [$maxInquiryID["maxID"] + 1, $senderID, $receiverID, $message, date("Y-m-d H:i:s"), 1]);
+    }
+
 }
