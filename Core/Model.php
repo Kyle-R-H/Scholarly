@@ -40,7 +40,7 @@ class Model
 
     public function getStatsByBusiness($businessName)
     {
-        return $this->db->query("SELECT * FROM businessstats WHERE BusinessName = ?", [$businessName])->fetchAll(PDO::FETCH_ASSOC);
+        return $this->db->query("SELECT * FROM BusinessStats WHERE BusinessName = ?", [$businessName])->fetchAll(PDO::FETCH_ASSOC);
     }
 
     public function getStatsByBusinessAndStatus($businessName, $orderStatus)
@@ -115,11 +115,11 @@ class Model
     {
         return $this->db->query(
             "
-        SELECT users.*, business.BusinessName 
-        FROM users 
-        LEFT JOIN business ON users.UserID = business.UserID 
-        WHERE users.VerifiedCustomer = '1' 
-        AND users.PermissionLevel = ?",
+        SELECT Users.*, business.BusinessName 
+        FROM Users 
+        LEFT JOIN Business ON Users.UserID = Business.UserID 
+        WHERE Users.VerifiedCustomer = '1' 
+        AND U sers.PermissionLevel = ?",
             [$permissionLevel]
         )->fetchAll(PDO::FETCH_ASSOC);
     }
@@ -140,6 +140,17 @@ class Model
     {
         // echo "Sender: " . $senderID . "<br>Reciever: " . $receiverID;
         $maxMessageID = $this->db->query("SELECT MAX(MessageID) AS maxID FROM Messages")->fetch(PDO::FETCH_ASSOC);
+        if ($maxMessageID == null) {
+            $maxMessageID = 1;
+        }
+        $query = "INSERT INTO Messages (MessageID, Sender, Receiver, Message, TimeSent, Pending) VALUES (?, ?, ?, ?, ?, ?)";
+        return $this->db->query($query, [$maxMessageID["maxID"] + 1, $senderID, $receiverID, $message, date("Y-m-d H:i:s"), "Pending"]);
+    }
+
+    public function createInquiry($senderID, $receiverID, $message)
+    {
+        // echo "Sender: " . $senderID . "<br>Reciever: " . $receiverID;
+        $maxID = $this->db->query("SELECT MAX(InquiryID) AS maxID FROM Inquiries")->fetch(PDO::FETCH_ASSOC);
         if ($maxMessageID == null) {
             $maxMessageID = 1;
         }
