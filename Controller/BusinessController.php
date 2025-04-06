@@ -141,7 +141,7 @@ class BusinessController extends Controller
         //     });
         // }
 
-        require_once 'View/Business/businessMessagesView.php';
+        require_once 'View/Business/BusinessMessagesView.php';
     }
 
 
