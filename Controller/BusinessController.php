@@ -14,7 +14,6 @@ class BusinessController extends Controller
             // $this->view('Auth/LoginView', []);
             header("Location: ?controller=auth&action=loginView");
             exit();
-
         } else {
             // Get user table
             $user = $this->businessModel->getUserByEmail($_COOKIE['Login_Info']);
@@ -42,13 +41,13 @@ class BusinessController extends Controller
         $this->view('Business/BusinessItemManagerView', ['businessType' => $this->businessType, 'businessName' => $this->businessName, 'items' => $items]);
     }
 
-    
+
     public function profile()
     {
         $business = $this->businessModel->getBusinessByEmail($_COOKIE["Login_Info"]);
-        $this->view('Business/BusinessProfileView', ['businessType' => $this->businessType,'businessName'=>$this->businessName, 'business'=>$business]);
+        $this->view('Business/BusinessProfileView', ['businessType' => $this->businessType, 'businessName' => $this->businessName, 'business' => $business]);
     }
-  
+
     public function addItemView()
     {
         $this->view('Business/AddItemView', ['businessType' => $this->businessType, 'businessName' => $this->businessName]);
@@ -216,9 +215,31 @@ class BusinessController extends Controller
     public function removeItem()
     {
         $itemName = $_POST['RemoveItemName'];
-        
+
         $this->businessModel->removeItem($itemName);
 
         header("Location: ?controller=business&action=businessManager");
     }
+
+    public function deleteMessages()
+    {
+        $senderID = $this->businessModel->getUserByEmail($_COOKIE['Login_Info'])['UserID'];
+        $receiverID = $_POST['receiverID'] ?? null;
+    
+        if (!$senderID || !$receiverID) {
+            $_SESSION['error'] = "Missing required parameters.SenderID: " . $senderID . "receiver: " . $receiverID;
+            header("Location: " . ($_SERVER['HTTP_REFERER'] ?? '?controller=user&action=sendMessagesView'));
+            exit();
+        }
+    
+        $_SESSION['error'] = $this->businessModel->removeMessagesByConversation($senderID, $receiverID);
+        
+        if (!$_SESSION['error']) {
+            $_SESSION['success'] = "Conversation Successfully Cleared";
+        }
+    
+        header("Location: " . ($_SERVER['HTTP_REFERER'] ?? '?controller=user&action=sendMessagesView'));
+        exit();
+    }
+    
 }
