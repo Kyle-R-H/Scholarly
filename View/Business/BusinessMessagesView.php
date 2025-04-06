@@ -87,7 +87,7 @@
 
         <!-- Sidebar -->
         <?php if (isset($_GET['receiverID'])): ?>
-            <div class="border-end d-flex flex-column p-4" style="width: 50rem; min-width: 160px;">
+            <div class="border-end d-flex flex-column px-4 pt-4" style="width: 50rem; min-width: 160px;">
                 <ul class="nav nav-pills flex-column ">
                     <!-- Main Messaging Layout -->
                     <div class="container my-4 flex-grow-1 d-flex flex-column">
@@ -140,6 +140,14 @@
                                 </form>
                             </div>
                         </div>
+                        <!-- Clear Conversation  -->
+                        <div class="pt-5 pb-2">
+                            <form method="POST" action="?controller=business&action=deleteMessages">
+                                <input type="hidden" name="receiverID" value="<?= htmlspecialchars($_GET['receiverID']) ?>">
+                                <button class="btn remove" type="submit">Delete Conversation</button>
+                            </form>
+                        </div>
+
                     </div>
                 </ul>
             </div>
