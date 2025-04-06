@@ -357,7 +357,7 @@ class UserController extends Controller
             });
         }
 
-        require_once 'View/User/userMessagesView.php';
+        require_once 'View/User/UserMessagesView.php';
     }
 
     public function sendMessage()
