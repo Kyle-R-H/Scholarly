@@ -124,7 +124,7 @@ class Model
         )->fetchAll(PDO::FETCH_ASSOC);
     }
 
-    public function getUserMessages($senderID, $receiverID,)
+    public function getUserMessages($senderID, $receiverID)
     {
         // echo "sender: " . $senderID;
         // echo " <br> receiver: " . $receiverID;
@@ -136,7 +136,7 @@ class Model
         return $this->db->query($query, [$senderID, $receiverID, $receiverID, $senderID])->fetchAll(PDO::FETCH_ASSOC);
     }
 
-    public function getUserInquiries($senderID, $receiverID,)
+    public function getUserInquiries($senderID, $receiverID)
     {
         // echo "sender: " . $senderID;
         // echo " <br> receiver: " . $receiverID;

@@ -121,12 +121,9 @@ class BusinessController extends Controller
     public function businessMessages()
     {
         $users = $this->businessModel->getUsersByVerifiedCustomer(0); // 0 = normal user
-        // $businessUsers = $this->businessModel->getUsersByVerifiedCustomer(1); // 1 = business user
 
         // Get search query from Form POST
         $searchUserQuery = $_POST['searchUser'] ?? '';
-        // $searchBusinessQuery = $_POST['searchBusiness'] ?? '';
-        // echo "<br> Search Q: "; print_r($searchQuery);
 
         // Filter Reviews based on the search query
         if (!empty($searchUserQuery)) {
@@ -134,13 +131,6 @@ class BusinessController extends Controller
                 return stripos($users['Email'], $searchUserQuery) !== false;
             });
         }
-
-        // if (!empty($searchBusinessQuery)) {
-        //     $businessUsers = array_filter($businessUsers, function ($businessUsers) use ($searchBusinessQuery) {
-        //         return stripos($businessUsers['Email'], $searchBusinessQuery) !== false;
-        //     });
-        // }
-
         require_once 'View/Business/BusinessMessagesView.php';
     }
 
@@ -219,27 +209,5 @@ class BusinessController extends Controller
         $this->businessModel->removeItem($itemName);
 
         header("Location: ?controller=business&action=businessManager");
-    }
-
-    public function deleteMessages()
-    {
-        $senderID = $this->businessModel->getUserByEmail($_COOKIE['Login_Info'])['UserID'];
-        $receiverID = $_POST['receiverID'] ?? null;
-    
-        if (!$senderID || !$receiverID) {
-            $_SESSION['error'] = "Missing required parameters.SenderID: " . $senderID . "receiver: " . $receiverID;
-            header("Location: " . ($_SERVER['HTTP_REFERER'] ?? '?controller=user&action=sendMessagesView'));
-            exit();
-        }
-    
-        $_SESSION['error'] = $this->businessModel->removeMessagesByConversation($senderID, $receiverID);
-        
-        if (!$_SESSION['error']) {
-            $_SESSION['success'] = "Conversation Successfully Cleared";
-        }
-    
-        header("Location: " . ($_SERVER['HTTP_REFERER'] ?? '?controller=user&action=sendMessagesView'));
-        exit();
-    }
-    
+    }    
 }

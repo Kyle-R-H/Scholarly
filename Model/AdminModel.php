@@ -144,4 +144,41 @@ class AdminModel extends Model
             ,[$businessName]
         );
     }
+
+    public function getAllUsersInquiries($senderID)
+    {
+        $query = "SELECT 
+                    `Sender`,`Receiver`, 
+                    `Message`, 
+                    `TimeSent`
+                FROM Inquiries
+                WHERE `Sender` = ?
+
+                UNION ALL
+
+                SELECT 
+                    `Sender`, 
+                    `Receiver`, 
+                    `Message`, 
+                    `TimeSent`
+                FROM Messages
+                WHERE `Sender` = ?";
+        return $this->db->query($query, [$senderID, $senderID])->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    public function removeMessagesByConversation($senderID, $receiverID, $timeSent){
+        if($this->getUserByID($receiverID)['PermissionLevel'] == 1 || $this->getUserByID($senderID)['PermissionLevel'] == 1){
+            $table = "Inquiries";
+        } else {
+            $table = "Messages";
+        }
+
+        $query = "DELETE FROM $table
+            WHERE (Sender = ? AND Receiver = ? AND TimeSent = ?)";
+            print_r($query);
+        $this->db->query(
+            $query,
+            [$senderID, $receiverID, $timeSent]
+        );
+    }
 }
