@@ -141,4 +141,24 @@ class UserModel extends Model
         return $this->db->query($query, [$maxInquiryID["maxID"] + 1, $senderID, $receiverID, $message, date("Y-m-d H:i:s"), 1]);
     }
 
+    public function getUserMessages($senderID, $receiverID,)
+    {
+      //  echo "sender: " . $senderID;
+     // echo " <br> receiver: " . $receiverID;
+        $query = "SELECT * FROM Messages 
+                WHERE (Sender = ? AND Receiver = ?) 
+                ORDER BY TimeSent ASC";
+
+        return $this->db->query($query, [$senderID, $receiverID])-> fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    public function getBusinessByTypeAndRating($businessType, $minRating) {
+        $query = "SELECT *, IFNULL(Rating, 0) AS effectiveRating 
+                  FROM Business 
+                  WHERE BusinessType = ? 
+                    AND (IFNULL(Rating, 0) >= ? OR Rating IS NULL)
+                  ORDER BY IFNULL(Rating, 0) DESC";
+        return $this->db->query($query, [$businessType, $minRating])->fetchAll(PDO::FETCH_ASSOC);
+    }
+
 }

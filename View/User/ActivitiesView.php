@@ -101,9 +101,23 @@
                 <!-- Search Bar Functionality -->
                 <form method="POST" role="search">
                     <input type="hidden" name="controller" value="user">
-                    <input type="hidden" name="action" value="restaurantView">
+                    <input type="hidden" name="action" value="activitiesView">
                     <input type="search" class="form-control" name="search" placeholder="Search..."
                         value="<?= isset($_POST['search']) ? htmlspecialchars($_POST['search']) : '' ?>">
+                    <hr>
+                    <!-- Rating filter -->
+                    <div class="mb-3">
+                        <label for="minRating" class="form-label">
+                            Minimum Rating: <span id="minRatingValue"><?= isset($_POST['minRating']) ? htmlspecialchars($_POST['minRating']) : '0' ?></span> ⭐
+                        </label>
+                        <input type="range" class="form-range" id="minRating" name="minRating" min="0" max="5" step="0.5"
+                            value="<?= isset($_POST['minRating']) ? htmlspecialchars($_POST['minRating']) : '0' ?>"
+                            oninput="document.getElementById('minRatingValue').innerText = this.value;">
+                    </div>
+                    <div class="d-flex gap-2">
+                        <button type="submit" class="btn btn-primary">Filter</button>
+                        <a href="?controller=user&action=activitiesView&all=true" class="btn btn-secondary">Clear</a>
+                    </div>
                 </form>
             </ul>
         </div>
@@ -115,7 +129,9 @@
                     <div class="col-lg-7 p-5 p-lg-5">
                         <h1 class="display-5 fw-bold lh-1 text-body-emphasis">
                             <?= htmlspecialchars($activity['BusinessName']) ?>
-                            <span class="fs-4 text-muted text-muted d-inline-block" style="white-space: nowrap;"><?= number_format($activity['Rating'], 1) ?> ⭐</span>
+                            <span class="fs-4 text-muted d-inline-block" style="white-space: nowrap;">
+                                <?= number_format($activity['Rating'], 1) ?> ⭐
+                            </span>
                         </h1>
                         <p class="lead"><?= htmlspecialchars($activity['Description']) ?></p>
                         <div class="d-grid gap-2 d-md-flex justify-content-md-start mb-4 mb-lg-3">
@@ -130,9 +146,9 @@
                 </div>
                 <hr>
             <?php endforeach; ?>
-
         </div>
     </div>
+
 
 </body>
 

@@ -61,37 +61,11 @@
         </div>
     </header>
 
-    <!-- Main Layout -->
+    <!-- Layout -->
     <div class="container-fluid d-flex flex-grow-1">
-        <?php if (!empty($_SESSION['error'])) : ?>
-            <div class="position-fixed top-0 end-0 p-3" style="z-index: 1050">
-                <div id="errorToast" class="toast align-items-center text-bg-danger border-0 show" role="alert" aria-live="assertive" aria-atomic="true">
-                    <div class="d-flex">
-                        <div class="toast-body">
-                            <?php echo $_SESSION['error'] ?>
-                        </div>
-                        <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"><?php unset($_SESSION['error']) ?></button>
-                    </div>
-                </div>
-            </div>
-        <?php endif; ?>
-        
-        <?php if (!empty($_SESSION['success'])) : ?>
-            <div class="position-fixed top-0 end-0 p-3" style="z-index: 1050">
-                <div id="successToast" class="toast align-items-center text-bg-success border-0 show" role="alert" aria-live="assertive" aria-atomic="true">
-                    <div class="d-flex">
-                        <div class="toast-body">
-                            <?php echo $_SESSION['success'] ?>
-                        </div>
-                        <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"><?php unset($_SESSION['success']) ?></button>
-                    </div>
-                </div>
-            </div>
-        <?php endif; ?>
-
         <!-- Sidebar -->
         <div class="border-end d-flex flex-column p-3" style="width: 280px; min-width: 160px;">
-            <ul class="nav nav-pills flex-column ">
+            <ul class="nav nav-pills flex-column">
                 <li class="nav-item">
                     <a href="#" class="nav-link active" aria-current="page">Restaurants</a>
                 </li>
@@ -99,29 +73,57 @@
                     <a href="?controller=user&action=historyView" class="nav-link link-body-emphasis">Order History</a>
                 </li>
                 <hr>
-                <!-- Search Bar Functionality -->
-                <form method="POST" role="search">
-                    <input type="hidden" name="controller" value="user">
-                    <input type="hidden" name="action" value="restaurantView">
-                    <input type="search" class="form-control" name="search" placeholder="Search..."
-                        value="<?= isset($_POST['search']) ? htmlspecialchars($_POST['search']) : '' ?>">
+                <!-- Filter + Search -->
+                <form method="POST" action="?controller=user&action=restaurantView">
+                    <!-- Search input -->
+                    <div class="mb-3">
+                        <input type="search" class="form-control" name="search" placeholder="Search..."
+                            value="<?= isset($_POST['search']) ? htmlspecialchars($_POST['search']) : '' ?>">
+                    </div>
+                    <hr>
+                    <!-- Rating filter -->
+                    <div class="mb-3">
+                        <label for="minRating" class="form-label">
+                            Minimum Rating: <span id="minRatingValue"><?= isset($_POST['minRating']) ? htmlspecialchars($_POST['minRating']) : '0' ?></span> ⭐
+                        </label>
+                        <input type="range" class="form-range" id="minRating" name="minRating" min="0" max="5" step="0.5"
+                            value="<?= isset($_POST['minRating']) ? htmlspecialchars($_POST['minRating']) : '0' ?>"
+                            oninput="document.getElementById('minRatingValue').innerText = this.value;">
+                    </div>
+                    <div class="d-flex gap-2">
+                        <button type="submit" class="btn btn-primary">Filter</button>
+                        <a href="?controller=user&action=restaurantView&all=true" class="btn btn-secondary">Clear</a>
+                    </div>
                 </form>
-
             </ul>
         </div>
 
         <!-- Main Content -->
         <div class="px-5 py-3" style="width: 100%;">
+            <?php
+            if (isset($_POST['search']) && $_POST['search'] !== '') {
+                $searchTerm = strtolower(trim($_POST['search']));
+                $restaurants = array_filter($restaurants, fn($s) => str_contains(strtolower($s['BusinessName']), $searchTerm));
+            }
+
+            if (isset($_POST['minRating']) && !isset($_GET['all'])) {
+                $minRating = floatval($_POST['minRating']);
+                $restaurants = array_filter($restaurants, fn($s) => $s['Rating'] >= $minRating);
+            }
+            ?>
 
             <?php foreach ($restaurants as $restaurant): ?>
-                <div class="row px-4 pe-lg-0 align-items-center rounded-3 border shadow-lg">
+                <div class="row px-4 pe-lg-0 align-items-center rounded-3 border shadow-lg mb-4">
                     <div class="col-lg-7 p-5 p-lg-5">
-                        <h1 class="display-5 fw-bold lh-1 text-body-emphasis"><?= htmlspecialchars($restaurant['BusinessName']) ?>
-                            <span class="fs-4 text-muted text-muted d-inline-block" style="white-space: nowrap;"><?= number_format($restaurant['Rating'], 1) ?> ⭐</span>
+                        <h1 class="display-5 fw-bold lh-1 text-body-emphasis">
+                            <?= htmlspecialchars($restaurant['BusinessName']) ?>
+                            <span class="fs-4 text-muted d-inline-block" style="white-space: nowrap;">
+                                <?= number_format($restaurant['Rating'], 1) ?> ⭐
+                            </span>
                         </h1>
                         <p class="lead"><?= htmlspecialchars($restaurant['Description']) ?></p>
                         <div class="d-grid gap-2 d-md-flex justify-content-md-start mb-4 mb-lg-3">
-                            <a href="<?= '?controller=user&action=bookingView&businessName=' . htmlspecialchars($restaurant['BusinessName']) ?>">
+                            <a href="<?= '?controller=user&action=bookingView&businessName=' . urlencode($restaurant['BusinessName']) ?>">
                                 <button type="button" class="btn btn-lg px-4">Menu</button>
                             </a>
                         </div>
@@ -132,11 +134,8 @@
                 </div>
                 <hr>
             <?php endforeach; ?>
-
         </div>
     </div>
-
-
 </body>
 
 </html>

@@ -72,10 +72,22 @@ class UserController extends Controller
         require_once 'View/User/UserSettingsView.php';
     }
 
-    public function restaurantView()
+    public function restaurantView($all = null)
     {
-        // Fetch all restaurants from the database
-        $restaurants = $this->userModel->getBusinessByType("Restaurant");
+        // If the "Show All Restaurants" button was clicked, $all will be 'true'
+        if ($all === 'true') {
+            // When showing all restaurants, we can set minRating to 0 or ignore the filter.
+            $minRating = 0;
+        } else {
+            // Get minimum rating from POST; default is 0.
+            $minRating = isset($_POST['minRating']) ? floatval($_POST['minRating']) : 0;
+        }
+
+        // Get minimum rating from POST; default is 0
+        $minRating = isset($_POST['minRating']) ? floatval($_POST['minRating']) : 0;
+
+        $restaurants = $this->userModel->getBusinessByTypeAndRating("restaurant", $minRating);
+
 
         // print_r($restaurants);
 
@@ -93,9 +105,21 @@ class UserController extends Controller
         require_once 'View/User/RestaurantView.php';
     }
 
-    public function eventsView()
+    public function eventsView($all = null)
     {
-        $events = $this->userModel->getBusinessByType("Event");
+        // If the "Show All Restaurants" button was clicked, $all will be 'true'
+        if ($all === 'true') {
+            // When showing all restaurants, we can set minRating to 0 or ignore the filter.
+            $minRating = 0;
+        } else {
+            // Get minimum rating from POST; default is 0.
+            $minRating = isset($_POST['minRating']) ? floatval($_POST['minRating']) : 0;
+        }
+
+        // Get minimum rating from POST; default is 0
+        $minRating = isset($_POST['minRating']) ? floatval($_POST['minRating']) : 0;
+
+        $events = $this->userModel->getBusinessByTypeAndRating("event", $minRating);
 
         // Get search query from Form POST
         $searchQuery = $_POST['search'] ?? '';
@@ -111,9 +135,21 @@ class UserController extends Controller
         require_once 'View/User/EventsView.php';
     }
 
-    public function servicesView()
+    public function servicesView($all = null)
     {
-        $services = $this->userModel->getBusinessByType("Service");
+        // If the "Show All Restaurants" button was clicked, $all will be 'true'
+        if ($all === 'true') {
+            // When showing all restaurants, we can set minRating to 0 or ignore the filter.
+            $minRating = 0;
+        } else {
+            // Get minimum rating from POST; default is 0.
+            $minRating = isset($_POST['minRating']) ? floatval($_POST['minRating']) : 0;
+        }
+
+        // Get minimum rating from POST; default is 0
+        $minRating = isset($_POST['minRating']) ? floatval($_POST['minRating']) : 0;
+
+        $services = $this->userModel->getBusinessByTypeAndRating("service", $minRating);
 
         // Get search query from Form POST
         $searchQuery = $_POST['search'] ?? '';
@@ -129,9 +165,21 @@ class UserController extends Controller
         require_once 'View/User/ServicesView.php';
     }
 
-    public function activitiesView()
+    public function activitiesView($all = null)
     {
-        $activities = $this->userModel->getBusinessByType("Activity");
+        // If the "Show All Restaurants" button was clicked, $all will be 'true'
+        if ($all === 'true') {
+            // When showing all restaurants, we can set minRating to 0 or ignore the filter.
+            $minRating = 0;
+        } else {
+            // Get minimum rating from POST; default is 0.
+            $minRating = isset($_POST['minRating']) ? floatval($_POST['minRating']) : 0;
+        }
+
+        // Get minimum rating from POST; default is 0
+        $minRating = isset($_POST['minRating']) ? floatval($_POST['minRating']) : 0;
+
+        $activities = $this->userModel->getBusinessByTypeAndRating("activity", $minRating);
 
         // Get search query from Form POST
         $searchQuery = $_POST['search'] ?? '';
