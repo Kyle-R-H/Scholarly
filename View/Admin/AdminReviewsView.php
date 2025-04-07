@@ -84,79 +84,45 @@
             <h1 class="h2">Business Statistics</h1>
         </div>
 
-        <div class="container mt-4">
-            <div class="row g-3">
-                <div class="col-md-4">
-                    <div class="p-3 bg-light rounded-pill text-center shadow-sm">
-                        <strong>Most Popular Item:</strong>
-                        <?= htmlspecialchars($mostPopularItem['ItemName']) ?>
-                        (Ordered <?= $mostPopularItem['OrderCount'] ?> times)
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="p-3 bg-light rounded-pill text-center shadow-sm">
-                        <strong>Most Popular Business:</strong>
-                        <?= htmlspecialchars($mostPopularBusiness['BusinessName']) ?>
-                        (<?= $mostPopularBusiness['OrderCount'] ?> orders)
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="p-3 bg-light rounded-pill text-center shadow-sm">
-                        <strong>Busiest Day:</strong>
-                        <?= htmlspecialchars($mostPopularDay['OrderDate']) ?>
-                        (<?= $mostPopularDay['OrderCount'] ?> orders)
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="p-3 bg-light rounded-pill text-center shadow-sm">
-                        <strong>Largest Order by Price:</strong>
-                        $<?= htmlspecialchars($largestOrderByPrice['TotalOrderValue']) ?>
-                        (Order ID: <?= $largestOrderByPrice['Order_ID'] ?>)
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="p-3 bg-light rounded-pill text-center shadow-sm">
-                        <strong>Largest Order by Items:</strong>
-                        <?= $largestOrderByItems['TotalItems'] ?> items
-                        (Order ID: <?= $largestOrderByItems['Order_ID'] ?>)
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="p-3 bg-light rounded-pill text-center shadow-sm">
-                        <strong>Top Customer:</strong>
-                        User ID <?= $topCustomer['UserID'] ?>
-                        (Bought <?= $topCustomer['TotalItemsBought'] ?> items)
-                    </div>
-                </div>
-            </div>
-        </div>
+        <h2>Reviews</h2>
 
-
-        <!-- Add filters? -->
-        <h2>Data</h2>
-        <div class="table-responsive small">
-            <table class="table table-striped table-sm">
-                <thead>
+        <?php if (isset($reviews) && count($reviews) > 0): ?>
+            <table class="table table-striped align-middle rounded-3 overflow-hidden">
+                <thead class="table-dark">
                     <tr>
-                        <th scope="col">Business</th>
-                        <th scope="col">User ID</th>
-                        <th scope="col">Time Of Order</th>
-                        <th scope="col">Total Price</th>
-                        <th scope="col">Order ID</th>
+                        <th>Business</th>
+                        <th>Comment</th>
+                        <th>Response</th>
+                        <th>Created At</th>
+                        <th>By</th>
+                        <th>Delete</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <?php foreach ($orders as $order): ?>
+                    <?php foreach ($reviews as $review): ?>
                         <tr>
-                            <td><?= htmlspecialchars($order['BusinessName']) ?></td>
-                            <td><?= htmlspecialchars($order['UserID']) ?></td>
-                            <td><?= htmlspecialchars($order['TimeOfOrder']) ?></td>
-                            <td><?= htmlspecialchars($order['TotalPrice']) ?></td>
-                            <td><?= htmlspecialchars($order['Order_ID']) ?></td>
+                            <td class="d-flex align-items-center justify-content-between">
+                                <div>
+                                    <span class="fw-bold"><?= htmlspecialchars($review['BusinessName']) ?></span>
+                                    <span class="fs-6 text-muted">(<?= number_format($review['Rating'], 1) ?> ⭐)</span>
+                                </div>
+                                <img class="rounded ms-3" src="<?= htmlspecialchars($review['Image']) ?>" alt="Business Image" height="50" width="50" style="object-fit: cover;">
+                            </td>
+                            <td><?= nl2br(htmlspecialchars($review['Comment'])) ?></td>
+                            <td><?= $review['Response'] ? htmlspecialchars($review['Response']) : '<em>No response</em>' ?></td>
+                            <td><?= date('F j, Y', strtotime($review['CreatedAt'])) ?></td>
+                            <td><?= nl2br(htmlspecialchars($review['FirstName']) . " " . htmlspecialchars($review['LastName'])) ?></td>
+                            <td>
+                                <!-- TODO: Add remove function for reviews -->
+                                <button class="btn remove">-</button> 
+                            </td>
                         </tr>
                     <?php endforeach; ?>
                 </tbody>
             </table>
-        </div>
+        <?php else: ?>
+            <p class="text-muted">No reviews found.</p>
+            <?php print_r($reviews); ?>
+        <?php endif; ?>
     </main>
 </body>

@@ -51,6 +51,67 @@ class AdminController extends Controller
         );
     }
 
+    public function adminMessages(){
+        $users = $this->adminModel->getUsersByVerifiedCustomer(0); // 0 = normal user
+        $businessUsers = $this->adminModel->getUsersByVerifiedCustomer(1); // business user
+
+        // Get search query from Form POST
+        $searchUserQuery = $_POST['searchUser'] ?? '';
+        $searchBusinessQuery = $_POST['searchBusiness'] ?? '';
+        // echo "<br> Search Q: "; print_r($searchQuery);
+
+        // Filter Reviews based on the search query
+        if (!empty($searchUserQuery)) {
+            $users = array_filter($users, function ($users) use ($searchUserQuery) {
+                return stripos($users['Email'], $searchUserQuery) !== false;
+            });
+        }
+
+        if (!empty($searchBusinessQuery)) {
+            $businessUsers = array_filter($businessUsers, function ($businessUsers) use ($searchBusinessQuery) {
+                return stripos($businessUsers['Email'], $searchBusinessQuery) !== false;
+            });
+        }
+
+        require_once 'View/Admin/AdminMessagesView.php';
+    }
+        // Messages Funcitonality
+        public function adminMessagesView($senderID)
+        {
+            $users = $this->adminModel->getUsersByVerifiedCustomer(0); // 0 = normal user
+            $businessUsers = $this->adminModel->getUsersByVerifiedCustomer(1); // business user
+
+            // Sender is the logged-in user
+            $previousMessages = $this->adminModel->getAllUsersInquiries($senderID);
+    
+            // Get search query from Form POST
+            $searchUserQuery = $_POST['searchUser'] ?? '';
+            $searchBusinessQuery = $_POST['searchBusiness'] ?? '';
+            // echo "<br> Search Q: "; print_r($searchQuery);
+    
+            // Filter Reviews based on the search query
+            if (!empty($searchUserQuery)) {
+                unset($_SESSION['success']);
+                unset($_SESSION['error']);
+                $users = array_filter($users, function ($users) use ($searchUserQuery) {
+                    return stripos($users['Email'], $searchUserQuery) !== false;
+                });
+            }
+            if (!empty($searchBusinessQuery)) {
+                $businessUsers = array_filter($businessUsers, function ($businessUsers) use ($searchBusinessQuery) {
+                    return stripos($businessUsers['Email'], $searchBusinessQuery) !== false;
+                });
+            }
+    
+            require_once 'View/Admin/AdminMessagesView.php';
+        }
+
+    public function reviews(){
+        $reviews = $this->adminModel->getReviewByReviewID();
+
+        $this->view('Admin/AdminReviewsView',['reviews' => $reviews]);
+    }
+
     public function registerBusinessView()
     {
         $this->view('Admin/RegisterBusinessView', []);
@@ -104,5 +165,27 @@ class AdminController extends Controller
         $this->adminModel->removeBusiness($businessName);
 
         header("Location: ?controller=admin&action=adminManager");
+    }
+
+    public function removeMessage()
+    {
+        $senderID = $_POST['senderID'] ?? null;
+        $receiverID = $_POST['receiverID'] ?? null;
+        $timeSent = $_POST['timeSent'] ?? null;
+    
+        if (!$senderID || !$receiverID || !$timeSent) {
+            $_SESSION['error'] = "Missing required parameters.SenderID:" . $senderID . "receiver:" . $receiverID . "timeSent: " . $timeSent;
+            header("Location: " . ($_SERVER['HTTP_REFERER'] ?? '?controller=admin&action=adminMessages'));
+            exit();
+        }
+    
+        $_SESSION['error'] = $this->adminModel->removeMessagesByConversation($senderID, $receiverID, $timeSent);
+        
+        if (!$_SESSION['error']) {
+            $_SESSION['success'] = "Message Successfully Removed";
+        }
+    
+        header("Location: " . ($_SERVER['HTTP_REFERER'] ?? '?controller=admin&action=adminMessages'));
+        exit();
     }
 }

@@ -81,12 +81,4 @@ WHERE UserID = ? AND OrderStatus = 'Pending';",
         return $this->db->query($query, [$response, $reviewID]);
     }
 
-    public function removeMessagesByConversation($senderID, $receiverID){
-        $this->db->query(
-            "DELETE FROM Inquiries
-            WHERE (Sender = ? AND Receiver = ?)
-            OR (Sender = ? AND Receiver = ?)",
-            [$senderID, $receiverID, $receiverID, $senderID]
-        );
-    }
 }
