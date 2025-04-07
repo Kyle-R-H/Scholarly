@@ -103,4 +103,13 @@ class UserModel extends Model
 
         return $this->db->query($query, [$senderID, $receiverID])-> fetchAll(PDO::FETCH_ASSOC);
     }
+
+    public function getBusinessByTypeAndRating($businessType, $minRating) {
+        $query = "SELECT *, IFNULL(Rating, 0) AS effectiveRating 
+                  FROM Business 
+                  WHERE BusinessType = ? 
+                    AND (IFNULL(Rating, 0) >= ? OR Rating IS NULL)
+                  ORDER BY IFNULL(Rating, 0) DESC";
+        return $this->db->query($query, [$businessType, $minRating])->fetchAll(PDO::FETCH_ASSOC);
+    }
 }

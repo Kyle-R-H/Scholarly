@@ -88,7 +88,7 @@
                 </div>
             </div>
         <?php endif; ?>
-        
+
         <!-- Sidebar -->
         <div class="border-end d-flex flex-column p-3" style="width: 280px;">
             <ul class="nav nav-pills flex-column mb-auto">
@@ -99,12 +99,27 @@
                     <a href="?controller=user&action=historyView" class="nav-link link-body-emphasis">Order History</a>
                 </li>
                 <hr>
-                <!-- Search Bar Functionality -->
-                <form method="POST" role="search">
-                    <input type="hidden" name="controller" value="user">
-                    <input type="hidden" name="action" value="restaurantView">
-                    <input type="search" class="form-control" name="search" placeholder="Search..."
-                        value="<?= isset($_POST['search']) ? htmlspecialchars($_POST['search']) : '' ?>">
+                <form method="POST" action="?controller=user&action=eventsView">
+                    <!-- Search bar -->
+                    <div class="mb-3">
+                        <input type="search" class="form-control" name="search" placeholder="Search..."
+                            value="<?= isset($_POST['search']) ? htmlspecialchars($_POST['search']) : '' ?>">
+                    </div>
+
+                    <hr>
+                    <!-- Rating filter -->
+                    <div class="mb-3">
+                        <label for="minRating" class="form-label">
+                            Minimum Rating: <span id="minRatingValue"><?= isset($_POST['minRating']) ? htmlspecialchars($_POST['minRating']) : '0' ?></span> ⭐
+                        </label>
+                        <input type="range" class="form-range" id="minRating" name="minRating" min="0" max="5" step="0.5"
+                            value="<?= isset($_POST['minRating']) ? htmlspecialchars($_POST['minRating']) : '0' ?>"
+                            oninput="document.getElementById('minRatingValue').innerText = this.value;">
+                    </div>
+                    <div class="d-flex gap-2">
+                        <button type="submit" class="btn btn-primary">Filter</button>
+                        <a href="?controller=user&action=eventsView&all=true" class="btn btn-secondary">Clear</a>
+                    </div>
                 </form>
             </ul>
         </div>
