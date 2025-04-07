@@ -11,7 +11,9 @@ class BusinessController extends Controller
 
         if (!isset($_COOKIE['Login_Info']) || $this->businessModel->getUserByEmail($_COOKIE["Login_Info"])['PermissionLevel'] != 1) {
             $_SESSION['error'] = "Insufficient Permissions";
-            $this->view('Auth/LoginView', []);
+            // $this->view('Auth/LoginView', []);
+            header("Location: ?controller=auth&action=loginView");
+            exit();
         } else {
             // Get user table
             $user = $this->businessModel->getUserByEmail($_COOKIE['Login_Info']);
@@ -28,7 +30,9 @@ class BusinessController extends Controller
     public function dashboard()
     {
         $stats = $this->businessModel->getStatsByBusiness($this->businessName);
-        $this->view('Business/BusinessDashboardView', ['businessType' => $this->businessType, 'businessName' => $this->businessName, 'stats' => $stats]);
+        $completedStats = $this->businessModel->getStatsByBusinessAndStatus($this->businessName, "Completed");
+        $pendingStats = $this->businessModel->getStatsByBusinessAndStatus($this->businessName, "Pending");
+        $this->view('Business/BusinessDashboardView', ['businessType' => $this->businessType, 'businessName' => $this->businessName, 'completedStats' => $completedStats, 'pendingStats' => $pendingStats, 'stats' => $stats]);
     }
 
     public function businessManager()
@@ -37,9 +41,11 @@ class BusinessController extends Controller
         $this->view('Business/BusinessItemManagerView', ['businessType' => $this->businessType, 'businessName' => $this->businessName, 'items' => $items]);
     }
 
+
     public function profile()
     {
-        $this->view('Business/BusinessProfileView', ['businessType' => $this->businessType, 'businessName' => $this->businessName]);
+        $business = $this->businessModel->getBusinessByEmail($_COOKIE["Login_Info"]);
+        $this->view('Business/BusinessProfileView', ['businessType' => $this->businessType, 'businessName' => $this->businessName, 'business' => $business]);
     }
 
     public function addItemView()
@@ -110,4 +116,130 @@ class BusinessController extends Controller
             die("Failed to save response.");
         }
     }
+
+
+    public function businessMessages()
+    {
+        $users = $this->businessModel->getUsersByVerifiedCustomer(0); // 0 = normal user
+        // $businessUsers = $this->businessModel->getUsersByVerifiedCustomer(1); // 1 = business user
+
+        // Get search query from Form POST
+        $searchUserQuery = $_POST['searchUser'] ?? '';
+        // $searchBusinessQuery = $_POST['searchBusiness'] ?? '';
+        // echo "<br> Search Q: "; print_r($searchQuery);
+
+        // Filter Reviews based on the search query
+        if (!empty($searchUserQuery)) {
+            $users = array_filter($users, function ($users) use ($searchUserQuery) {
+                return stripos($users['Email'], $searchUserQuery) !== false;
+            });
+        }
+
+        // if (!empty($searchBusinessQuery)) {
+        //     $businessUsers = array_filter($businessUsers, function ($businessUsers) use ($searchBusinessQuery) {
+        //         return stripos($businessUsers['Email'], $searchBusinessQuery) !== false;
+        //     });
+        // }
+
+        require_once 'View/Business/BusinessMessagesView.php';
+    }
+
+
+    // Messages Funcitonality
+    public function businessMessagesView($receiverID)
+    {
+        $users = $this->businessModel->getUsersByVerifiedCustomer(0); // 0 = normal user
+
+        // Sender is the logged-in user
+        $senderID = $this->businessModel->getUserByEmail($_COOKIE['Login_Info'])['UserID'];
+        $previousMessages = $this->businessModel->getUserInquiries($senderID, $receiverID);
+
+        // Get search query from Form POST
+        $searchUserQuery = $_POST['searchUser'] ?? '';
+        // $searchBusinessQuery = $_POST['searchBusiness'] ?? '';
+        // echo "<br> Search Q: "; print_r($searchQuery);
+
+        // Filter Reviews based on the search query
+        if (!empty($searchUserQuery)) {
+            unset($_SESSION['success']);
+            unset($_SESSION['error']);
+            $users = array_filter($users, function ($users) use ($searchUserQuery) {
+                return stripos($users['Email'], $searchUserQuery) !== false;
+            });
+        }
+
+        require_once 'View/Business/BusinessMessagesView.php';
+    }
+
+    public function sendMessage()
+    {
+        if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST['messageText']) && !empty($_POST['messageText'])) {
+            $senderID = $this->businessModel->getUserByEmail($_COOKIE['Login_Info'])['UserID'];
+            $receiverID = $_POST['receiverID'];
+            $message = trim($_POST['messageText']);
+
+            $this->businessModel->createInquiry($senderID, $receiverID, $message);
+            $_SESSION['success'] = "Message sent successfully!";
+        } else {
+            $_SESSION['error'] = "Message failed to send";
+        }
+        // Stops view redirect and keeps user on current view
+        header("Location: " . $_SERVER['HTTP_REFERER'] ?? '?controller=user&action=sendMessagesView');
+        exit();
+    }
+
+    public function updateOrderPrice()
+    {
+        // Get data from POST request
+        $userID = $_POST['userID'] ?? null;
+        $orderPrice = $_POST['orderPrice'] ?? null;
+
+        // Validate input
+        if (!$userID || !$orderPrice || !is_numeric($orderPrice)) {
+            die("Invalid input data.");
+        }
+
+        // Update the database
+        $success = $this->businessModel->updateOrderPriceByUserID($userID, $orderPrice);
+
+        // Redirect back to the dashboard
+        if ($success) {
+            $_SESSION['success'] = "Order price updated successfully.";
+        } else {
+            $_SESSION['error'] = "Failed to update order price.";
+        }
+        header("Location: ?controller=business&action=dashboard");
+        exit;
+    }
+
+    public function removeItem()
+    {
+        $itemName = $_POST['RemoveItemName'];
+
+        $this->businessModel->removeItem($itemName);
+
+        header("Location: ?controller=business&action=businessManager");
+    }
+
+    public function deleteMessages()
+    {
+        $senderID = $this->businessModel->getUserByEmail($_COOKIE['Login_Info'])['UserID'];
+        $receiverID = $_POST['receiverID'] ?? null;
+    
+        if (!$senderID || !$receiverID) {
+            $_SESSION['error'] = "Missing required parameters.SenderID: " . $senderID . "receiver: " . $receiverID;
+            header("Location: " . ($_SERVER['HTTP_REFERER'] ?? '?controller=user&action=sendMessagesView'));
+            exit();
+        }
+    
+        $_SESSION['error'] = $this->businessModel->removeMessagesByConversation($senderID, $receiverID);
+        
+        if (!$_SESSION['error']) {
+            $_SESSION['success'] = "Conversation Successfully Cleared";
+        }
+    
+        header("Location: " . ($_SERVER['HTTP_REFERER'] ?? '?controller=user&action=sendMessagesView'));
+        exit();
+    }
+    
 }

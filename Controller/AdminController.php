@@ -9,7 +9,9 @@ class AdminController extends Controller
 
         if (!isset($_COOKIE['Login_Info']) || $this->adminModel->getUserByEmail($_COOKIE["Login_Info"])['PermissionLevel'] != 2) {
             $_SESSION['error'] ="Insufficient Permissions";
-            $this->view('Auth/LoginView', []);
+            // $this->view('Auth/LoginView', []);
+            header("Location: ?controller=auth&action=loginView");
+            exit();
         }
     }
 
@@ -56,6 +58,8 @@ class AdminController extends Controller
 
     public function registerBusiness()
     {
+        $businesses = $this->adminModel->getBusinessesWithOwners();
+
         // Debugging input values
         $name = $_POST['RegisterName'] ?? 'EMPTY';
         $email = $_POST['RegisterEmail'] ?? 'EMPTY';
@@ -71,7 +75,6 @@ class AdminController extends Controller
         // Fetch user from database
         $user = $this->adminModel->getUserByEmail($email);
         // echo "<br>Query executed, result: <pre>" . print_r($user, true) . "</pre>";
-
 
         if ($user) {
             $userID = $user['UserID'];
@@ -92,5 +95,14 @@ class AdminController extends Controller
             $_SESSION['error'] = "User with that email does not exist.";
             $this->view('Admin/RegisterBusinessView', []);
         }
+    }
+
+    public function removeBusiness()
+    {
+        $businessName = $_POST['RemoveBusinessName'];
+        
+        $this->adminModel->removeBusiness($businessName);
+
+        header("Location: ?controller=admin&action=adminManager");
     }
 }

@@ -18,6 +18,23 @@ class UserModel extends Model
         return $this->db->query("SELECT * FROM Business WHERE BusinessName = ?", [$businessName])->fetchAll(PDO::FETCH_ASSOC);
     }
 
+    public function getReviewByReviewID()
+    {
+        $query = "SELECT 
+                    Review.ReviewID, 
+                    Review.UserID, 
+                    Business.BusinessName,
+                    Business.Image, 
+                    Review.Rating, 
+                    Review.Comment, 
+                    Review.Response, 
+                    Review.CreatedAt
+                FROM Review
+                LEFT JOIN Business 
+                    ON Review.Business = Business.UserID";
+        return $this->db->query($query)->fetchAll(PDO::FETCH_ASSOC);
+    }
+
     public function registerUser($firstName, $lastName, $email, $password)
     {
         // Generate UserID, max ID in user table + 1
@@ -33,9 +50,40 @@ class UserModel extends Model
         return $this->db->lastInsertId();
     }
 
+    public function updateUserDetails($email, $firstName, $lastName)
+    {
+        $this->db->query(
+            "UPDATE Users
+
+            SET
+                FirstName = ?
+                ,LastName = ?
+
+            WHERE
+                Email = ?"
+            ,[$firstName, $lastName, $email]
+        );
+    }
+
+    public function updatePassword($email, $password)
+    {
+        $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
+
+        $this->db->query(
+            "UPDATE Users
+
+            SET
+                Password = ?
+
+            WHERE
+                Email = ?"
+            ,[$hashedPassword, $email]
+        );
+    }
+
     public function getBusinessByType($businessType)
     {
-        return $this->db->query("SELECT * FROM Business Where BusinessType = ?", [$businessType])->fetchAll(PDO::FETCH_ASSOC);
+        return $this->db->query("SELECT * FROM Business Where BusinessType = ? ORDER BY Rating DESC", [$businessType])->fetchAll(PDO::FETCH_ASSOC);
     }
 
     public function getBusinessStatsByType($businessType, $userID)
@@ -81,16 +129,16 @@ class UserModel extends Model
         return $this->db->query("SELECT BusinessName FROM Business", [])->fetchAll(PDO::FETCH_ASSOC);
     }
 
-    public function createMessage($senderID, $receiverID, $message)
+
+
+    public function storeInquiry($senderID, $receiverID, $message)
     {
-        echo "Sender: " . $senderID . "<br>Reciever: " . $receiverID;
-        // TODO: get MethodID +1 from db
-        $maxMessageID = $this->db->query("SELECT MAX(MessageID) AS maxID FROM Messages")->fetch(PDO::FETCH_ASSOC);
-        if ($maxMessageID == null) {
-            $maxMessageID = 1;
+        $maxInquiryID = $this->db->query("SELECT MAX(InquiriesID) AS maxID FROM Inquiries")->fetch(PDO::FETCH_ASSOC);
+        if ($maxInquiryID == null) {
+            $maxInquiryID = 1;
         }
-        $query = "INSERT INTO Messages (MessageID, Sender, Receiver, Message, TimeSent, Pending) VALUES (?, ?, ?, ?, ?, ?)";
-        return $this->db->query($query, [$maxMessageID["maxID"] + 1, $senderID, $receiverID, $message, date("Y-m-d H:i:s"), "Pending"]);
+        $query = "INSERT INTO Inquiries (InquiriesID, Sender, Receiver, Message, TimeSent, Pending) VALUES (?, ?, ?, ?, ?, ?)";
+        return $this->db->query($query, [$maxInquiryID["maxID"] + 1, $senderID, $receiverID, $message, date("Y-m-d H:i:s"), 1]);
     }
 
     public function getUserMessages($senderID, $receiverID,)
@@ -112,4 +160,5 @@ class UserModel extends Model
                   ORDER BY IFNULL(Rating, 0) DESC";
         return $this->db->query($query, [$businessType, $minRating])->fetchAll(PDO::FETCH_ASSOC);
     }
+
 }

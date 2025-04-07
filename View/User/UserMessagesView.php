@@ -3,7 +3,7 @@
 <html>
 
 <head>
-    <title>Restaurants</title>
+    <title>User Messages</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -137,12 +137,14 @@
                                 </thead>
                                 <tbody>
                                     <?php foreach ($users as $user): ?>
+                                        <?php if($user['Email'] !== $_COOKIE['Login_Info']): ?>
                                         <tr>
                                             <td><?= htmlspecialchars($user['FirstName']) . " " . htmlspecialchars($user['LastName']) ?></td>
                                             <td>
                                                 <a href="?controller=user&action=sendMessageView&receiverID=<?= $user['UserID'] ?>" class="btn btn-primary">Message</a>
                                             </td>
                                         </tr>
+                                        <?php endif; ?>
                                     <?php endforeach; ?>
                                 </tbody>
                             </table>
@@ -188,6 +190,7 @@
                         <?php endif; ?>
                     </div>
                 </div>
+                
             </div>
         </div>
     </div>

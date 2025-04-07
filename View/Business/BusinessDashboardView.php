@@ -26,7 +26,7 @@
                 <!-- Messages and Reviews Section -->
                 <ul class="nav col-lg-auto justify-content-center">
                     <li>
-                        <a href="#" class="nav-link link-body-emphasis">
+                        <a href="?controller=business&action=businessMessages" class="nav-link link-body-emphasis">
                             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512" width="22" height="22" fill="currentColor"><!--!Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2025 Fonticons, Inc.-->
                                 <path d="M160 32a104 104 0 1 1 0 208 104 104 0 1 1 0-208zm320 0a104 104 0 1 1 0 208 104 104 0 1 1 0-208zM0 416c0-70.7 57.3-128 128-128l64 0c70.7 0 128 57.3 128 128l0 16c0 26.5-21.5 48-48 48L48 480c-26.5 0-48-21.5-48-48l0-16zm448 64c-38.3 0-72.7-16.8-96.1-43.5c.1-1.5 .1-3 .1-4.5l0-16c0-34.9-11.2-67.1-30.1-93.4c5.8-20 24.2-34.6 46.1-34.6l224 0c26.5 0 48 21.5 48 48l0 16c0 70.7-57.3 128-128 128l-64 0z" />
                             </svg>
@@ -123,19 +123,80 @@
         </script>
 
         <!-- Add filters? -->
-        <h2>Orders</h2>
-        <div class="table-responsive small">
-            <table class="table table-striped table-sm">
-                <thead>
+
+
+        <div class = "row">
+        <!-- Pending Orders -->
+        <div class="col-md-6">
+            <!-- Search Bar Functionality normal users -->
+            <form class="py-2 mb-4" method="POST" role="search">
+                <input type="hidden" name="controller" value="user">
+                <input type="hidden" name="action" value="reviewView">
+                <input type="search" class="form-control" name="searchUser" placeholder="Search Name"
+                       value="<?= isset($_POST['searchUser']) ? htmlspecialchars($_POST['searchUser']) : '' ?>">
+            </form>
+
+            <h2 class="text-center">Pending Orders</h2>
+            <?php if (isset($pendingStats) && count($pendingStats) > 0): ?>
+                <table class="table table-striped align-middle rounded-3 overflow-hidden">
+                    <thead class="table-dark">
+                    <tr>
+                        <th scope="col">User ID</th>
+                        <th scope="col">Order Price</th>
+                        <th scope="col">Time Of Order</th>
+                        <th scope="col">Status</th>
+                        <th scope="col"></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <?php foreach ($pendingStats as $stat): ?>
+                        <tr>
+                            <td><?= htmlspecialchars($stat['UserID']) ?></td>
+                            <td>
+                                <form method="POST" action="?controller=business&action=updateOrderPrice">
+                                    <input type="hidden" name="userID" value="<?= htmlspecialchars($stat['UserID']) ?>">
+                                    <input type="number" name="orderPrice" value="<?= htmlspecialchars($stat['OrderPrice']) ?>" step="0.01" class="form-control">
+                            </td>
+                            <td><?= htmlspecialchars($stat['TimeOfOrder']) ?></td>
+                            <td><?= htmlspecialchars($stat['OrderStatus']) ?></td>
+                            <td>
+                                <button type="submit" class="btn btn-success">Submit</button>
+                                </form>
+                            </td>
+                        </tr>
+                    <?php endforeach; ?>
+                    </tbody>
+                </table>
+            <?php else: ?>
+                <p class="text-muted text-center">No Users found.</p>
+            <?php endif; ?>
+        </div>
+
+
+        <!-- Completed Orders -->
+        <div class="col-md-6">
+
+            <!-- Search Bar Functionality Business -->
+            <form class="py-2 mb-4" method="POST" role="search">
+                <input type="hidden" name="controller" value="user">
+                <input type="hidden" name="action" value="reviewView">
+                <input type="search" class="form-control" name="searchBusiness" placeholder="Search Business"
+                       value="<?= isset($_POST['searchBusiness']) ? htmlspecialchars($_POST['searchBusiness']) : '' ?>">
+            </form>
+
+            <h2 class="text-center">Completed Orders</h2>
+            <?php if (isset($completedStats) && count($completedStats) > 0): ?>
+                <table class="table table-striped align-middle rounded-3 overflow-hidden">
+                    <thead class="table-dark">
                     <tr>
                         <th scope="col">User ID</th>
                         <th scope="col">Order Price</th>
                         <th scope="col">Time Of Order</th>
                         <th scope="col">Status</th>
                     </tr>
-                </thead>
-                <tbody>
-                    <?php foreach ($stats as $stat): ?>
+                    </thead>
+                    <tbody>
+                    <?php foreach ($completedStats as $stat): ?>
                         <tr>
                             <td><?= htmlspecialchars($stat['UserID']) ?></td>
                             <td><?= htmlspecialchars($stat['OrderPrice']) ?></td>
@@ -143,8 +204,12 @@
                             <td><?= htmlspecialchars($stat['OrderStatus']) ?></td>
                         </tr>
                     <?php endforeach; ?>
-                </tbody>
-            </table>
+                    </tbody>
+                </table>
+            <?php else: ?>
+                <p class="text-muted text-center">No Business Users found.</p>
+            <?php endif; ?>
+            </div>
         </div>
     </main>
 </body>

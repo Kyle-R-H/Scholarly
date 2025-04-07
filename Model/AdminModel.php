@@ -134,4 +134,14 @@ class AdminModel extends Model
 
         return $this->db->query($query)->fetch(PDO::FETCH_ASSOC);
     }
+
+    public function removeBusiness($businessName)
+    {
+        echo "In removeBusiness<br>";
+        $this->db->query(
+            "DELETE FROM Business
+            WHERE BusinessName = ?"
+            ,[$businessName]
+        );
+    }
 }
