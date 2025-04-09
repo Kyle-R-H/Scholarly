@@ -44,8 +44,18 @@ class AdminController extends Controller
 
 
         $this->view(
-            'Admin/AdminManagerView',
+            'Admin/AdminBusinessManagerView',
             ['businesses' => $businesses]
+        );
+    }
+
+    public function adminUserManager()
+    {
+        $users = $this->adminModel->getAllUsers();
+
+        $this->view(
+            'Admin/AdminUserManagerView',
+            ['users' => $users]
         );
     }
 
@@ -113,5 +123,26 @@ class AdminController extends Controller
         $this->adminModel->removeBusiness($businessName);
 
         header("Location: ?controller=admin&action=adminManager");
+    }
+
+    public function banUser()
+    {
+        $userId = $_POST['BanUserID'];
+        $banStatusToSet = $_POST['BanUserStatusToSet'];
+
+
+        $this->adminModel->setUserBanStatus($userId, $banStatusToSet);
+
+        header("Location: ?controller=admin&action=adminUserManager");
+    }
+
+    public function removeUser()
+    {
+        $userId = $_POST['RemoveUserID'];
+
+
+        $this->adminModel->removeUser($userId);
+
+        header("Location: ?controller=admin&action=adminUserManager");
     }
 }

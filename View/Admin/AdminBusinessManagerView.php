@@ -1,14 +1,13 @@
 <!DOCTYPE html>
 
 <head>
-    <title>Register Business</title>
+    <title>Business Management</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="public\css\Styles.css">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-
 </head>
 
 
@@ -20,7 +19,7 @@
                 <img class="pt-1 px-3" src="Public\Images\scholarly logo.png" alt="Scholarly Logo" height="40" width="auto">
                 <ul class="nav col-12 col-lg-auto me-lg-auto justify-content-center mb-md-0">
                     <li><a href="?controller=admin&action=dashboard" class="nav-link px-2 link-body-emphasis">Dashboard</a></li>
-                    <li><a href="?controller=admin&action=adminManager" class="nav-link px-2 link-body-emphasis">Business Management</a></li>
+                    <li><a href="?controller=admin&action=adminManager" class="nav-link px-2 link-secondary">Business Management</a></li>
                     <li><a href="?controller=admin&action=adminUserManager" class="nav-link px-2 link-body-emphasis">User Management</a></li>
                 </ul>
 
@@ -67,61 +66,49 @@
         <?php endif; ?>
         
         <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-            <h1 class="h2">Add a Business</h1>
+            <h1 class="h2">Businesses</h1>
+            <a href="?controller=admin&action=registerBusinessView" class="btn">Add</a>
         </div>
 
-        <?php if (!empty($_SESSION['error'])) : ?>
-            <div class="position-fixed top-0 end-0 p-3" style="z-index: 1050">
-                <div id="errorToast" class="toast align-items-center text-bg-danger border-0 show" role="alert" aria-live="assertive" aria-atomic="true">
-                    <div class="d-flex">
-                        <div class="toast-body">
-                            <?php echo htmlspecialchars($_SESSION['error']); ?>
-                        </div>
-                        <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"><?php unset($_SESSION['error']) ?></button>
-                    </div>
-                </div>
-            </div>
-        <?php endif; ?>
+        <div class="table-responsive small">
+            <table class="table table-striped table-sm">
+                <thead>
+                    <tr>
+                        <th scope="col">Name</th>
+                        <th scope="col">Owner</th>
+                        <th scope="col">Rating</th>
+                        <th scope="col">Description</th>
+                        <th scope="col">Ban/Unban</th>
+                        <th scope="col">Remove</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php foreach ($businesses as $business): ?>
+                        <tr>
 
-        <form method="POST" action="?controller=admin&action=registerBusiness">
-            <div class="form-floating mb-4">
-                <input name="RegisterName" id="nameInput" type="text" class="form-control" placeholder="Business Name" value="<?php echo isset($_POST['RegisterName']) ? htmlspecialchars($_POST['RegisterName']) : ''; ?>" required>
-                <label for="nameInput">Business Name</label>
-            </div>
+                            <td><?= htmlspecialchars($business['BusinessName']) ?></td>
+                            <td><?= htmlspecialchars($business['Email']) ?></td>
+                            <td><?= htmlspecialchars($business['Rating']) ?></td>
+                            <td><?= htmlspecialchars($business['Description']) ?></td>
 
+                            <td class="text-center">
+                                <form id="BanBusinessForm" action="?controller=admin&action=banBusiness" method="post">
+                                    <input type="hidden" name="BanBusinessName" value="<?= $business['BusinessName'] ?>">
+                                    <input type="hidden" name="BanBusinessStatusToSet" value="<?= !$business['BanStatus'] ?>">
+                                    <button class="btn <?= $business['BanStatus']? "primary" : "red" ?>" type="submit"> <?= $business['BanStatus']? "Unban" : "Ban" ?> </button>
+                                </form>
+                            </td>
 
-            <div class="form-floating mb-4">
-                <input name="RegisterEmail" id="emailInput" type="email" class="form-control" placeholder="name@ul.ie" value="<?php echo isset($_POST['RegisterEmail']) ? htmlspecialchars($_POST['RegisterEmail']) : ''; ?>" required>
-                <label for="emailInput">Business Email Address</label>
-            </div>
-
-            <div class="form-floating mb-4">
-                <select name="RegisterBusinessType" id="businessTypeInput" class="form-select" required>
-                    <option value="" disabled selected>Select Business Type</option>
-                    <option value="Restaurant">Restaurant</option>
-                    <option value="Event">Event</option>
-                    <option value="Service">Service</option>
-                    <option value="Activity">Activity</option>
-                </select>
-                <label for="businessTypeInput">Business Type</label>
-            </div>
-
-            <div class="form-floating mb-4">
-                <input name="RegisterDescription" id="descriptionInput" class="form-control" placeholder="Description" value="<?php echo isset($_POST['RegisterDescription']) ? htmlspecialchars($_POST['RegisterDescription']) : ''; ?>" required>
-                <label for="descriptionInput">Business Description</label>
-            </div>
-
-            <div class="form-floating mb-4">
-                <input name="RegisterImage" id="imageInput" class="form-control" placeholder="Image" value="<?php echo isset($_POST['RegisterImage']) ? htmlspecialchars($_POST['RegisterImage']) : ''; ?>" required>
-                <label for="imageInput">Business Image Link</label>
-            </div>
-
-            <div class="pt-4">
-                <button class="position-relative start-50 translate-middle btn" type="submit">Submit</button>
-            </div>
-        </form>
-
-
-
+                            <td class="text-center">
+                                <form id="RemoveBusinessForm" action="?controller=admin&action=removeBusiness" method="post">
+                                    <input type="hidden" name="RemoveBusinessName" value="<?= $business['BusinessName'] ?>">
+                                    <button class="btn red" type="submit"> - </button>
+                                </form>
+                            </td>
+                        </tr>
+                    <?php endforeach; ?>
+                </tbody>
+            </table>
+        </div>
     </main>
 </body>

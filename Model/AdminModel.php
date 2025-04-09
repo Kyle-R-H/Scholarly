@@ -62,6 +62,27 @@ class AdminModel extends Model
     }
 
 
+    // Ban user
+    public function setUserBanStatus($userId, $banStatus)
+    {
+        $this->db->query(
+            "UPDATE Users
+            SET BanStatus = ?
+            WHERE UserID = ?"
+            ,[$banStatus, $userId]
+        );
+    }
+
+    // Remove user
+    public function removeUser($userId)
+    {
+        $this->db->query(
+            "DELETE FROM Users
+            WHERE UserID = ?"
+            ,[$userId]
+        );
+    }
+
     // Main Data Methods 
     public function getBusinessesWithOwners()
     {
@@ -94,7 +115,12 @@ class AdminModel extends Model
         return $this->db->query($query)->fetchAll(PDO::FETCH_ASSOC);
     }
 
+    public function getAllUsers()
+    {
+        $query = "SELECT * FROM Users";
 
+        return $this->db->query($query)->fetchAll(PDO::FETCH_ASSOC); 
+    }
 
     // Niche funky stats methods
     public function getMostPopularItem()

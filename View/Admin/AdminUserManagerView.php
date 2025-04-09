@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 
 <head>
-    <title>Business Management</title>
+    <title>User Management</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -19,7 +19,8 @@
                 <img class="pt-1 px-3" src="Public\Images\scholarly logo.png" alt="Scholarly Logo" height="40" width="auto">
                 <ul class="nav col-12 col-lg-auto me-lg-auto justify-content-center mb-md-0">
                     <li><a href="?controller=admin&action=dashboard" class="nav-link px-2 link-body-emphasis">Dashboard</a></li>
-                    <li><a href="?controller=admin&action=adminManager" class="nav-link px-2 link-secondary">Business Management</a></li>
+                    <li><a href="?controller=admin&action=adminManager" class="nav-link px-2 link-body-emphasis">Business Management</a></li>
+                    <li><a href="?controller=admin&action=adminUserManager" class="nav-link px-2 link-secondary">User Management</a></li>
                 </ul>
 
 
@@ -65,47 +66,51 @@
         <?php endif; ?>
         
         <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-            <h1 class="h2">Businesses</h1>
-            <a href="?controller=admin&action=registerBusinessView" class="btn">Add</a>
+            <h1 class="h2">Users</h1>
         </div>
 
         <div class="table-responsive small">
             <table class="table table-striped table-sm">
                 <thead>
                     <tr>
-                        <th scope="col">Name</th>
-                        <th scope="col">Owner</th>
-                        <th scope="col">Rating</th>
-                        <th scope="col">Description</th>
+                        <th scope="col">User ID</th>
+                        <th scope="col">Email</th>
+                        <th scope="col">Permission Level</th>
+                        <th scope="col">Verified</th>
+                        <th scope="col">First Name</th>
+                        <th scope="col">Last Name</th>
                         <th scope="col">Ban/Unban</th>
                         <th scope="col">Remove</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <?php foreach ($businesses as $business): ?>
+                    <?php foreach ($users as $user):
+                            if($user['Email'] != $_COOKIE["Login_Info"]) {?>
                         <tr>
 
-                            <td><?= htmlspecialchars($business['BusinessName']) ?></td>
-                            <td><?= htmlspecialchars($business['Email']) ?></td>
-                            <td><?= htmlspecialchars($business['Rating']) ?></td>
-                            <td><?= htmlspecialchars($business['Description']) ?></td>
+                            <td><?= htmlspecialchars($user['UserID']) ?></td>
+                            <td><?= htmlspecialchars($user['Email']) ?></td>
+                            <td><?= htmlspecialchars($user['PermissionLevel']) ?></td>
+                            <td><?= htmlspecialchars($user['VerifiedCustomer']) ?></td>
+                            <td><?= htmlspecialchars($user['FirstName']) ?></td>
+                            <td><?= htmlspecialchars($user['LastName']) ?></td>
 
                             <td class="text-center">
-                                <form id="BanBusinessForm" action="?controller=admin&action=banBusiness" method="post">
-                                    <input type="hidden" name="BanBusinessName" value="<?= $business['BusinessName'] ?>">
-                                    <input type="hidden" name="BanBusinessStatusToSet" value="<?= !$business['BanStatus'] ?>">
-                                    <button class="btn <?= $business['BanStatus']? "primary" : "red" ?>" type="submit"> <?= $business['BanStatus']? "Unban" : "Ban" ?> </button>
+                                <form id="BanUserForm" action="?controller=admin&action=banUser" method="post">
+                                    <input type="hidden" name="BanUserID" value="<?= $user['UserID'] ?>">
+                                    <input type="hidden" name="BanUserStatusToSet" value="<?= !$user['BanStatus'] ?>">
+                                    <button class="btn <?= $user['BanStatus']? "primary" : "red" ?>" type="submit"> <?= $user['BanStatus']? "Unban" : "Ban" ?> </button>
                                 </form>
                             </td>
 
                             <td class="text-center">
-                                <form id="RemoveBusinessForm" action="?controller=admin&action=removeBusiness" method="post">
-                                    <input type="hidden" name="RemoveBusinessName" value="<?= $business['BusinessName'] ?>">
+                                <form id="RemoveUserForm" action="?controller=admin&action=removeUser" method="post">
+                                    <input type="hidden" name="RemoveUserID" value="<?= $user['UserID'] ?>">
                                     <button class="btn red" type="submit"> - </button>
                                 </form>
                             </td>
                         </tr>
-                    <?php endforeach; ?>
+                    <?php } endforeach; ?>
                 </tbody>
             </table>
         </div>
