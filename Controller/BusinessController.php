@@ -231,4 +231,11 @@ class BusinessController extends Controller
 
         header("Location: ?controller=business&action=businessManager");
     }
+
+    public function businessChangePasswordView()
+    {
+        $business = $this->businessModel->getBusinessByEmail($_COOKIE["Login_Info"]);
+
+        $this->view('Business/BusinessChangePasswordView', ['business'=>$business]);
+    }
 }

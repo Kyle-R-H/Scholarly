@@ -61,7 +61,7 @@
                         <a href="?controller=business&action=profile" class="nav-link active" aria-current="page">Profile</a>
                     </li>
                     <li class="nav-item">
-                        <a href="?controller=business&action=changePassword" class="nav-link link-body-emphasis">Change Password</a>
+                        <a href="?controller=business&action=changePasswordView" class="nav-link link-body-emphasis">Change Password</a>
                     </li>
                     <!-- <li>
                         <a href="#" class="nav-link delete-account">Delete Account</a>
