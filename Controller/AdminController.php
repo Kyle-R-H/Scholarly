@@ -98,8 +98,10 @@ class AdminController extends Controller
     public function banBusiness()
     {
         $businessName = $_POST['BanBusinessName'];
+        $banStatusToSet = $_POST['BanBusinessStatusToSet'];
 
-        $this->adminModel->banBusiness($businessName);
+
+        $this->adminModel->setBusinessBanStatus($businessName, $banStatusToSet);
 
         header("Location: ?controller=admin&action=adminManager");
     }

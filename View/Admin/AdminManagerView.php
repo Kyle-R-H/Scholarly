@@ -77,7 +77,7 @@
                         <th scope="col">Owner</th>
                         <th scope="col">Rating</th>
                         <th scope="col">Description</th>
-                        <th scope="col">Banned</th>
+                        <th scope="col">Ban/Unban</th>
                         <th scope="col">Remove</th>
                     </tr>
                 </thead>
@@ -93,7 +93,8 @@
                             <td class="text-center">
                                 <form id="BanBusinessForm" action="?controller=admin&action=banBusiness" method="post">
                                     <input type="hidden" name="BanBusinessName" value="<?= $business['BusinessName'] ?>">
-                                    <input type="checkbox" name="Banned" <?= $business['BanStatus'] ? 'checked': '' ?>>
+                                    <input type="hidden" name="BanBusinessStatusToSet" value="<?= !$business['BanStatus'] ?>">
+                                    <button class="btn <?= $business['BanStatus']? "primary" : "red" ?>" type="submit"> <?= $business['BanStatus']? "Unban" : "Ban" ?> </button>
                                 </form>
                             </td>
 
