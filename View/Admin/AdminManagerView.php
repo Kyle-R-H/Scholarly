@@ -91,9 +91,9 @@
                             <td><?= htmlspecialchars($business['Description']) ?></td>
 
                             <td class="text-center">
-                                <form id="RemoveBusinessForm" action="?controller=admin&action=banBusiness" method="post">
+                                <form id="BanBusinessForm" action="?controller=admin&action=banBusiness" method="post">
                                     <input type="hidden" name="BanBusinessName" value="<?= $business['BusinessName'] ?>">
-                                    <input type="checkbox" name="Banned">
+                                    <input type="checkbox" name="Banned" <?= $business['BanStatus'] ? 'checked': '' ?>>
                                 </form>
                             </td>
 

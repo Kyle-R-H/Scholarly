@@ -65,7 +65,14 @@ class AdminModel extends Model
     // Main Data Methods 
     public function getBusinessesWithOwners()
     {
-        $query = "SELECT Business.BusinessName, Business.UserID, Business.Rating, Business.Description, Users.Email 
+        $query = "SELECT 
+                    Business.BusinessName
+                    ,Business.BusinessType
+                    ,Business.UserID
+                    ,Business.Rating
+                    ,Business.Description
+                    ,Business.BanStatus
+                    ,Users.Email
                   FROM Business 
                   JOIN Users ON Business.UserID = Users.UserID";
 
