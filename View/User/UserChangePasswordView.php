@@ -47,8 +47,6 @@
                     </a>
                     <ul class="dropdown-menu text-small">
                         <li><a class="dropdown-item" href="?controller=user&action=profile">Profile</a></li>
-                        <li><a class="dropdown-item" href="?controller=user&action=settings">Settings</a></li>
-                        <li>
                             <hr class="dropdown-divider">
                         </li>
                         <li><a class="dropdown-item" href="?controller=auth&action=logout">Sign out</a></li>
