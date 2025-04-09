@@ -232,10 +232,40 @@ class BusinessController extends Controller
         header("Location: ?controller=business&action=businessManager");
     }
 
-    public function businessChangePasswordView()
+    public function changePasswordView()
     {
         $business = $this->businessModel->getBusinessByEmail($_COOKIE["Login_Info"]);
 
         $this->view('Business/BusinessChangePasswordView', ['business'=>$business]);
+    }
+
+    public function changePassword()
+    {
+        // echo "In changePassword";
+
+        $business = $this->businessModel->getBusinessByEmail($_COOKIE["Login_Info"]);
+        $user = $this->businessModel->getUserByEmail($_COOKIE['Login_Info']);
+        
+        $currentPasswordCorrect = password_verify($_POST['CurrentPassword'], $user['Password']);
+        $newPassword = $_POST['NewPassword'];
+        $confirmNewPassword = $_POST['ConfirmNewPassword'];
+
+        if ($currentPasswordCorrect) {
+            if($newPassword == $confirmNewPassword) {
+                // Check if businessModel is set
+                if (!$this->businessModel) {
+                    die("Error: businessModel is NULL! Check if it is being initialized correctly.");
+                };
+
+                $this->businessModel->updatePassword(
+                    $user['Email']
+                    ,empty($_POST['NewPassword']) ? $user['Password'] : $_POST['NewPassword']
+                );
+            }
+            // Passwords don't match
+            header("Location: ?controller=business&action=changePasswordView");
+        }
+        // Current password incorrect
+        header("Location: ?controller=business&action=changePasswordView");
     }
 }
