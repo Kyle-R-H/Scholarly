@@ -39,11 +39,61 @@ class AdminModel extends Model
         }
     }
 
+    // Remove business
+    public function removeBusiness($businessName)
+    {
+        // echo "In removeBusiness<br>";
+        $this->db->query(
+            "DELETE FROM Business
+            WHERE BusinessName = ?"
+            ,[$businessName]
+        );
+    }
+
+    // Ban business
+    public function setBusinessBanStatus($businessName, $banStatus)
+    {
+        $this->db->query(
+            "UPDATE Business
+            SET BanStatus = ?
+            WHERE BusinessName = ?"
+            ,[$banStatus, $businessName]
+        );
+    }
+
+
+    // Ban user
+    public function setUserBanStatus($userId, $banStatus)
+    {
+        $this->db->query(
+            "UPDATE Users
+            SET BanStatus = ?
+            WHERE UserID = ?"
+            ,[$banStatus, $userId]
+        );
+    }
+
+    // Remove user
+    public function removeUser($userId)
+    {
+        $this->db->query(
+            "DELETE FROM Users
+            WHERE UserID = ?"
+            ,[$userId]
+        );
+    }
 
     // Main Data Methods 
     public function getBusinessesWithOwners()
     {
-        $query = "SELECT Business.BusinessName, Business.UserID, Business.Rating, Business.Description, Users.Email 
+        $query = "SELECT 
+                    Business.BusinessName
+                    ,Business.BusinessType
+                    ,Business.UserID
+                    ,Business.Rating
+                    ,Business.Description
+                    ,Business.BanStatus
+                    ,Users.Email
                   FROM Business 
                   JOIN Users ON Business.UserID = Users.UserID";
 
@@ -65,7 +115,12 @@ class AdminModel extends Model
         return $this->db->query($query)->fetchAll(PDO::FETCH_ASSOC);
     }
 
+    public function getAllUsers()
+    {
+        $query = "SELECT * FROM Users";
 
+        return $this->db->query($query)->fetchAll(PDO::FETCH_ASSOC); 
+    }
 
     // Niche funky stats methods
     public function getMostPopularItem()

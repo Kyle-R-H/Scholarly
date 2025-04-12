@@ -46,7 +46,7 @@ class AdminController extends Controller
 
 
         $this->view(
-            'Admin/AdminManagerView',
+            'Admin/AdminBusinessManagerView',
             ['businesses' => $businesses]
         );
     }
@@ -112,6 +112,16 @@ class AdminController extends Controller
         $this->view('Admin/AdminReviewsView',['reviews' => $reviews]);
     }
 
+    public function adminUserManager()
+    {
+        $users = $this->adminModel->getAllUsers();
+
+        $this->view(
+            'Admin/AdminUserManagerView',
+            ['users' => $users]
+        );
+    }
+
     public function registerBusinessView()
     {
         $this->view('Admin/RegisterBusinessView', []);
@@ -158,6 +168,17 @@ class AdminController extends Controller
         }
     }
 
+    public function banBusiness()
+    {
+        $businessName = $_POST['BanBusinessName'];
+        $banStatusToSet = $_POST['BanBusinessStatusToSet'];
+
+
+        $this->adminModel->setBusinessBanStatus($businessName, $banStatusToSet);
+
+        header("Location: ?controller=admin&action=adminManager");
+    }
+
     public function removeBusiness()
     {
         $businessName = $_POST['RemoveBusinessName'];
@@ -187,5 +208,26 @@ class AdminController extends Controller
     
         header("Location: " . ($_SERVER['HTTP_REFERER'] ?? '?controller=admin&action=adminMessages'));
         exit();
+    }
+    
+    public function banUser()
+    {
+        $userId = $_POST['BanUserID'];
+        $banStatusToSet = $_POST['BanUserStatusToSet'];
+
+
+        $this->adminModel->setUserBanStatus($userId, $banStatusToSet);
+
+        header("Location: ?controller=admin&action=adminUserManager");
+    }
+
+    public function removeUser()
+    {
+        $userId = $_POST['RemoveUserID'];
+
+
+        $this->adminModel->removeUser($userId);
+
+        header("Location: ?controller=admin&action=adminUserManager");
     }
 }

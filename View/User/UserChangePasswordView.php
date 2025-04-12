@@ -47,8 +47,6 @@
                     </a>
                     <ul class="dropdown-menu text-small">
                         <li><a class="dropdown-item" href="?controller=user&action=profile">Profile</a></li>
-                        <li><a class="dropdown-item" href="?controller=user&action=settings">Settings</a></li>
-                        <li>
                             <hr class="dropdown-divider">
                         </li>
                         <li><a class="dropdown-item" href="?controller=auth&action=logout">Sign out</a></li>
@@ -67,7 +65,7 @@
                     <a href="?controller=user&action=profile" class="nav-link link-body-emphasis" aria-current="page">Profile</a>
                 </li>
                 <li class="nav-item">
-                    <a href="?controller=user&action=changePassword" class="nav-link active">Change Password</a>
+                    <a href="?controller=user&action=userChangePasswordView" class="nav-link active">Change Password</a>
                 </li>
                 <!-- <li>
                     <a href="#" class="nav-link delete-account">Delete Account</a>
@@ -77,33 +75,35 @@
 
         <!-- Main Content -->
         <div class="p-3">
-            <?php if ($user): ?>
-                <div class="row">
-                    <div class="form-floating mb-3">
-                        <input id="currentPasswordInput" type="password" class="form-control" placeholder="Current password">
-                        <label for="currentPasswordInput" class="px-4">Current password</label>
+            <form  action="?controller=user&action=changePassword" method="POST">
+                <?php if ($user): ?>
+                    <div class="row">
+                        <div class="form-floating mb-3">
+                            <input name="CurrentPassword" id="currentPasswordInput" type="password" class="form-control" placeholder="Current password">
+                            <label for="currentPasswordInput" class="px-4">Current password</label>
+                        </div>
                     </div>
-                </div>
-                <div class="row">
-                    <div class="form-floating mb-3">
-                        <input id="newPasswordInput" type="password" class="form-control" placeholder="New password">
-                        <label for="newPasswordInput" class="px-4">New password</label>
+                    <div class="row">
+                        <div class="form-floating mb-3">
+                            <input name="NewPassword" id="newPasswordInput" type="password" class="form-control" placeholder="New password">
+                            <label for="newPasswordInput" class="px-4">New password</label>
+                        </div>
                     </div>
-                </div>
-                <div class="row">
-                    <div class="form-floating mb-3">
-                        <input id="confirmNewPasswordInput" type="password" class="form-control" placeholder="Confirm new password">
-                        <label for="confirmNewPasswordInput" class="px-4">Confirm new password</label>
+                    <div class="row">
+                        <div class="form-floating mb-3">
+                            <input name="ConfirmNewPassword" id="confirmNewPasswordInput" type="password" class="form-control" placeholder="Confirm new password">
+                            <label for="confirmNewPasswordInput" class="px-4">Confirm new password</label>
+                        </div>
                     </div>
-                </div>
-                <div class="row">
-                    <div class="pt-3">
-                        <button class="position-relative start-50 translate-middle btn" type="submit">Reset password</button>
+                    <div class="row">
+                        <div class="pt-3">
+                            <button class="position-relative start-50 translate-middle btn" type="submit">Reset password</button>
+                        </div>
                     </div>
-                </div>
-            <?php else: ?>
-                <p>User not found.</p>
-            <?php endif; ?>
+                <?php else: ?>
+                    <p>User not found.</p>
+                <?php endif; ?>
+            </form>
         </div>
     </div>
 

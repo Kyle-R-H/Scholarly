@@ -1,18 +1,16 @@
 <!DOCTYPE html>
+<html>
 
 <head>
-    <title>Dashboard</title>
-    <meta charset="utf-8">
+    <title>Change Password</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="public\css\Styles.css">
+    <link href="public/css/Styles.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-
 </head>
 
-
 <body class="d-flex flex-column min-vh-100">
+    <!-- Header -->
     <!-- Header -->
     <header class="py-3 ps-4 pe-5 border-bottom">
         <div class="container-fluid">
@@ -51,38 +49,55 @@
         </div>
     </header>
 
-    <!-- Main Content -->
-    <main>
-        <div class="container-fluid d-flex flex-grow-1">
-            <!-- Sidebar -->
-            <div class="border-end d-flex flex-column p-3" style="width: 280px; min-width: 160px;">
-                <ul class="nav nav-pills flex-column ">
-                    <li class="nav-item">
-                        <a href="?controller=business&action=profile" class="nav-link active" aria-current="page">Profile</a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="?controller=business&action=changePasswordView" class="nav-link link-body-emphasis">Change Password</a>
-                    </li>
-                    <!-- <li>
-                        <a href="#" class="nav-link delete-account">Delete Account</a>
-                    </li> -->
-                </ul>
-            </div>
+    <!-- Main Layout -->
+    <div class="container-fluid d-flex flex-grow-1">
+        <!-- Sidebar -->
+        <div class="border-end d-flex flex-column p-3" style="width: 280px; min-width: 160px;">
+            <ul class="nav nav-pills flex-column ">
+                <li class="nav-item">
+                    <a href="?controller=business&action=profile" class="nav-link link-body-emphasis" aria-current="page">Profile</a>
+                </li>
+                <li class="nav-item">
+                    <a href="?controller=business&action=changePasswordView" class="nav-link active">Change Password</a>
+                </li>
+                <!-- <li>
+                    <a href="#" class="nav-link delete-account">Delete Account</a>
+                </li> -->
+            </ul>
+        </div>
 
-            <!-- Main Content -->
-            <div class="p-3">
+        <!-- Main Content -->
+        <div class="p-3">
+            <form  action="?controller=business&action=changePassword" method="POST">
                 <?php if ($business): ?>
-                    <h1><?php echo htmlspecialchars($business['BusinessName']); ?></h1>
-
-                    <form method="POST" action="?controller=business&action=updateProfile">
-                        <!-- Change business info here -->
-
-                        <button type="submit" class="btn"> Save changes </button>
-                    </form>
+                    <div class="row">
+                        <div class="form-floating mb-3">
+                            <input name="CurrentPassword" id="currentPasswordInput" type="password" class="form-control" placeholder="Current password">
+                            <label for="currentPasswordInput" class="px-4">Current password</label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-floating mb-3">
+                            <input name="NewPassword" id="newPasswordInput" type="password" class="form-control" placeholder="New password">
+                            <label for="newPasswordInput" class="px-4">New password</label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-floating mb-3">
+                            <input name="ConfirmNewPassword" id="confirmNewPasswordInput" type="password" class="form-control" placeholder="Confirm new password">
+                            <label for="confirmNewPasswordInput" class="px-4">Confirm new password</label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="pt-3">
+                            <button class="position-relative start-50 translate-middle btn" type="submit">Reset password</button>
+                        </div>
+                    </div>
                 <?php else: ?>
                     <p>Business not found.</p>
                 <?php endif; ?>
-            </div>
+            </form>
         </div>
-    </main>
-</body>
+    </div>
+
+</html>

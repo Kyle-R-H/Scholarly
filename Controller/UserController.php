@@ -47,24 +47,36 @@ class UserController extends Controller
     {
         $user = $this->userModel->getUserByEmail($_COOKIE["Login_Info"]);
 
-        $this->view('User/ChangePasswordView', ['user'=>$user]);
+        $this->view('User/UserChangePasswordView', ['user'=>$user]);
     }
 
     public function changePassword()
     {
+        // echo "In changePassword";
+
         $user = $this->userModel->getUserByEmail($_COOKIE["Login_Info"]);
 
-        // Check if userModel is set
-        if (!$this->userModel) {
-            die("Error: userModel is NULL! Check if it is being initialized correctly.");
+        $currentPasswordCorrect = password_verify($_POST['CurrentPassword'], $user['Password']);
+        $newPassword = $_POST['NewPassword'];
+        $confirmNewPassword = $_POST['ConfirmNewPassword'];
+
+        if ($currentPasswordCorrect) {
+            if($newPassword == $confirmNewPassword) {
+                // Check if userModel is set
+                if (!$this->userModel) {
+                    die("Error: userModel is NULL! Check if it is being initialized correctly.");
+                }
+
+                $this->userModel->updatePassword(
+                    $user['Email']
+                    ,empty($_POST['NewPassword']) ? $user['Password'] : $_POST['NewPassword']
+                );
+            }
+            // Passwords don't match
+            header("Location: ?controller=user&action=changePasswordView");
         }
-
-        $this->userModel->updatePassword(
-            $user['Email']
-            ,empty($_POST['NewPassword']) ? $user['Password'] : $_POST['NewPassword']
-        );
-
-        $this->view('User/ChangePasswordView', ['user'=>$user]);
+        // Current password incorrect
+        header("Location: ?controller=user&action=changePasswordView");
     }
 
     public function settings()
