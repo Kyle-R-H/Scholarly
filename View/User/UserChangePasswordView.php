@@ -65,11 +65,11 @@
                     <a href="?controller=user&action=profile" class="nav-link link-body-emphasis" aria-current="page">Profile</a>
                 </li>
                 <li class="nav-item">
-                    <a href="?controller=user&action=userChangePasswordView" class="nav-link active">Change Password</a>
+                    <a href="?controller=user&action=changePasswordView" class="nav-link active">Change Password</a>
                 </li>
-                <!-- <li>
-                    <a href="#" class="nav-link delete-account">Delete Account</a>
-                </li> -->
+                <li class="nav-item">
+                    <a href="?controller=user&action=historyView" class="nav-link link-body-emphasis">Order History</a>
+                </li>
             </ul>
         </div>
 

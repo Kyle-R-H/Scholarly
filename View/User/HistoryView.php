@@ -62,6 +62,21 @@
 
     <!-- Main Layout -->
     <div class="container-fluid d-flex flex-grow-1">
+        <!-- Sidebar -->
+        <div class="border-end d-flex flex-column p-3" style="width: 280px; min-width: 160px;">
+            <ul class="nav nav-pills flex-column ">
+                <li class="nav-item">
+                    <a href="?controller=user&action=profile" class="nav-link link-body-emphasis" aria-current="page">Profile</a>
+                </li>
+                <li class="nav-item">
+                    <a href="?controller=user&action=changePasswordView" class="nav-link link-body-emphasis">Change Password</a>
+                </li>
+                <li class="nav-item">
+                    <a href="?controller=user&action=historyView" class="nav-link active">Order History</a>
+                </li>
+            </ul>
+        </div>
+
         <?php if (!empty($_SESSION['error'])) : ?>
             <div class="position-fixed top-0 end-0 p-3" style="z-index: 1050">
                 <div id="errorToast" class="toast align-items-center text-bg-danger border-0 show" role="alert" aria-live="assertive" aria-atomic="true">

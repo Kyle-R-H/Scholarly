@@ -69,9 +69,9 @@
                 <li class="nav-item">
                     <a href="?controller=user&action=changePasswordView" class="nav-link link-body-emphasis">Change Password</a>
                 </li>
-                <!-- <li>
-                    <a href="#" class="nav-link delete-account">Delete Account</a>
-                </li> -->
+                <li class="nav-item">
+                    <a href="?controller=user&action=historyView" class="nav-link link-body-emphasis">Order History</a>
+                </li>
             </ul>
         </div>
 
