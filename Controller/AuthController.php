@@ -67,40 +67,45 @@ class AuthController extends Controller
             } else {
                 // echo "User found!<br>";
 
-                // Verify password
-                $passwordMatch = password_verify($password, $user['Password'] ?? '');
-                // echo "Password Verify Result: " . ($passwordMatch ? "MATCH" : "NO MATCH") . "<br>";
-                // echo "Password Result: " . $passwordMatch;
+                if(!$user['BanStatus']){
+                    // Verify password
+                    $passwordMatch = password_verify($password, $user['Password'] ?? '');
+                    // echo "Password Verify Result: " . ($passwordMatch ? "MATCH" : "NO MATCH") . "<br>";
+                    // echo "Password Result: " . $passwordMatch;
 
-                if ($user && $passwordMatch) {
-                    // echo "User authenticated, setting session variables.<br>";
+                    if ($user && $passwordMatch) {
+                        // echo "User authenticated, setting session variables.<br>";
 
-                    $_SESSION['UserID'] = $user['UserID'];
-                    $_SESSION['FirstName'] = $user['FirstName'];
+                        $_SESSION['UserID'] = $user['UserID'];
+                        $_SESSION['FirstName'] = $user['FirstName'];
 
-                    $this -> cookieValue = $email;
-                    setcookie($this-> cookieName, $this -> cookieValue,  time() + (86400 * 30));
+                        $this -> cookieValue = $email;
+                        setcookie($this-> cookieName, $this -> cookieValue,  time() + (86400 * 30));
 
-                    $permissionLevel = $this->checkPermissionLevel($email);
-                    switch($permissionLevel){
-                        // User
-                        case 0:
-                            header("Location: ?controller=user&action=restaurantView");
-                            exit();
+                        $permissionLevel = $this->checkPermissionLevel($email);
+                        switch($permissionLevel){
+                            // User
+                            case 0:
+                                header("Location: ?controller=user&action=restaurantView");
+                                exit();
 
-                        // Business
-                        case 1:
-                            header("Location: ?controller=business&action=dashboard");
-                            exit();
-                        
-                        // Admin
-                        case 2:
-                            header("Location: ?controller=admin&action=dashboard");
-                            exit();
+                            // Business
+                            case 1:
+                                header("Location: ?controller=business&action=dashboard");
+                                exit();
+                            
+                            // Admin
+                            case 2:
+                                header("Location: ?controller=admin&action=dashboard");
+                                exit();
+                        }
+                    } else {
+                        // echo "Invalid credentials, displaying error.<br>";
+                        $_SESSION['error'] = "Invalid email or password.";
+                        $this->view('Auth/LoginView', []);
                     }
                 } else {
-                    // echo "Invalid credentials, displaying error.<br>";
-                    $_SESSION['error'] = "Invalid email or password.";
+                    $_SESSION['error'] = "User is banned.";
                     $this->view('Auth/LoginView', []);
                 }
             }
