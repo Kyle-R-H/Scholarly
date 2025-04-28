@@ -18,8 +18,12 @@ class AdminModel extends Model
         // Add new business to Business table
         $this->db->query(
             "INSERT INTO Business (UserID, BusinessName, BusinessType, Rating, Description, Image) 
-             VALUES (?, ?, ?, ?, ?, ?)"
-            , [$userID, $businessName, $businessType, 0.0, $description, $image]
+             SELECT ?, ?, ?, ?, ?, ?
+             WHERE ? NOT IN (SELECT UserID FROM Business)"
+            , [
+                $userID, $businessName, $businessType, 0.0, $description, $image
+                ,$userID
+            ]
         );
 
         $this->db->query(
