@@ -97,6 +97,7 @@ class AuthController extends Controller
                             // Admin
                             case 2:
                                 header("Location: ?controller=admin&action=dashboard");
+                                $this->userModel->addToAdminLogs($this->userModel->getUserByEmail($_COOKIE["Login_Info"])['UserID'], "Login", "Admin Logged In");
                                 exit();
                         }
                     } else {

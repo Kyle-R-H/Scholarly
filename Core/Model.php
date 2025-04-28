@@ -218,4 +218,9 @@ class Model
                   OR (Sender = ? AND Receiver = ?)";
         return $this->db->query($query, [$senderID, $receiverID, $receiverID, $senderID])->fetchAll(PDO::FETCH_ASSOC);
     }
+
+    public function addToAdminLogs($adminID, $action, $description){
+        $query = "INSERT INTO AdminLogs (NameOfAdmin, ActionTaken, TimeStamp, Description) VALUES (?, ?, ?, ?)";
+        return $this->db->query($query, [$adminID, $action, date("Y-m-d H:i:s"), $description]);        
+    }
 }
