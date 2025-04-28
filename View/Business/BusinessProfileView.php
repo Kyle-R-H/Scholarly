@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 
 <head>
-    <title>Dashboard</title>
+    <title>Profile</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -63,21 +63,32 @@
                     <li class="nav-item">
                         <a href="?controller=business&action=changePasswordView" class="nav-link link-body-emphasis">Change Password</a>
                     </li>
-                    <!-- <li>
-                        <a href="#" class="nav-link delete-account">Delete Account</a>
-                    </li> -->
                 </ul>
             </div>
 
             <!-- Main Content -->
-            <div class="p-3">
+            <div class="p-3" style="width: 100%;">
                 <?php if ($business): ?>
                     <h1><?php echo htmlspecialchars($business['BusinessName']); ?></h1>
 
                     <form method="POST" action="?controller=business&action=updateProfile">
                         <!-- Change business info here -->
+                        <div>
+                            <label> Description </label>
+                            <input name="Description" type="text" class="form-control" placeholder="<?php echo htmlspecialchars($business['Description']) ?>">
+                        </div>
 
-                        <button type="submit" class="btn"> Save changes </button>
+                        <div>
+                        <label> Image URL </label>
+                        <input name="Image" type="text" class="form-control" placeholder="<?php echo htmlspecialchars($business['Image']) ?>">
+                        </div>
+                        
+                        <div>
+                            <label> Contact info </label>
+                            <input name="ContactInfo" type="text" class="form-control" placeholder="<?php echo htmlspecialchars($business['ContactInfo']) ?>">
+                        </div>
+
+                        <button type="submit" class="btn mt-3"> Save changes </button>
                     </form>
                 <?php else: ?>
                     <p>Business not found.</p>

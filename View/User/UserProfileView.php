@@ -98,12 +98,12 @@
                 <form method="POST" action="?controller=user&action=updateProfile">
                     <div class="row pb-4">
                         <div class="col form pr-3">
-                            <label class="labels"> First name </label>
+                            <label> First name </label>
                             <input name="FirstName" type="text" class="form-control" placeholder="<?php echo htmlspecialchars($user['FirstName'])?>">
                         </div>
 
                         <div class="col form">
-                            <label class="labels"> Last name </label>
+                            <label> Last name </label>
                             <input name="LastName" type="text" class="form-control" placeholder="<?php echo htmlspecialchars($user['LastName'])?>">
                         </div>
                     </div>
