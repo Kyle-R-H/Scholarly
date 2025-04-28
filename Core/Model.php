@@ -222,6 +222,15 @@ class Model
     }
 
 
+    public function sendReport($senderID, $receiverID, $message) {
+        $maxID = $this->db->query("SELECT MAX(ReportID) AS maxID FROM Reports")->fetch(PDO::FETCH_ASSOC);
+        if ($maxID == null) {
+            $maxID = 1;
+        }
+        $query = "INSERT INTO Reports (ReportID, Sender, Receiver, Message, TimeSent) VALUES (?, ?, ?, ?, ?)";
+        $this->db->query($query, [$maxID["maxID"] + 1, $senderID, $receiverID ,$message, date("Y-m-d H:i:s")]);
+    }
+
     public function addToAdminLogs($adminID, $action, $description){
         $maxID = $this->db->query("SELECT MAX(LogID) AS maxID FROM AdminLogs")->fetch(PDO::FETCH_ASSOC);
         if ($maxID == null) {

@@ -247,4 +247,9 @@ class AdminModel extends Model
         }
     }
 
+    public function getAllReports()
+    {
+        $query = "SELECT * FROM Reports";
+        return $this->db->query($query)->fetchAll(PDO::FETCH_ASSOC);
+    }
 }

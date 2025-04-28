@@ -19,7 +19,7 @@
             <div class="d-flex flex-wrap align-items-center justify-content-center">
                 <img class="pt-1 px-3" src="Public\Images\scholarly logo.png" alt="Scholarly Logo" height="40" width="auto">
                 <ul class="nav col-12 col-lg-auto me-lg-auto justify-content-center mb-md-0">
-                    <li><a href="?controller=admin&action=dashboard" class="nav-link px-2 link-secondary">Dashboard</a></li>
+                    <li><a href="?controller=admin&action=dashboard" class="nav-link px-2 link-body-emphasis">Dashboard</a></li>
                     <li><a href="?controller=admin&action=adminManager" class="nav-link px-2 link-body-emphasis">Business Management</a></li>
                     <li><a href="?controller=admin&action=adminUserManager" class="nav-link px-2 link-body-emphasis">User Management</a></li>
                 </ul>
@@ -55,105 +55,29 @@
 
     <!-- Main Content -->
     <main class="container-fluid px-5 py-3">
-        <?php if (!empty($_SESSION['error'])) : ?>
-            <div class="position-fixed top-0 end-0 p-3" style="z-index: 1050">
-                <div id="errorToast" class="toast align-items-center text-bg-danger border-0 show" role="alert" aria-live="assertive" aria-atomic="true">
-                    <div class="d-flex">
-                        <div class="toast-body">
-                            <?php echo $_SESSION['error'] ?>
-                        </div>
-                        <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"><?php unset($_SESSION['error']) ?></button>
-                    </div>
-                </div>
-            </div>
-        <?php endif; ?>
-
-        <?php if (!empty($_SESSION['success'])) : ?>
-            <div class="position-fixed top-0 end-0 p-3" style="z-index: 1050">
-                <div id="successToast" class="toast align-items-center text-bg-success border-0 show" role="alert" aria-live="assertive" aria-atomic="true">
-                    <div class="d-flex">
-                        <div class="toast-body">
-                            <?php echo $_SESSION['success'] ?>
-                        </div>
-                        <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"><?php unset($_SESSION['success']) ?></button>
-                    </div>
-                </div>
-            </div>
-        <?php endif; ?>
-
+        <!-- Show Reports -->
         <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-            <h1 class="h2">Business Statistics</h1>
+            <h1 class="h2">User Reports</h1>
         </div>
-
-        <div class="container mt-4">
-            <div class="row g-3">
-                <div class="col-md-4">
-                    <div class="p-3 bg-light rounded-pill text-center shadow-sm">
-                        <strong>Most Popular Item:</strong>
-                        <?= htmlspecialchars($mostPopularItem['ItemName']) ?>
-                        (Ordered <?= $mostPopularItem['OrderCount'] ?> times)
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="p-3 bg-light rounded-pill text-center shadow-sm">
-                        <strong>Most Popular Business:</strong>
-                        <?= htmlspecialchars($mostPopularBusiness['BusinessName']) ?>
-                        (<?= $mostPopularBusiness['OrderCount'] ?> orders)
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="p-3 bg-light rounded-pill text-center shadow-sm">
-                        <strong>Busiest Day:</strong>
-                        <?= htmlspecialchars($mostPopularDay['OrderDate']) ?>
-                        (<?= $mostPopularDay['OrderCount'] ?> orders)
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="p-3 bg-light rounded-pill text-center shadow-sm">
-                        <strong>Largest Order by Price:</strong>
-                        $<?= htmlspecialchars($largestOrderByPrice['TotalOrderValue']) ?>
-                        (Order ID: <?= $largestOrderByPrice['Order_ID'] ?>)
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="p-3 bg-light rounded-pill text-center shadow-sm">
-                        <strong>Largest Order by Items:</strong>
-                        <?= $largestOrderByItems['TotalItems'] ?> items
-                        (Order ID: <?= $largestOrderByItems['Order_ID'] ?>)
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="p-3 bg-light rounded-pill text-center shadow-sm">
-                        <strong>Top Customer:</strong>
-                        User ID <?= $topCustomer['UserID'] ?>
-                        (Bought <?= $topCustomer['TotalItemsBought'] ?> items)
-                    </div>
-                </div>
-            </div>
-        </div>
-
-
-        <!-- Add filters? -->
-        <h2>Data</h2>
         <div class="table-responsive small">
             <table class="table table-striped table-sm">
                 <thead>
                     <tr>
-                        <th scope="col">Business</th>
+                        <th scope="col">ReportID</th>
                         <th scope="col">User ID</th>
-                        <th scope="col">Time Of Order</th>
-                        <th scope="col">Total Price</th>
-                        <th scope="col">Order ID</th>
+                        <th scope="col">Reciever</th>
+                        <th scope="col">Message</th>
+                        <th scope="col">Time Sent</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <?php foreach ($orders as $order): ?>
+                    <?php foreach ($reports as $report): ?>
                         <tr>
-                            <td><?= htmlspecialchars($order['BusinessName']) ?></td>
-                            <td><?= htmlspecialchars($order['UserID']) ?></td>
-                            <td><?= htmlspecialchars($order['TimeOfOrder']) ?></td>
-                            <td><?= htmlspecialchars($order['TotalPrice']) ?></td>
-                            <td><?= htmlspecialchars($order['Order_ID']) ?></td>
+                            <td><?= htmlspecialchars($report['ReportID']) ?></td>
+                            <td><?= htmlspecialchars($report['Sender']) ?></td>
+                            <td><?= htmlspecialchars($report['Receiver']) ?></td>
+                            <td><?= htmlspecialchars($report['Message']) ?></td>
+                            <td><?= htmlspecialchars($report['TimeSent']) ?></td>
                         </tr>
                     <?php endforeach; ?>
                 </tbody>
