@@ -227,8 +227,17 @@ class Model
         if ($maxID == null) {
             $maxID = 1;
         }
-
         $query = "INSERT INTO Reports (ReportID, Sender, Receiver, Message, TimeSent) VALUES (?, ?, ?, ?, ?)";
         $this->db->query($query, [$maxID["maxID"] + 1, $senderID, $receiverID ,$message, date("Y-m-d H:i:s")]);
     }
+
+    public function addToAdminLogs($adminID, $action, $description){
+        $maxID = $this->db->query("SELECT MAX(LogID) AS maxID FROM AdminLogs")->fetch(PDO::FETCH_ASSOC);
+        if ($maxID == null) {
+            $maxID = 1;
+        }
+        $query = "INSERT INTO AdminLogs (NameOfAdmin,LogID ,ActionTaken, TimeStamp, Description) VALUES (?, ?, ?, ?)";
+        return $this->db->query($query, [$adminID, $maxID["maxID"]+1, $action, date("Y-m-d H:i:s"), $description]);
+    }
+
 }
