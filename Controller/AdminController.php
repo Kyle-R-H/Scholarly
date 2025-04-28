@@ -8,7 +8,7 @@ class AdminController extends Controller
         $this->adminModel = $this->model('AdminModel');
 
         if (!isset($_COOKIE['Login_Info']) || $this->adminModel->getUserByEmail($_COOKIE["Login_Info"])['PermissionLevel'] != 2) {
-            $_SESSION['error'] ="Insufficient Permissions";
+            $_SESSION['error'] = "Insufficient Permissions";
             // $this->view('Auth/LoginView', []);
             header("Location: ?controller=auth&action=loginView");
             exit();
@@ -51,7 +51,8 @@ class AdminController extends Controller
         );
     }
 
-    public function adminMessages(){
+    public function adminMessages()
+    {
         $users = $this->adminModel->getUsersByVerifiedCustomer(0); // 0 = normal user
         $businessUsers = $this->adminModel->getUsersByVerifiedCustomer(1); // business user
 
@@ -75,41 +76,42 @@ class AdminController extends Controller
 
         require_once 'View/Admin/AdminMessagesView.php';
     }
-        // Messages Funcitonality
-        public function adminMessagesView($senderID)
-        {
-            $users = $this->adminModel->getUsersByVerifiedCustomer(0); // 0 = normal user
-            $businessUsers = $this->adminModel->getUsersByVerifiedCustomer(1); // business user
+    // Messages Funcitonality
+    public function adminMessagesView($senderID)
+    {
+        $users = $this->adminModel->getUsersByVerifiedCustomer(0); // 0 = normal user
+        $businessUsers = $this->adminModel->getUsersByVerifiedCustomer(1); // business user
 
-            // Sender is the logged-in user
-            $previousMessages = $this->adminModel->getAllUsersInquiries($senderID);
-    
-            // Get search query from Form POST
-            $searchUserQuery = $_POST['searchUser'] ?? '';
-            $searchBusinessQuery = $_POST['searchBusiness'] ?? '';
-            // echo "<br> Search Q: "; print_r($searchQuery);
-    
-            // Filter Reviews based on the search query
-            if (!empty($searchUserQuery)) {
-                unset($_SESSION['success']);
-                unset($_SESSION['error']);
-                $users = array_filter($users, function ($users) use ($searchUserQuery) {
-                    return stripos($users['Email'], $searchUserQuery) !== false;
-                });
-            }
-            if (!empty($searchBusinessQuery)) {
-                $businessUsers = array_filter($businessUsers, function ($businessUsers) use ($searchBusinessQuery) {
-                    return stripos($businessUsers['Email'], $searchBusinessQuery) !== false;
-                });
-            }
-    
-            require_once 'View/Admin/AdminMessagesView.php';
+        // Sender is the logged-in user
+        $previousMessages = $this->adminModel->getAllUsersInquiries($senderID);
+
+        // Get search query from Form POST
+        $searchUserQuery = $_POST['searchUser'] ?? '';
+        $searchBusinessQuery = $_POST['searchBusiness'] ?? '';
+        // echo "<br> Search Q: "; print_r($searchQuery);
+
+        // Filter Reviews based on the search query
+        if (!empty($searchUserQuery)) {
+            unset($_SESSION['success']);
+            unset($_SESSION['error']);
+            $users = array_filter($users, function ($users) use ($searchUserQuery) {
+                return stripos($users['Email'], $searchUserQuery) !== false;
+            });
+        }
+        if (!empty($searchBusinessQuery)) {
+            $businessUsers = array_filter($businessUsers, function ($businessUsers) use ($searchBusinessQuery) {
+                return stripos($businessUsers['Email'], $searchBusinessQuery) !== false;
+            });
         }
 
-    public function reviews(){
+        require_once 'View/Admin/AdminMessagesView.php';
+    }
+
+    public function reviews()
+    {
         $reviews = $this->adminModel->getReviewByReviewID();
 
-        $this->view('Admin/AdminReviewsView',['reviews' => $reviews]);
+        $this->view('Admin/AdminReviewsView', ['reviews' => $reviews]);
     }
 
     public function adminUserManager()
@@ -184,7 +186,7 @@ class AdminController extends Controller
     public function removeBusiness()
     {
         $businessName = $_POST['RemoveBusinessName'];
-        
+
         $this->adminModel->removeBusiness($businessName);
 
         $this->adminModel->addToAdminLogs($this->adminModel->getUserByEmail($_COOKIE["Login_Info"])['UserID'], "Business Removed", "Removed Business " . $businessName);
@@ -197,25 +199,25 @@ class AdminController extends Controller
         $senderID = $_POST['senderID'] ?? null;
         $receiverID = $_POST['receiverID'] ?? null;
         $timeSent = $_POST['timeSent'] ?? null;
-    
+
         if (!$senderID || !$receiverID || !$timeSent) {
             $_SESSION['error'] = "Missing required parameters.SenderID:" . $senderID . "receiver:" . $receiverID . "timeSent: " . $timeSent;
             header("Location: " . ($_SERVER['HTTP_REFERER'] ?? '?controller=admin&action=adminMessages'));
             exit();
         }
-    
+
         $_SESSION['error'] = $this->adminModel->removeMessagesByConversation($senderID, $receiverID, $timeSent);
-        
+
         if (!$_SESSION['error']) {
             $_SESSION['success'] = "Message Successfully Removed";
         }
-    
+
         $this->adminModel->addToAdminLogs($this->adminModel->getUserByEmail($_COOKIE["Login_Info"])['UserID'], "Message Removed", "Removed message between " . $senderID . " & " . $receiverID);
 
         header("Location: " . ($_SERVER['HTTP_REFERER'] ?? '?controller=admin&action=adminMessages'));
         exit();
     }
-    
+
     public function banUser()
     {
         $userId = $_POST['BanUserID'];
@@ -244,13 +246,14 @@ class AdminController extends Controller
         header("Location: ?controller=admin&action=adminUserManager");
     }
 
-    public function removeReview(){
+    public function removeReview()
+    {
 
         $createdAt = $_POST['createdAt'] ?? null;
         $businessName = $_POST['businessName'] ?? null;
         $comment = $_POST['comment'] ?? null;
 
-            $_SESSION['error'] = "Missing required parameters.createdAt:" . $createdAt . "businessName:" . $businessName . "comment: " . $comment;
+        $_SESSION['error'] = "Missing required parameters.createdAt:" . $createdAt . "businessName:" . $businessName . "comment: " . $comment;
         if (!$createdAt || !$businessName || !$comment) {
             header("Location: " . ($_SERVER['HTTP_REFERER'] ?? '?controller=admin&action=reviews'));
             exit();
@@ -266,13 +269,11 @@ class AdminController extends Controller
         exit();
     }
 
-    public function reports(){
+    public function reports()
+    {
         $reports = $this->adminModel->getAllReports();
+        // print_r($reports);
 
-        $this->view(
-            'Admin/AdminManagerView',
-            [$reports => 'reports']
-        );
-
+        $this->view('Admin/AdminReportView', ['reports' => $reports]);
     }
 }
