@@ -3,7 +3,7 @@
 <html>
 
 <head>
-    <title>User Messages</title>
+    <title>Messages</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -50,7 +50,6 @@
                     </a>
                     <ul class="dropdown-menu text-small">
                         <li><a class="dropdown-item" href="?controller=user&action=profile">Profile</a></li>
-                        <li><a class="dropdown-item" href="?controller=user&action=settings">Settings</a></li>
                         <li>
                             <hr class="dropdown-divider">
                         </li>
@@ -141,7 +140,7 @@
                                         <tr>
                                             <td><?= htmlspecialchars($user['FirstName']) . " " . htmlspecialchars($user['LastName']) ?></td>
                                             <td>
-                                                <a href="?controller=user&action=sendMessageView&receiverID=<?= $user['UserID'] ?>" class="btn btn-primary">Message</a>
+                                                <a href="?controller=user&action=sendMessageView&receiverID=<?= $user['UserID'] ?>" class="btn">Message</a>
                                             </td>
                                         </tr>
                                         <?php endif; ?>
@@ -178,7 +177,7 @@
                                         <tr>
                                             <td><?= htmlspecialchars($user['BusinessName']) ?></td>
                                             <td>
-                                                <a href="?controller=user&action=sendMessageView&receiverID=<?= $user['UserID'] ?>" class="btn btn-primary">Message</a>
+                                                <a href="?controller=user&action=sendMessageView&receiverID=<?= $user['UserID'] ?>" class="btn">Message</a>
 
                                             </td>
                                         </tr>

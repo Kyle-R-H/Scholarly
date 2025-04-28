@@ -46,7 +46,7 @@ class AdminController extends Controller
 
 
         $this->view(
-            'Admin/AdminManagerView',
+            'Admin/AdminBusinessManagerView',
             ['businesses' => $businesses]
         );
     }
@@ -112,6 +112,16 @@ class AdminController extends Controller
         $this->view('Admin/AdminReviewsView',['reviews' => $reviews]);
     }
 
+    public function adminUserManager()
+    {
+        $users = $this->adminModel->getAllUsers();
+
+        $this->view(
+            'Admin/AdminUserManagerView',
+            ['users' => $users]
+        );
+    }
+
     public function registerBusinessView()
     {
         $this->view('Admin/RegisterBusinessView', []);
@@ -146,6 +156,8 @@ class AdminController extends Controller
                 // Successful registration
                 $_SESSION['success'] = "Successful Business Registration";
                 $this->adminModel->registerBusiness($userID, $name, $businessType, $description, $image);
+                $this->adminModel->addToAdminLogs($this->adminModel->getUserByEmail($_COOKIE["Login_Info"])['UserID'], "Business Registered", "Registered business " . $name);
+
                 header("Location: ?controller=admin&action=adminManager");
                 exit();
             } else {
@@ -158,11 +170,24 @@ class AdminController extends Controller
         }
     }
 
+    public function banBusiness()
+    {
+        $businessName = $_POST['BanBusinessName'];
+        $banStatusToSet = $_POST['BanBusinessStatusToSet'];
+
+
+        $this->adminModel->setBusinessBanStatus($businessName, $banStatusToSet);
+
+        header("Location: ?controller=admin&action=adminManager");
+    }
+
     public function removeBusiness()
     {
         $businessName = $_POST['RemoveBusinessName'];
         
         $this->adminModel->removeBusiness($businessName);
+
+        $this->adminModel->addToAdminLogs($this->adminModel->getUserByEmail($_COOKIE["Login_Info"])['UserID'], "Business Removed", "Removed Business " . $businessName);
 
         header("Location: ?controller=admin&action=adminManager");
     }
@@ -185,7 +210,59 @@ class AdminController extends Controller
             $_SESSION['success'] = "Message Successfully Removed";
         }
     
+        $this->adminModel->addToAdminLogs($this->adminModel->getUserByEmail($_COOKIE["Login_Info"])['UserID'], "Message Removed", "Removed message between " . $senderID . " & " . $receiverID);
+
         header("Location: " . ($_SERVER['HTTP_REFERER'] ?? '?controller=admin&action=adminMessages'));
+        exit();
+    }
+    
+    public function banUser()
+    {
+        $userId = $_POST['BanUserID'];
+        $banStatusToSet = $_POST['BanUserStatusToSet'];
+
+
+        $this->adminModel->setUserBanStatus($userId, $banStatusToSet);
+        if ($banStatusToSet == 0) {
+            $this->adminModel->addToAdminLogs($this->adminModel->getUserByEmail($_COOKIE["Login_Info"])['UserID'], "Unbanned User", "Unbanned User " . $userId);
+        } else {
+            $this->adminModel->addToAdminLogs($this->adminModel->getUserByEmail($_COOKIE["Login_Info"])['UserID'], "Banned User", "Banned User " . $userId);
+        }
+
+        header("Location: ?controller=admin&action=adminUserManager");
+    }
+
+    public function removeUser()
+    {
+        $userId = $_POST['RemoveUserID'];
+
+
+        $this->adminModel->removeUser($userId);
+
+        // Log
+        $this->adminModel->addToAdminLogs($this->adminModel->getUserByEmail($_COOKIE["Login_Info"])['UserID'], "Removed User", "Removed User " . $userId);
+        header("Location: ?controller=admin&action=adminUserManager");
+    }
+
+    public function removeReview(){
+
+        $createdAt = $_POST['createdAt'] ?? null;
+        $businessName = $_POST['businessName'] ?? null;
+        $comment = $_POST['comment'] ?? null;
+
+            $_SESSION['error'] = "Missing required parameters.createdAt:" . $createdAt . "businessName:" . $businessName . "comment: " . $comment;
+        if (!$createdAt || !$businessName || !$comment) {
+            header("Location: " . ($_SERVER['HTTP_REFERER'] ?? '?controller=admin&action=reviews'));
+            exit();
+        }
+
+        $_SESSION['error'] = $this->adminModel->removeReviewByReviewID($createdAt, $businessName, $comment);
+
+        if (!$_SESSION['error']) {
+            $_SESSION['success'] = "Review Successfully Removed ";
+        }
+
+        header("Location: " . ($_SERVER['HTTP_REFERER'] ?? '?controller=admin&action=reviews'));
         exit();
     }
 

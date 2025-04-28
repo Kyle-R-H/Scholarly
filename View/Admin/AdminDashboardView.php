@@ -21,6 +21,7 @@
                 <ul class="nav col-12 col-lg-auto me-lg-auto justify-content-center mb-md-0">
                     <li><a href="?controller=admin&action=dashboard" class="nav-link px-2 link-secondary">Dashboard</a></li>
                     <li><a href="?controller=admin&action=adminManager" class="nav-link px-2 link-body-emphasis">Business Management</a></li>
+                    <li><a href="?controller=admin&action=adminUserManager" class="nav-link px-2 link-body-emphasis">User Management</a></li>
                 </ul>
 
                 <!-- Messages and Reviews Section -->

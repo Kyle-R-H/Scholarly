@@ -81,4 +81,37 @@ WHERE UserID = ? AND OrderStatus = 'Pending';",
         return $this->db->query($query, [$response, $reviewID]);
     }
 
+    public function updatePassword($email, $password)
+    {
+        $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
+
+        $this->db->query(
+            "UPDATE
+                Users
+
+            SET
+                Password = ?
+
+            WHERE
+                Email = ?"
+            ,[$hashedPassword, $email]
+        );
+    }
+
+    public function updateBusinessDetails($userId, $description, $image, $contactInfo)
+    {
+        $this->db->query(
+            "UPDATE
+                Business
+            
+            SET
+                Description = ?
+                ,Image = ?
+                ,ContactInfo = ?
+            
+            WHERE
+                UserID = ?"
+            ,[$description, $image, $contactInfo, $userId]
+        );
+    }
 }

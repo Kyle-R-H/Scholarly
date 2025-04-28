@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 
 <head>
-    <title>Business Management</title>
+    <title>Messages</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -135,7 +135,7 @@
                                     <input type="hidden" name="receiverID" value="<?= htmlspecialchars($receiverID) ?>">
                                     <div class="input-group" style="border: 1px solid #ddd; border-radius: 5px; overflow: hidden;">
                                         <textarea class="form-control border-0" name="messageText" placeholder="Type your message here..." rows="2" required style="resize: none;"></textarea>
-                                        <button class="btn btn-success border-0" type="submit" style="border-top-right-radius: 5px; border-bottom-right-radius: 5px;">Send</button>
+                                        <button class="btn border-0" type="submit" style="border-top-right-radius: 5px; border-bottom-right-radius: 5px;">Send</button>
                                     </div>
                                 </form>
                             </div>
@@ -178,7 +178,7 @@
                                     <tr>
                                         <td><?= htmlspecialchars($user['FirstName']) . " " . htmlspecialchars($user['LastName']) ?></td>
                                         <td>
-                                            <a href="?controller=business&action=businessMessagesView&receiverID=<?= $user['UserID'] ?>" class="btn btn-primary">Message</a>
+                                            <a href="?controller=business&action=businessMessagesView&receiverID=<?= $user['UserID'] ?>" class="btn">Message</a>
                                         </td>
                                     </tr>
                                 <?php endforeach; ?>

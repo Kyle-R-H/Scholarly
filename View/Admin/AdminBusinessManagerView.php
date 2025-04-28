@@ -1,14 +1,13 @@
 <!DOCTYPE html>
 
 <head>
-    <title>Reviews</title>
+    <title>Business Management</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="public\css\Styles.css">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-
 </head>
 
 
@@ -20,7 +19,7 @@
                 <img class="pt-1 px-3" src="Public\Images\scholarly logo.png" alt="Scholarly Logo" height="40" width="auto">
                 <ul class="nav col-12 col-lg-auto me-lg-auto justify-content-center mb-md-0">
                     <li><a href="?controller=admin&action=dashboard" class="nav-link px-2 link-body-emphasis">Dashboard</a></li>
-                    <li><a href="?controller=admin&action=adminManager" class="nav-link px-2 link-body-emphasis">Business Management</a></li>
+                    <li><a href="?controller=admin&action=adminManager" class="nav-link px-2 link-secondary">Business Management</a></li>
                     <li><a href="?controller=admin&action=adminUserManager" class="nav-link px-2 link-body-emphasis">User Management</a></li>
                 </ul>
 
@@ -82,56 +81,49 @@
         <?php endif; ?>
 
         <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-            <h1 class="h2">Business Statistics</h1>
+            <h1 class="h2">Businesses</h1>
+            <a href="?controller=admin&action=registerBusinessView" class="btn">Add</a>
         </div>
 
-        <h2>Reviews</h2>
-
-        <?php if (isset($reviews) && count($reviews) > 0): ?>
-            <table class="table table-striped align-middle rounded-3 overflow-hidden">
-                <thead class="table-dark">
+        <div class="table-responsive small">
+            <table class="table table-striped table-sm">
+                <thead>
                     <tr>
-                        <th>Business</th>
-                        <th>Comment</th>
-                        <th>Response</th>
-                        <th>Created At</th>
-                        <th>By</th>
-                        <th>Delete</th>
+                        <th scope="col">Name</th>
+                        <th scope="col">Owner</th>
+                        <th scope="col">Rating</th>
+                        <th scope="col">Description</th>
+                        <th scope="col">Ban/Unban</th>
+                        <th scope="col">Remove</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <?php foreach ($reviews as $review): ?>
+                    <?php foreach ($businesses as $business): ?>
                         <tr>
-                            <td class="d-flex align-items-center justify-content-between">
-                                <div>
-                                    <span class="fw-bold"><?= htmlspecialchars($review['BusinessName']) ?></span>
-                                    <span class="fs-6 text-muted">(<?= number_format($review['Rating'], 1) ?> ⭐)</span>
-                                </div>
-                                <img class="rounded ms-3" src="<?= htmlspecialchars($review['Image']) ?>" alt="Business Image" height="50" width="50" style="object-fit: cover;">
+
+                            <td><?= htmlspecialchars($business['BusinessName']) ?></td>
+                            <td><?= htmlspecialchars($business['Email']) ?></td>
+                            <td><?= htmlspecialchars($business['Rating']) ?></td>
+                            <td><?= htmlspecialchars($business['Description']) ?></td>
+
+                            <td class="text-center">
+                                <form id="BanBusinessForm" action="?controller=admin&action=banBusiness" method="post">
+                                    <input type="hidden" name="BanBusinessName" value="<?= $business['BusinessName'] ?>">
+                                    <input type="hidden" name="BanBusinessStatusToSet" value="<?= !$business['BanStatus'] ?>">
+                                    <button class="btn <?= $business['BanStatus']? "primary" : "red" ?>" type="submit"> <?= $business['BanStatus']? "Unban" : "Ban" ?> </button>
+                                </form>
                             </td>
-                            <td><?= nl2br(htmlspecialchars($review['Comment'])) ?></td>
-                            <td><?= $review['Response'] ? htmlspecialchars($review['Response']) : '<em>No response</em>' ?></td>
-                            <td><?= date('F j, Y', strtotime($review['CreatedAt'])) ?></td>
-                            <td><?= nl2br(htmlspecialchars($review['FirstName']) . " " . htmlspecialchars($review['LastName'])) ?></td>
-                            <td>
-                                <form method="post" action="?controller=admin&action=removeReview">
-                                    <input type="hidden" name="comment" value="<?= htmlspecialchars($review['Comment']) ?>">
-                                    <input type="hidden" name="response" value="<?= htmlspecialchars($review['Response']) ?>">
-                                    <input type="hidden" name="createdAt" value="<?= htmlspecialchars($review['CreatedAt']) ?>">
-                                    <input type="hidden" name="firstName" value="<?= htmlspecialchars($review['FirstName']) ?>">
-                                    <input type="hidden" name="lastName" value="<?= htmlspecialchars($review['LastName']) ?>">
-                                    <input type="hidden" name="businessName" value="<?= htmlspecialchars($review['BusinessName']) ?>">
-                                    <input type="hidden" name="table" value="Review"> <!-- or 'Inquiries', depending on context -->
-                                    <button type="submit" class="btn remove">-</button>
+
+                            <td class="text-center">
+                                <form id="RemoveBusinessForm" action="?controller=admin&action=removeBusiness" method="post">
+                                    <input type="hidden" name="RemoveBusinessName" value="<?= $business['BusinessName'] ?>">
+                                    <button class="btn red" type="submit"> - </button>
                                 </form>
                             </td>
                         </tr>
                     <?php endforeach; ?>
                 </tbody>
             </table>
-        <?php else: ?>
-            <p class="text-muted">No reviews found.</p>
-            <?php print_r($reviews); ?>
-        <?php endif; ?>
+        </div>
     </main>
 </body>

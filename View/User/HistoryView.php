@@ -3,7 +3,7 @@
 <html>
 
 <head>
-    <title>Restaurants</title>
+    <title>History</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -50,7 +50,6 @@
                     </a>
                     <ul class="dropdown-menu text-small">
                         <li><a class="dropdown-item" href="?controller=user&action=profile">Profile</a></li>
-                        <li><a class="dropdown-item" href="?controller=user&action=settings">Settings</a></li>
                         <li>
                             <hr class="dropdown-divider">
                         </li>
@@ -63,6 +62,21 @@
 
     <!-- Main Layout -->
     <div class="container-fluid d-flex flex-grow-1">
+        <!-- Sidebar -->
+        <div class="border-end d-flex flex-column p-3" style="width: 280px; min-width: 160px;">
+            <ul class="nav nav-pills flex-column ">
+                <li class="nav-item">
+                    <a href="?controller=user&action=profile" class="nav-link link-body-emphasis" aria-current="page">Profile</a>
+                </li>
+                <li class="nav-item">
+                    <a href="?controller=user&action=changePasswordView" class="nav-link link-body-emphasis">Change Password</a>
+                </li>
+                <li class="nav-item">
+                    <a href="?controller=user&action=historyView" class="nav-link active">Order History</a>
+                </li>
+            </ul>
+        </div>
+
         <?php if (!empty($_SESSION['error'])) : ?>
             <div class="position-fixed top-0 end-0 p-3" style="z-index: 1050">
                 <div id="errorToast" class="toast align-items-center text-bg-danger border-0 show" role="alert" aria-live="assertive" aria-atomic="true">

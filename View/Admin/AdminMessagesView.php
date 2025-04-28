@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 
 <head>
-    <title>Dashboard</title>
+    <title>Messages</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -19,8 +19,9 @@
             <div class="d-flex flex-wrap align-items-center justify-content-center">
                 <img class="pt-1 px-3" src="Public\Images\scholarly logo.png" alt="Scholarly Logo" height="40" width="auto">
                 <ul class="nav col-12 col-lg-auto me-lg-auto justify-content-center mb-md-0">
-                    <li><a href="?controller=admin&action=dashboard" class="nav-link px-2 link-secondary">Dashboard</a></li>
+                    <li><a href="?controller=admin&action=dashboard" class="nav-link px-2 link-body-emphasis">Dashboard</a></li>
                     <li><a href="?controller=admin&action=adminManager" class="nav-link px-2 link-body-emphasis">Business Management</a></li>
+                    <li><a href="?controller=admin&action=adminUserManager" class="nav-link px-2 link-body-emphasis">User Management</a></li>
                 </ul>
 
                 <!-- Messages and Reviews Section -->
@@ -169,7 +170,7 @@
                                         <tr>
                                             <td><?= htmlspecialchars($user['FirstName']) . " " . htmlspecialchars($user['LastName']) ?></td>
                                             <td>
-                                                <a href="?controller=admin&action=adminMessagesView&senderID=<?= $user['UserID'] ?>" class="btn btn-primary">Message</a>
+                                                <a href="?controller=admin&action=adminMessagesView&senderID=<?= $user['UserID'] ?>" class="btn">Message</a>
                                             </td>
                                         </tr>
                                     <?php endforeach; ?>
@@ -207,7 +208,7 @@
                                             <tr>
                                                 <td><?= htmlspecialchars($user['BusinessName']) ?></td>
                                                 <td>
-                                                    <a href="?controller=admin&action=adminMessagesView&senderID=<?= $user['UserID'] ?>" class="btn btn-primary">Message</a>
+                                                    <a href="?controller=admin&action=adminMessagesView&senderID=<?= $user['UserID'] ?>" class="btn">Message</a>
                                                 </td>
                                             </tr>
                                         <?php endif; ?>

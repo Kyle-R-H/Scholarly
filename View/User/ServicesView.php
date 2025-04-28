@@ -7,7 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="public/css/Styles.css">
+    <link rel="stylesheet" href="Public/css/Styles.css">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </head>
 
@@ -41,7 +41,6 @@
                     </a>
                     <ul class="dropdown-menu text-small">
                         <li><a class="dropdown-item" href="?controller=user&action=profile">Profile</a></li>
-                        <li><a class="dropdown-item" href="?controller=user&action=settings">Settings</a></li>
                         <li>
                             <hr class="dropdown-divider">
                         </li>
@@ -82,8 +81,8 @@
                             oninput="document.getElementById('minRatingValue').innerText = this.value;">
                     </div>
                     <div class="d-flex gap-2">
-                        <button type="submit" class="btn btn-primary">Filter</button>
-                        <a href="?controller=user&action=servicesView&all=true" class="btn btn-secondary">Clear</a>
+                        <button type="submit" class="btn">Filter</button>
+                        <a href="?controller=user&action=servicesView&all=true" class="btn">Clear</a>
                     </div>
                 </form>
             </ul>

@@ -13,12 +13,13 @@ class AdminModel extends Model
     }
 
     // Register new Business
-    public function registerBusiness($userID, $businessName, $businessType, $description, $image){
+    public function registerBusiness($userID, $businessName, $businessType, $description, $image)
+    {
         // Add new business to Business table
         $this->db->query(
             "INSERT INTO Business (UserID, BusinessName, BusinessType, Rating, Description, Image) 
              VALUES (?, ?, ?, ?, ?, ?)"
-            ,[$userID, $businessName, $businessType, 0.0, $description, $image]
+            , [$userID, $businessName, $businessType, 0.0, $description, $image]
         );
 
         $this->db->query(
@@ -28,22 +29,73 @@ class AdminModel extends Model
         $this->updateVerifiedCustomer($userID);
         return $this->db->lastInsertId();
     }
-    
-    public function getSimilarBusinessNames($businessName){
+
+    public function getSimilarBusinessNames($businessName)
+    {
         $existingNames = $this->db->query(
             "SELECT BusinessName FROM BusinessStats WHERE BusinessName LIKE ?"
-            ,[$businessName])->fetchAll(PDO::FETCH_COLUMN);
-    
+            , [$businessName])->fetchAll(PDO::FETCH_COLUMN);
+
         if (!empty($existingNames)) {
             return "Business Name already exists";
         }
     }
 
+    // Remove business
+    public function removeBusiness($businessName)
+    {
+        // echo "In removeBusiness<br>";
+        $this->db->query(
+            "DELETE FROM Business
+            WHERE BusinessName = ?"
+            , [$businessName]
+        );
+    }
+
+    // Ban business
+    public function setBusinessBanStatus($businessName, $banStatus)
+    {
+        $this->db->query(
+            "UPDATE Business
+            SET BanStatus = ?
+            WHERE BusinessName = ?"
+            , [$banStatus, $businessName]
+        );
+    }
+
+
+    // Ban user
+    public function setUserBanStatus($userId, $banStatus)
+    {
+        $this->db->query(
+            "UPDATE Users
+            SET BanStatus = ?
+            WHERE UserID = ?"
+            , [$banStatus, $userId]
+        );
+    }
+
+    // Remove user
+    public function removeUser($userId)
+    {
+        $this->db->query(
+            "DELETE FROM Users
+            WHERE UserID = ?"
+            , [$userId]
+        );
+    }
 
     // Main Data Methods 
     public function getBusinessesWithOwners()
     {
-        $query = "SELECT Business.BusinessName, Business.UserID, Business.Rating, Business.Description, Users.Email 
+        $query = "SELECT 
+                    Business.BusinessName
+                    ,Business.BusinessType
+                    ,Business.UserID
+                    ,Business.Rating
+                    ,Business.Description
+                    ,Business.BanStatus
+                    ,Users.Email
                   FROM Business 
                   JOIN Users ON Business.UserID = Users.UserID";
 
@@ -65,7 +117,12 @@ class AdminModel extends Model
         return $this->db->query($query)->fetchAll(PDO::FETCH_ASSOC);
     }
 
+    public function getAllUsers()
+    {
+        $query = "SELECT * FROM Users";
 
+        return $this->db->query($query)->fetchAll(PDO::FETCH_ASSOC);
+    }
 
     // Niche funky stats methods
     public function getMostPopularItem()
@@ -135,16 +192,6 @@ class AdminModel extends Model
         return $this->db->query($query)->fetch(PDO::FETCH_ASSOC);
     }
 
-    public function removeBusiness($businessName)
-    {
-        echo "In removeBusiness<br>";
-        $this->db->query(
-            "DELETE FROM Business
-            WHERE BusinessName = ?"
-            ,[$businessName]
-        );
-    }
-
     public function getAllUsersInquiries($senderID)
     {
         $query = "SELECT 
@@ -166,8 +213,9 @@ class AdminModel extends Model
         return $this->db->query($query, [$senderID, $senderID])->fetchAll(PDO::FETCH_ASSOC);
     }
 
-    public function removeMessagesByConversation($senderID, $receiverID, $timeSent){
-        if($this->getUserByID($receiverID)['PermissionLevel'] == 1 || $this->getUserByID($senderID)['PermissionLevel'] == 1){
+    public function removeMessagesByConversation($senderID, $receiverID, $timeSent)
+    {
+        if ($this->getUserByID($receiverID)['PermissionLevel'] == 1 || $this->getUserByID($senderID)['PermissionLevel'] == 1) {
             $table = "Inquiries";
         } else {
             $table = "Messages";
@@ -175,11 +223,28 @@ class AdminModel extends Model
 
         $query = "DELETE FROM $table
             WHERE (Sender = ? AND Receiver = ? AND TimeSent = ?)";
-            print_r($query);
+        //print_r($query);
         $this->db->query(
             $query,
             [$senderID, $receiverID, $timeSent]
         );
+
+    }
+
+    public function removeReviewByReviewID($createdAt, $businessName, $comment)
+    {   $review = $this->db->query(
+        "SELECT ReviewID FROM Review
+     WHERE CreatedAt = ? AND BusinessName = ? AND Comment = ?",
+        [$createdAt, $businessName, $comment]
+    )->fetch();
+
+
+        if ($review) {
+            $this->db->query(
+                "DELETE FROM Review WHERE ReviewID = ?",
+                [$review['ReviewID']]
+            );
+        }
     }
 
     public function getAllReports()

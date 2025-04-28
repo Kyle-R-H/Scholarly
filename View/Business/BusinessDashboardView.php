@@ -160,7 +160,7 @@
                             <td><?= htmlspecialchars($stat['TimeOfOrder']) ?></td>
                             <td><?= htmlspecialchars($stat['OrderStatus']) ?></td>
                             <td>
-                                <button type="submit" class="btn btn-success">Submit</button>
+                                <button type="submit" class="btn">Submit</button>
                                 </form>
                             </td>
                         </tr>

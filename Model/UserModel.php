@@ -18,22 +18,38 @@ class UserModel extends Model
         return $this->db->query("SELECT * FROM Business WHERE BusinessName = ?", [$businessName])->fetchAll(PDO::FETCH_ASSOC);
     }
 
-    public function getReviewByReviewID()
+    public function getBusinessByUserID($userId)
     {
-        $query = "SELECT 
-                    Review.ReviewID, 
-                    Review.UserID, 
-                    Business.BusinessName,
-                    Business.Image, 
-                    Review.Rating, 
-                    Review.Comment, 
-                    Review.Response, 
-                    Review.CreatedAt
-                FROM Review
-                LEFT JOIN Business 
-                    ON Review.Business = Business.UserID";
-        return $this->db->query($query)->fetchAll(PDO::FETCH_ASSOC);
+        return $this->db->query("SELECT * FROM Business WHERE UserId = ?", [$userId])->fetch(PDO::FETCH_ASSOC);
+
     }
+
+    public function updatePermissionLevel($userID, $permissionLevel)
+    {
+        $query = "UPDATE Users SET PermissionLevel = ? WHERE UserID = ? AND PermissionLevel != 2";
+        return $this->db->query($query, [$permissionLevel, $userID]);
+    }
+
+    public function getReviewByReviewID()
+{
+    $query = "SELECT 
+                Review.ReviewID, 
+                Review.UserID, 
+                Users.FirstName, 
+                Users.LastName,
+                Business.BusinessName,
+                Business.Image, 
+                Review.Rating, 
+                Review.Comment, 
+                Review.Response, 
+                Review.CreatedAt
+            FROM Review
+            LEFT JOIN Business 
+                ON Review.Business = Business.UserID
+            LEFT JOIN Users
+                ON Review.UserID = Users.UserID";
+    return $this->db->query($query)->fetchAll(PDO::FETCH_ASSOC);
+}
 
     public function registerUser($firstName, $lastName, $email, $password)
     {
