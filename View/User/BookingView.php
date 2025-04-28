@@ -100,8 +100,23 @@
                 </div>
             <?php endif; ?>
 
+            <!-- Maximum Price Filter Form -->
+            <form method="POST" class="mb-4 d-flex gap-2">
+                <div class="input-group">
+                    <input type="number" step="0.01" class="form-control" name="maxPrice" placeholder="Enter maximum price"
+                           value="<?= isset($_POST['maxPrice']) ? htmlspecialchars($_POST['maxPrice']) : '' ?>">
+                    <button type="submit" class="btn btn-primary">Filter</button>
+                </div>
+            </form>
+
             <!-- Menu Items Section -->
             <div class="row">
+                <?php
+                if (isset($_POST['maxPrice']) && $_POST['maxPrice'] !== '') {
+                    $maxPrice = floatval($_POST['maxPrice']);
+                    $items = array_filter($items, fn($item) => $item['ItemPrice'] <= $maxPrice);
+                }
+                ?>
                 <?php foreach ($items as $item): ?>
                     <div class="col-md-6 mb-4">
                         <div class="card h-100 shadow-sm">
