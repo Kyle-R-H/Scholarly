@@ -106,7 +106,7 @@
         <div class="flex-grow-1 p-4">
             <div class="d-flex justify-content-between align-items-center">
                 <h1>Reviews</h1>
-                <a href="?controller=user&action=addReviewView" class="btn btn-success">Add Review</a>
+                <a href="?controller=user&action=addReviewView" class="btn">Add Review</a>
             </div>
 
             <!-- Search Bar Functionality -->

@@ -140,7 +140,7 @@
                                         <tr>
                                             <td><?= htmlspecialchars($user['FirstName']) . " " . htmlspecialchars($user['LastName']) ?></td>
                                             <td>
-                                                <a href="?controller=user&action=sendMessageView&receiverID=<?= $user['UserID'] ?>" class="btn btn-primary">Message</a>
+                                                <a href="?controller=user&action=sendMessageView&receiverID=<?= $user['UserID'] ?>" class="btn">Message</a>
                                             </td>
                                         </tr>
                                         <?php endif; ?>
@@ -177,7 +177,7 @@
                                         <tr>
                                             <td><?= htmlspecialchars($user['BusinessName']) ?></td>
                                             <td>
-                                                <a href="?controller=user&action=sendMessageView&receiverID=<?= $user['UserID'] ?>" class="btn btn-primary">Message</a>
+                                                <a href="?controller=user&action=sendMessageView&receiverID=<?= $user['UserID'] ?>" class="btn">Message</a>
 
                                             </td>
                                         </tr>

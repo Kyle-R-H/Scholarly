@@ -116,8 +116,8 @@
                             oninput="document.getElementById('minRatingValue').innerText = this.value;">
                     </div>
                     <div class="d-flex gap-2">
-                        <button type="submit" class="btn btn-primary">Filter</button>
-                        <a href="?controller=user&action=eventsView&all=true" class="btn btn-secondary">Clear</a>
+                        <button type="submit" class="btn">Filter</button>
+                        <a href="?controller=user&action=eventsView&all=true" class="btn">Clear</a>
                     </div>
                 </form>
             </ul>

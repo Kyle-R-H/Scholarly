@@ -44,7 +44,7 @@
                         <img src="Public\Images\default_pfp_128.png" class="border" height="34" width="34" alt="pfp" style="border-radius: 50%;">
                     </a>
                     <ul class="dropdown-menu text-small">
-                        <li><a class="dropdown-item" href="?controller=business&action=profile">Profile</a></li>
+                        <li><a class="dropdown" href="?controller=business&action=profile">Profile</a></li>
                         <li>
                             <hr class="dropdown-divider">
                         </li>
@@ -128,7 +128,7 @@
                                                 class="form-control form-control-sm mb-2"
                                                 rows="2"
                                                 placeholder="Write response..."></textarea>
-                                            <button type="submit" class="btn btn-sm btn-primary">Save</button>
+                                            <button type="submit" class="btn btn-sm">Save</button>
                                         </form>
                                     <?php else: ?>
                                         <!-- Display existing response -->
