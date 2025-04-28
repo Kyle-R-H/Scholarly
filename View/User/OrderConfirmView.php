@@ -45,6 +45,7 @@
                     <img src="Public\Images\default_pfp_128.png" class="border" height="34" width="34" alt="pfp" style="border-radius: 50%;">
                 </a>
                 <ul class="dropdown-menu text-small">
+                    <li><a class="dropdown-item" href="?controller=user&action=profile">Profile</a></li>
                     <li>
                         <hr class="dropdown-divider">
                     </li>
