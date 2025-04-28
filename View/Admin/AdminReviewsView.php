@@ -113,8 +113,16 @@
                             <td><?= date('F j, Y', strtotime($review['CreatedAt'])) ?></td>
                             <td><?= nl2br(htmlspecialchars($review['FirstName']) . " " . htmlspecialchars($review['LastName'])) ?></td>
                             <td>
-                                <!-- TODO: Add remove function for reviews -->
-                                <button class="btn remove">-</button> 
+                                <form method="post" action="?controller=admin&action=removeReview">
+                                    <input type="hidden" name="comment" value="<?= htmlspecialchars($review['Comment']) ?>">
+                                    <input type="hidden" name="response" value="<?= htmlspecialchars($review['Response']) ?>">
+                                    <input type="hidden" name="createdAt" value="<?= htmlspecialchars($review['CreatedAt']) ?>">
+                                    <input type="hidden" name="firstName" value="<?= htmlspecialchars($review['FirstName']) ?>">
+                                    <input type="hidden" name="lastName" value="<?= htmlspecialchars($review['LastName']) ?>">
+                                    <input type="hidden" name="businessName" value="<?= htmlspecialchars($review['BusinessName']) ?>">
+                                    <input type="hidden" name="table" value="Review"> <!-- or 'Inquiries', depending on context -->
+                                    <button type="submit" class="btn remove">-</button>
+                                </form>
                             </td>
                         </tr>
                     <?php endforeach; ?>
