@@ -119,7 +119,9 @@ class Model
         FROM Users 
         LEFT JOIN Business ON Users.UserID = Business.UserID 
         WHERE Users.VerifiedCustomer = '1' 
-        AND Users.PermissionLevel = ?",
+        AND Users.PermissionLevel = ? 
+        AND Users.BanStatus = 0",
+
             [$permissionLevel]
         )->fetchAll(PDO::FETCH_ASSOC);
     }
@@ -219,8 +221,10 @@ class Model
         return $this->db->query($query, [$senderID, $receiverID, $receiverID, $senderID])->fetchAll(PDO::FETCH_ASSOC);
     }
 
+
     public function addToAdminLogs($adminID, $action, $description){
         $query = "INSERT INTO AdminLogs (NameOfAdmin, ActionTaken, TimeStamp, Description) VALUES (?, ?, ?, ?)";
         return $this->db->query($query, [$adminID, $action, date("Y-m-d H:i:s"), $description]);        
     }
+
 }

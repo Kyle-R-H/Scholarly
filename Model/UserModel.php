@@ -18,6 +18,18 @@ class UserModel extends Model
         return $this->db->query("SELECT * FROM Business WHERE BusinessName = ?", [$businessName])->fetchAll(PDO::FETCH_ASSOC);
     }
 
+    public function getBusinessByUserID($userId)
+    {
+        return $this->db->query("SELECT * FROM Business WHERE UserId = ?", [$userId])->fetch(PDO::FETCH_ASSOC);
+
+    }
+
+    public function updatePermissionLevel($userID, $permissionLevel)
+    {
+        $query = "UPDATE Users SET PermissionLevel = ? WHERE UserID = ?";
+        return $this->db->query($query, [$permissionLevel, $userID]);
+    }
+
     public function getReviewByReviewID()
     {
         $query = "SELECT 
