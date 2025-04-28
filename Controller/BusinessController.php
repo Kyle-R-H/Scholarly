@@ -215,27 +215,27 @@ class BusinessController extends Controller
     {
         $business = $this->businessModel->getBusinessByEmail($_COOKIE["Login_Info"]);
 
-        $this->view('Business/BusinessChangePasswordView', ['business'=>$business]);
+        $this->view('Business/BusinessChangePasswordView', ['business' => $business]);
     }
 
     public function changePassword()
     {
         $user = $this->businessModel->getUserByEmail($_COOKIE['Login_Info']);
-        
+
         $currentPasswordCorrect = password_verify($_POST['CurrentPassword'], $user['Password']);
         $newPassword = $_POST['NewPassword'];
         $confirmNewPassword = $_POST['ConfirmNewPassword'];
 
         if ($currentPasswordCorrect) {
-            if($newPassword == $confirmNewPassword) {
+            if ($newPassword == $confirmNewPassword) {
                 // Check if businessModel is set
                 if (!$this->businessModel) {
                     die("Error: businessModel is NULL! Check if it is being initialized correctly.");
                 };
 
                 $this->businessModel->updatePassword(
-                    $user['Email']
-                    ,empty($_POST['NewPassword']) ? $user['Password'] : $_POST['NewPassword']
+                    $user['Email'],
+                    empty($_POST['NewPassword']) ? $user['Password'] : $_POST['NewPassword']
                 );
             }
             // Passwords don't match
@@ -250,12 +250,28 @@ class BusinessController extends Controller
         $business = $this->businessModel->getBusinessByEmail($_COOKIE["Login_Info"]);
 
         $this->businessModel->updateBusinessDetails(
-            $business['UserID']
-            ,empty($_POST['Description']) ? $business['Description'] : $_POST['Description']
-            ,empty($_POST['Image']) ? $business['Image'] : $_POST['Image']
-            ,empty($_POST['ContactInfo']) ? $business['ContactInfo'] : $_POST['ContactInfo']
+            $business['UserID'],
+            empty($_POST['Description']) ? $business['Description'] : $_POST['Description'],
+            empty($_POST['Image']) ? $business['Image'] : $_POST['Image'],
+            empty($_POST['ContactInfo']) ? $business['ContactInfo'] : $_POST['ContactInfo']
         );
 
         header("Location: ?controller=business&action=profile");
+    }
+
+    public function sendReport()
+    {
+        $senderID = $this->businessModel->getUserByEmail($_COOKIE['Login_Info'])['UserID'];
+        $receiverID = $_POST['receiverID'] ?? null;
+        $message = $_POST['reportMessage'] ?? null;
+
+        $_SESSION['error'] = $this->businessModel->sendReport($senderID, $receiverID, $message);
+        if (!$_SESSION['error']) {
+            $_SESSION['success'] = "Report sent Successfully";
+        }
+
+        // Stops view redirect and keeps user on current view
+        header("Location: " . $_SERVER['HTTP_REFERER'] ?? '?controller=business&action=sendMessagesView');
+        exit();
     }
 }
