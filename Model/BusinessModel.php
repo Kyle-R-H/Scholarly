@@ -86,7 +86,8 @@ WHERE UserID = ? AND OrderStatus = 'Pending';",
         $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
 
         $this->db->query(
-            "UPDATE Users
+            "UPDATE
+                Users
 
             SET
                 Password = ?
@@ -94,6 +95,23 @@ WHERE UserID = ? AND OrderStatus = 'Pending';",
             WHERE
                 Email = ?"
             ,[$hashedPassword, $email]
+        );
+    }
+
+    public function updateBusinessDetails($userId, $description, $image, $contactInfo)
+    {
+        $this->db->query(
+            "UPDATE
+                Business
+            
+            SET
+                Description = ?
+                ,Image = ?
+                ,ContactInfo = ?
+            
+            WHERE
+                UserID = ?"
+            ,[$description, $image, $contactInfo, $userId]
         );
     }
 }

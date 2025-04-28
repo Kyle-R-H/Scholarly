@@ -2,7 +2,7 @@
 <html>
 
 <head>
-    <title>User Profile</title>
+    <title>Profile</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="Public/css/Styles.css" rel="stylesheet">
@@ -47,7 +47,6 @@
                     </a>
                     <ul class="dropdown-menu text-small">
                         <li><a class="dropdown-item" href="?controller=user&action=profile">Profile</a></li>
-                        <li><a class="dropdown-item" href="?controller=user&action=settings">Settings</a></li>
                         <li>
                             <hr class="dropdown-divider">
                         </li>
@@ -98,12 +97,12 @@
                 <form method="POST" action="?controller=user&action=updateProfile">
                     <div class="row pb-4">
                         <div class="col form pr-3">
-                            <label class="labels"> First name </label>
+                            <label> First name </label>
                             <input name="FirstName" type="text" class="form-control" placeholder="<?php echo htmlspecialchars($user['FirstName'])?>">
                         </div>
 
                         <div class="col form">
-                            <label class="labels"> Last name </label>
+                            <label> Last name </label>
                             <input name="LastName" type="text" class="form-control" placeholder="<?php echo htmlspecialchars($user['LastName'])?>">
                         </div>
                     </div>

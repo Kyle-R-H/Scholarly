@@ -156,6 +156,8 @@ class AdminController extends Controller
                 // Successful registration
                 $_SESSION['success'] = "Successful Business Registration";
                 $this->adminModel->registerBusiness($userID, $name, $businessType, $description, $image);
+                $this->adminModel->addToAdminLogs($this->adminModel->getUserByEmail($_COOKIE["Login_Info"])['UserID'], "Business Registered", "Registered business " . $name);
+
                 header("Location: ?controller=admin&action=adminManager");
                 exit();
             } else {
@@ -185,6 +187,8 @@ class AdminController extends Controller
         
         $this->adminModel->removeBusiness($businessName);
 
+        $this->adminModel->addToAdminLogs($this->adminModel->getUserByEmail($_COOKIE["Login_Info"])['UserID'], "Business Removed", "Removed Business " . $businessName);
+
         header("Location: ?controller=admin&action=adminManager");
     }
 
@@ -206,6 +210,8 @@ class AdminController extends Controller
             $_SESSION['success'] = "Message Successfully Removed";
         }
     
+        $this->adminModel->addToAdminLogs($this->adminModel->getUserByEmail($_COOKIE["Login_Info"])['UserID'], "Message Removed", "Removed message between " . $senderID . " & " . $receiverID);
+
         header("Location: " . ($_SERVER['HTTP_REFERER'] ?? '?controller=admin&action=adminMessages'));
         exit();
     }
@@ -217,6 +223,11 @@ class AdminController extends Controller
 
 
         $this->adminModel->setUserBanStatus($userId, $banStatusToSet);
+        if ($banStatusToSet == 0) {
+            $this->adminModel->addToAdminLogs($this->adminModel->getUserByEmail($_COOKIE["Login_Info"])['UserID'], "Unbanned User", "Unbanned User " . $userId);
+        } else {
+            $this->adminModel->addToAdminLogs($this->adminModel->getUserByEmail($_COOKIE["Login_Info"])['UserID'], "Banned User", "Banned User " . $userId);
+        }
 
         header("Location: ?controller=admin&action=adminUserManager");
     }
@@ -228,6 +239,8 @@ class AdminController extends Controller
 
         $this->adminModel->removeUser($userId);
 
+        // Log
+        $this->adminModel->addToAdminLogs($this->adminModel->getUserByEmail($_COOKIE["Login_Info"])['UserID'], "Removed User", "Removed User " . $userId);
         header("Location: ?controller=admin&action=adminUserManager");
     }
 

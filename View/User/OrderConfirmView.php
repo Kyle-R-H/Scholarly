@@ -2,7 +2,7 @@
 <html>
 
 <head>
-    <title>Order Confirm View</title>
+    <title>Confirm Order</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -45,6 +45,7 @@
                     <img src="Public\Images\default_pfp_128.png" class="border" height="34" width="34" alt="pfp" style="border-radius: 50%;">
                 </a>
                 <ul class="dropdown-menu text-small">
+                    <li><a class="dropdown-item" href="?controller=user&action=profile">Profile</a></li>
                     <li>
                         <hr class="dropdown-divider">
                     </li>
