@@ -243,8 +243,10 @@ class UserController extends Controller
 
             // Regenerate token to prevent re-submission on refresh
             $_SESSION['form_token'] = bin2hex(random_bytes(32));
+
             // Redirect to the same page to clear POST data and prevent duplicate submissions
-            header("Location: ?controller=user&action=bookingView&businessName=" . urlencode($businessName));
+            header("Location: " . $_SERVER['HTTP_REFERER'] ?? "Location: ?controller=user&action=bookingView&businessName=" . urlencode($businessName));
+
             exit();
         }
 
