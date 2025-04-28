@@ -36,6 +36,29 @@ class AuthController extends Controller
         return $permissionLevel;
     }
 
+    public function checkIfUserHasBusiness($email): bool
+    {
+        $user = $this->userModel->getUserByEmail($email);
+
+        // Check if user exists
+        if (!$user) {
+            return false; // User does not exist, so they cannot have a business
+        }
+
+        $userID = $user['UserID'];
+        $business = $this->userModel->getBusinessByUserID($userID);
+
+        return $business ? true : false;
+    }
+
+    public function updatePermissionIfNoBusiness($userID)
+    {
+        // Check if the user has a business
+        if (!$this->checkIfUserHasBusiness($this->userModel->getUserByID($userID)['Email'])) {
+            $this->userModel->updatePermissionLevel($userID, 0); // Update permission level to 0
+        }
+    }
+
     public function login(){
         // echo "<br> Login function called.<br>";
 
@@ -82,7 +105,9 @@ class AuthController extends Controller
                         $this -> cookieValue = $email;
                         setcookie($this-> cookieName, $this -> cookieValue,  time() + (86400 * 30));
 
+                        $this->updatePermissionIfNoBusiness($user['UserID']);
                         $permissionLevel = $this->checkPermissionLevel($email);
+
                         switch($permissionLevel){
                             // User
                             case 0:

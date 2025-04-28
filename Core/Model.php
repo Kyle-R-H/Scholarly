@@ -119,7 +119,9 @@ class Model
         FROM Users 
         LEFT JOIN Business ON Users.UserID = Business.UserID 
         WHERE Users.VerifiedCustomer = '1' 
-        AND Users.PermissionLevel = ?",
+        AND Users.PermissionLevel = ? 
+        AND Users.BanStatus = 0",
+
             [$permissionLevel]
         )->fetchAll(PDO::FETCH_ASSOC);
     }
@@ -218,4 +220,5 @@ class Model
                   OR (Sender = ? AND Receiver = ?)";
         return $this->db->query($query, [$senderID, $receiverID, $receiverID, $senderID])->fetchAll(PDO::FETCH_ASSOC);
     }
+
 }
