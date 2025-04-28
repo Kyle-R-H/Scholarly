@@ -31,21 +31,25 @@ class UserModel extends Model
     }
 
     public function getReviewByReviewID()
-    {
-        $query = "SELECT 
-                    Review.ReviewID, 
-                    Review.UserID, 
-                    Business.BusinessName,
-                    Business.Image, 
-                    Review.Rating, 
-                    Review.Comment, 
-                    Review.Response, 
-                    Review.CreatedAt
-                FROM Review
-                LEFT JOIN Business 
-                    ON Review.Business = Business.UserID";
-        return $this->db->query($query)->fetchAll(PDO::FETCH_ASSOC);
-    }
+{
+    $query = "SELECT 
+                Review.ReviewID, 
+                Review.UserID, 
+                Users.FirstName, 
+                Users.LastName,
+                Business.BusinessName,
+                Business.Image, 
+                Review.Rating, 
+                Review.Comment, 
+                Review.Response, 
+                Review.CreatedAt
+            FROM Review
+            LEFT JOIN Business 
+                ON Review.Business = Business.UserID
+            LEFT JOIN Users
+                ON Review.UserID = Users.UserID";
+    return $this->db->query($query)->fetchAll(PDO::FETCH_ASSOC);
+}
 
     public function registerUser($firstName, $lastName, $email, $password)
     {
