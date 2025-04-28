@@ -220,9 +220,6 @@ class BusinessController extends Controller
 
     public function changePassword()
     {
-        // echo "In changePassword";
-
-        $business = $this->businessModel->getBusinessByEmail($_COOKIE["Login_Info"]);
         $user = $this->businessModel->getUserByEmail($_COOKIE['Login_Info']);
         
         $currentPasswordCorrect = password_verify($_POST['CurrentPassword'], $user['Password']);
@@ -246,5 +243,19 @@ class BusinessController extends Controller
         }
         // Current password incorrect
         header("Location: ?controller=business&action=changePasswordView");
+    }
+
+    public function updateProfile()
+    {
+        $business = $this->businessModel->getBusinessByEmail($_COOKIE["Login_Info"]);
+
+        $this->businessModel->updateBusinessDetails(
+            $business['UserID']
+            ,empty($_POST['Description']) ? $business['Description'] : $_POST['Description']
+            ,empty($_POST['Image']) ? $business['Image'] : $_POST['Image']
+            ,empty($_POST['ContactInfo']) ? $business['ContactInfo'] : $_POST['ContactInfo']
+        );
+
+        header("Location: ?controller=business&action=profile");
     }
 }
