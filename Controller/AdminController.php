@@ -243,4 +243,26 @@ class AdminController extends Controller
         $this->adminModel->addToAdminLogs($this->adminModel->getUserByEmail($_COOKIE["Login_Info"])['UserID'], "Removed User", "Removed User " . $userId);
         header("Location: ?controller=admin&action=adminUserManager");
     }
+
+    public function removeReview(){
+
+        $createdAt = $_POST['createdAt'] ?? null;
+        $businessName = $_POST['businessName'] ?? null;
+        $comment = $_POST['comment'] ?? null;
+
+            $_SESSION['error'] = "Missing required parameters.createdAt:" . $createdAt . "businessName:" . $businessName . "comment: " . $comment;
+        if (!$createdAt || !$businessName || !$comment) {
+            header("Location: " . ($_SERVER['HTTP_REFERER'] ?? '?controller=admin&action=reviews'));
+            exit();
+        }
+
+        $_SESSION['error'] = $this->adminModel->removeReviewByReviewID($createdAt, $businessName, $comment);
+
+        if (!$_SESSION['error']) {
+            $_SESSION['success'] = "Review Successfully Removed ";
+        }
+
+        header("Location: " . ($_SERVER['HTTP_REFERER'] ?? '?controller=admin&action=reviews'));
+        exit();
+    }
 }
