@@ -181,4 +181,10 @@ class AdminModel extends Model
             [$senderID, $receiverID, $timeSent]
         );
     }
+
+    public function getAllReports()
+    {
+        $query = "SELECT * FROM Reports";
+        return $this->db->query($query)->fetchAll(PDO::FETCH_ASSOC);
+    }
 }

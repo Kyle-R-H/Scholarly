@@ -188,4 +188,14 @@ class AdminController extends Controller
         header("Location: " . ($_SERVER['HTTP_REFERER'] ?? '?controller=admin&action=adminMessages'));
         exit();
     }
+
+    public function reports(){
+        $reports = $this->adminModel->getAllReports();
+
+        $this->view(
+            'Admin/AdminManagerView',
+            [$reports => 'reports']
+        );
+
+    }
 }
