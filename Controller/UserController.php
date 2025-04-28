@@ -35,9 +35,9 @@ class UserController extends Controller
         }
 
         $this->userModel->updateUserDetails(
-            $user['Email']
-            ,empty($_POST['FirstName']) ? $user['FirstName'] : $_POST['FirstName']
-            ,empty($_POST['LastName']) ? $user['LastName'] : $_POST['LastName']
+            $user['Email'],
+            empty($_POST['FirstName']) ? $user['FirstName'] : $_POST['FirstName'],
+            empty($_POST['LastName']) ? $user['LastName'] : $_POST['LastName']
         );
 
         header("Location: ?controller=user&action=profile");
@@ -47,7 +47,7 @@ class UserController extends Controller
     {
         $user = $this->userModel->getUserByEmail($_COOKIE["Login_Info"]);
 
-        $this->view('User/UserChangePasswordView', ['user'=>$user]);
+        $this->view('User/UserChangePasswordView', ['user' => $user]);
     }
 
     public function changePassword()
@@ -61,15 +61,15 @@ class UserController extends Controller
         $confirmNewPassword = $_POST['ConfirmNewPassword'];
 
         if ($currentPasswordCorrect) {
-            if($newPassword == $confirmNewPassword) {
+            if ($newPassword == $confirmNewPassword) {
                 // Check if userModel is set
                 if (!$this->userModel) {
                     die("Error: userModel is NULL! Check if it is being initialized correctly.");
                 }
 
                 $this->userModel->updatePassword(
-                    $user['Email']
-                    ,empty($_POST['NewPassword']) ? $user['Password'] : $_POST['NewPassword']
+                    $user['Email'],
+                    empty($_POST['NewPassword']) ? $user['Password'] : $_POST['NewPassword']
                 );
             }
             // Passwords don't match
@@ -432,16 +432,14 @@ class UserController extends Controller
 
             if ($this->userModel->getUserById($receiverID)['PermissionLevel'] == 1) {
                 $_SESSION['error'] = $this->userModel->createInquiry($senderID, $receiverID, $message);
-                if($_SESSION['error'] == null){
+                if ($_SESSION['error'] == null) {
                     $_SESSION['success'] = "Message sent successfully!";
                 }
-                
             } else {
                 echo $senderID . $receiverID . $message;
                 $this->userModel->createMessage($senderID, $receiverID, $message);
                 $_SESSION['success'] = "Message sent successfully!";
             }
-
         } else {
             $_SESSION['error'] = "Message failed to send";
         }
@@ -459,7 +457,7 @@ class UserController extends Controller
         }
         // Sender is the logged-in user
         $senderID = $this->userModel->getUserByEmail($_COOKIE['Login_Info'])['UserID'];
-        $request = $this->userModel->getUserById($receiverID)['PermissionLevel'] == 1 && count($this->userModel->getAllInquiryMessages($senderID, $receiverID)) <= 1? true : false; 
+        $request = $this->userModel->getUserById($receiverID)['PermissionLevel'] == 1 && count($this->userModel->getAllInquiryMessages($senderID, $receiverID)) <= 1 ? true : false;
         if ($this->userModel->getUserById($receiverID)['PermissionLevel'] == 1) {
             $previousMessages = $this->userModel->getUserInquiries($senderID, $receiverID);
         } else {
@@ -468,5 +466,21 @@ class UserController extends Controller
 
         // Pass $previousMessages, $receiverID, etc. to the view
         require_once 'View/User/MessagingView.php';
+    }
+
+    public function sendReport()
+    {
+        $senderID = $this->userModel->getUserByEmail($_COOKIE['Login_Info'])['UserID'];
+        $receiverID = $_POST['receiverID'] ?? null;
+        $message = $_POST['reportMessage'] ?? null;
+
+        $_SESSION['error'] = $this->userModel->sendReport($senderID, $receiverID, $message);
+        if (!$_SESSION['error']) {
+            $_SESSION['success'] = "Report sent Successfully";
+        }
+        
+        // Stops view redirect and keeps user on current view
+        header("Location: " . $_SERVER['HTTP_REFERER'] ?? '?controller=user&action=sendMessagesView');
+        exit();
     }
 }

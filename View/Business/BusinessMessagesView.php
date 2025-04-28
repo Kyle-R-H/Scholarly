@@ -142,6 +142,28 @@
                         </div>
                     </div>
                 </ul>
+                <!-- Report Section -->
+                <div class="col-12">
+                    <h3 class="mb-3">
+                        <a class="btn red" data-bs-toggle="collapse" href="#reportSection" role="button" aria-expanded="false" aria-controls="reportSection">
+                            Report User #<?= htmlspecialchars($receiverID) ?>
+                        </a>
+                    </h3>
+                </div>
+
+                <div class="collapse" id="reportSection">
+                    <div class="card mb-3">
+                        <div class="card-body p-0">
+                            <form method="POST" action="?controller=business&action=sendReport">
+                                <input type="hidden" name="receiverID" value="<?= htmlspecialchars($receiverID) ?>">
+                                <div class="input-group" style="border: 1px solid #ddd; border-radius: 5px; overflow: hidden;">
+                                    <textarea class="form-control border-0" name="reportMessage" placeholder="Reason of Report..." rows="1" required style="resize: none;"></textarea>
+                                    <button class="btn red border-0" type="submit" style="border-top-right-radius: 5px; border-bottom-right-radius: 5px;">Report</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
             </div>
         <?php endif; ?>
 
@@ -228,7 +250,7 @@
                         <?php else: ?>
                             <p class="text-muted text-center">No Business Users found.</p>
                         <?php endif; ?> -->
-                    <!-- </div> -->
+                <!-- </div> -->
             </div>
         </div>
     </main>
