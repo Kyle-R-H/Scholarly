@@ -63,7 +63,6 @@ class AdminModel extends Model
     // Remove business
     public function removeBusiness($businessName)
     {
-        // echo "In removeBusiness<br>";
         $this->db->query(
             "DELETE FROM Business
             WHERE BusinessName = ?",

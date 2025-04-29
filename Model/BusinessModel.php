@@ -20,9 +20,8 @@ class BusinessModel extends Model
 
     public function getBusinessByEmail($email)
     {
-        // echo "In getBusinessByEmail<br>";
+
         $userID = $this->db->query("SELECT UserId FROM Users WHERE Email = ?", [$email])->fetch(PDO::FETCH_ASSOC);
-        // echo $userID['UserId'];
         return $this->getBusinessByUserID($userID['UserId']);
     }
 

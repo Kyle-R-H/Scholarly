@@ -11,7 +11,6 @@ class BusinessController extends Controller
 
         if (!isset($_COOKIE['Login_Info']) || $this->businessModel->getUserByEmail($_COOKIE["Login_Info"])['PermissionLevel'] != 1) {
             $_SESSION['error'] = "Insufficient Permissions";
-            // $this->view('Auth/LoginView', []);
             header("Location: ?controller=auth&action=loginView");
             exit();
         } else {
@@ -146,8 +145,7 @@ class BusinessController extends Controller
 
         // Get search query from Form POST
         $searchUserQuery = $_POST['searchUser'] ?? '';
-        // $searchBusinessQuery = $_POST['searchBusiness'] ?? '';
-        // echo "<br> Search Q: "; print_r($searchQuery);
+
 
         // Filter Reviews based on the search query
         if (!empty($searchUserQuery)) {

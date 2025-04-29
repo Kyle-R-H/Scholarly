@@ -14,14 +14,12 @@ class UserController extends Controller
             header("Location: ?controller=auth&action=loginView");
             exit();
         } else {
-            // print_r($_COOKIE);
         }
     }
 
     public function profile()
     {
         $user = $this->userModel->getUserByEmail($_COOKIE["Login_Info"]);
-        // print_r($user);
         require_once 'View/User/UserProfileView.php';
     }
 
@@ -101,11 +99,8 @@ class UserController extends Controller
         $restaurants = $this->userModel->getBusinessByTypeAndRating("restaurant", $minRating);
 
 
-        // print_r($restaurants);
-
         // Get search query from Form POST
         $searchQuery = $_POST['search'] ?? '';
-        // echo "<br> Search Q: "; print_r($searchQuery);
 
         // Filter restaurants based on the search query
         if (!empty($searchQuery)) {
@@ -135,7 +130,6 @@ class UserController extends Controller
 
         // Get search query from Form POST
         $searchQuery = $_POST['search'] ?? '';
-        // echo "<br> Search Q: "; print_r($searchQuery);
 
         // Filter restaurants based on the search query
         if (!empty($searchQuery)) {
@@ -195,7 +189,7 @@ class UserController extends Controller
 
         // Get search query from Form POST
         $searchQuery = $_POST['search'] ?? '';
-        // echo "<br> Search Q: "; print_r($searchQuery);
+
 
         // Filter restaurants based on the search query
         if (!empty($searchQuery)) {
@@ -310,8 +304,6 @@ class UserController extends Controller
 
         // Get search query from Form POST
         $searchQuery = $_POST['search'] ?? '';
-        // echo "<br> Search Q: "; print_r($searchQuery);
-
         // Filter Reviews based on the search query
         if (!empty($searchQuery)) {
             $reviews = array_filter($reviews, function ($reviews) use ($searchQuery) {
@@ -354,7 +346,6 @@ class UserController extends Controller
         } else {
             $_SESSION['error'] = "Cart is empty.";
         }
-        // $this->view('User/RestaurantView', []);
         header("Location: ?controller=user&action=restaurantView");
         exit();
     }
@@ -404,7 +395,6 @@ class UserController extends Controller
         // Get search query from Form POST
         $searchUserQuery = $_POST['searchUser'] ?? '';
         $searchBusinessQuery = $_POST['searchBusiness'] ?? '';
-        // echo "<br> Search Q: "; print_r($searchQuery);
 
         // Filter Reviews based on the search query
         if (!empty($searchUserQuery)) {
