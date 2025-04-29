@@ -149,7 +149,6 @@ class UserModel extends Model
 
     public function getUserMessages($senderID, $receiverID,)
     {
-
         $query = "SELECT * FROM Messages 
                 WHERE (Sender = ? AND Receiver = ?) 
                 ORDER BY TimeSent ASC";
