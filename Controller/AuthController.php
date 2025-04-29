@@ -36,68 +36,49 @@ class AuthController extends Controller
         return $permissionLevel;
     }
 
-    public function checkIfUserHasBusiness($email): bool
-    {
-        $user = $this->userModel->getUserByEmail($email);
 
-        // Check if user exists
-        if (!$user) {
-            return false; // User does not exist, so they cannot have a business
-        }
-
-        $userID = $user['UserID'];
-        $business = $this->userModel->getBusinessByUserID($userID);
-
-        return $business ? true : false;
-    }
-
-    public function updatePermissionIfNoBusiness($userID)
+    public function updatePermissionIfNoBusiness()
     {
         // Check if the user has a business
-        if (!$this->checkIfUserHasBusiness($this->userModel->getUserByID($userID)['Email'])) {
-            $this->userModel->updatePermissionLevel($userID, 0); // Update permission level to 0
+        $normalUsers=$this->userModel->getAllUserIDsFromTable();
+        if (!empty($normalUsers)) {
+            foreach ($normalUsers as $userID) {
+
+                $this->userModel->updatePermissionLevel($userID['UserID'], 0); // Update permission level to 0
+            }
         }
     }
 
     public function login(){
-        // echo "<br> Login function called.<br>";
 
         if ($_SERVER["REQUEST_METHOD"] == "POST") {
-            // echo "<br> In POST request.<br>";
 
-            // Debugging input values
+
             $email = $_POST['Email'] ?? 'EMPTY';
             $password = $_POST['Password'] ?? 'EMPTY';
-            // echo "Email: " . htmlspecialchars($email) . "<br>";
-            // echo "Password: " . htmlspecialchars($password) . "<br>";
+
 
             // Check if userModel is set
             if (!$this->userModel) {
                 die("Error: userModel is NULL! Check if it is being initialized correctly.");
             }
-            // echo "UserModel is set.<br>";
+
 
             // Fetch user from database
             $user = $this->userModel->getUserByEmail($email);
-            // echo "Query executed, result: <pre>" . print_r($user, true) . "</pre>";
 
             // Check if user exists
             if (!$user) {
                 $_SESSION['error'] = "User not found.";
                 $this->view('Auth/LoginView', []);
-                // header("Location: ?controller=auth&action=loginView");
-                // exit;
+
             } else {
-                // echo "User found!<br>";
 
                 if(!$user['BanStatus']){
-                    // Verify password
                     $passwordMatch = password_verify($password, $user['Password'] ?? '');
-                    // echo "Password Verify Result: " . ($passwordMatch ? "MATCH" : "NO MATCH") . "<br>";
-                    // echo "Password Result: " . $passwordMatch;
+
 
                     if ($user && $passwordMatch) {
-                        // echo "User authenticated, setting session variables.<br>";
 
                         $_SESSION['UserID'] = $user['UserID'];
                         $_SESSION['FirstName'] = $user['FirstName'];
@@ -126,7 +107,6 @@ class AuthController extends Controller
                                 exit();
                         }
                     } else {
-                        // echo "Invalid credentials, displaying error.<br>";
                         $_SESSION['error'] = "Invalid email or password.";
                         $this->view('Auth/LoginView', []);
                     }
@@ -145,7 +125,6 @@ class AuthController extends Controller
 
     public function register()
     {
-        // echo "<br>Register function called.<br>";
 
         // Debugging input values
         $email = $_POST['RegisterEmail'] ?? 'EMPTY';
@@ -161,7 +140,6 @@ class AuthController extends Controller
 
         // Fetch user from database
         $user = $this->userModel->getUserByEmail($email);
-        // echo "<br>Query executed, result: <pre>" . print_r($user, true) . "</pre>";
 
 
         if(!empty($email)){

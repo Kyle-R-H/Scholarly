@@ -26,7 +26,6 @@
                                     <div class="toast-body">
                                         <?php echo $_SESSION['error'] ?>
                                     </div>
-                                    <!-- <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"><?php unset($_SESSION['error']) ?></button> -->
                                 </div>
                             </div>
                         </div>

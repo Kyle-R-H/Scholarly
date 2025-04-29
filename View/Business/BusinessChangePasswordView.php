@@ -64,9 +64,6 @@
                 <li class="nav-item">
                     <a href="?controller=business&action=changePasswordView" class="nav-link active">Change Password</a>
                 </li>
-                <!-- <li>
-                    <a href="#" class="nav-link delete-account">Delete Account</a>
-                </li> -->
             </ul>
         </div>
 

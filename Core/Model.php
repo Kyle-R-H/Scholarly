@@ -136,7 +136,7 @@ class Model
         // echo "sender: " . $senderID;
         // echo " <br> receiver: " . $receiverID;
         $query = "SELECT * FROM Messages 
-                WHERE (Sender = ? AND Receiver = ?) 
+                WHERE (Sender = ? AND Receiver = ?)  
                 OR (Sender = ? AND Receiver = ?) 
                 ORDER BY TimeSent ASC";
 
@@ -243,6 +243,19 @@ class Model
         }
         $query = "INSERT INTO AdminLogs (NameOfAdmin,LogID ,ActionTaken, TimeStamp, Description) VALUES (?, ?, ?, ?, ?)";
         return $this->db->query($query, [$adminID, $maxID["maxID"]+1, $action, date("Y-m-d H:i:s"), $description]);
+    }
+
+    public function updatePermissionLevel($userID, $permissionLevel)
+    {
+        $query = "UPDATE Users SET PermissionLevel = ? WHERE UserID = ? AND PermissionLevel != 2";
+        return $this->db->query($query, [$permissionLevel, $userID]);
+    }
+
+    public function getAllUserIDsFromTable()
+    {
+        return $this->db->query("SELECT UserID
+        FROM Users
+        WHERE UserID NOT IN (SELECT UserID FROM Business)")->fetchAll(PDO::FETCH_ASSOC);
     }
 
 }

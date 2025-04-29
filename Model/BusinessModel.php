@@ -15,9 +15,8 @@ class BusinessModel extends Model
 
     public function getBusinessByEmail($email)
     {
-        // echo "In getBusinessByEmail<br>";
+
         $userID = $this->db->query("SELECT UserId FROM Users WHERE Email = ?", [$email])->fetch(PDO::FETCH_ASSOC);
-        // echo $userID['UserId'];
         return $this->getBusinessByUserID($userID['UserId']);
     }
 
@@ -96,16 +95,11 @@ WHERE UserID = ? AND OrderStatus = 'Pending';",
     public function updateBusinessDetails($userId, $description, $image, $contactInfo)
     {
         $this->db->query(
-            "UPDATE
-                Business
-            
-            SET
-                Description = ?
+            "UPDATE Business
+            SET Description = ?
                 ,Image = ?
                 ,ContactInfo = ?
-            
-            WHERE
-                UserID = ?"
+            WHERE UserID = ?"
             ,[$description, $image, $contactInfo, $userId]
         );
     }

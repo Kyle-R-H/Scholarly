@@ -18,32 +18,26 @@ class UserModel extends Model
         return $this->db->query("SELECT * FROM Business WHERE BusinessName = ?", [$businessName])->fetchAll(PDO::FETCH_ASSOC);
     }
 
-    public function updatePermissionLevel($userID, $permissionLevel)
-    {
-        $query = "UPDATE Users SET PermissionLevel = ? WHERE UserID = ? AND PermissionLevel != 2";
-        return $this->db->query($query, [$permissionLevel, $userID]);
-    }
-
     public function getReviewByReviewID()
-{
-    $query = "SELECT 
-                Review.ReviewID, 
-                Review.UserID, 
-                Users.FirstName, 
-                Users.LastName,
-                Business.BusinessName,
-                Business.Image, 
-                Review.Rating, 
-                Review.Comment, 
-                Review.Response, 
-                Review.CreatedAt
-            FROM Review
-            LEFT JOIN Business 
-                ON Review.Business = Business.UserID
-            LEFT JOIN Users
-                ON Review.UserID = Users.UserID";
-    return $this->db->query($query)->fetchAll(PDO::FETCH_ASSOC);
-}
+    {
+        $query = "SELECT 
+                    Review.ReviewID, 
+                    Review.UserID, 
+                    Users.FirstName, 
+                    Users.LastName,
+                    Business.BusinessName,
+                    Business.Image, 
+                    Review.Rating, 
+                    Review.Comment, 
+                    Review.Response, 
+                    Review.CreatedAt
+                FROM Review
+                LEFT JOIN Business 
+                    ON Review.Business = Business.UserID
+                LEFT JOIN Users
+                    ON Review.UserID = Users.UserID";
+        return $this->db->query($query)->fetchAll(PDO::FETCH_ASSOC);
+    }
 
     public function registerUser($firstName, $lastName, $email, $password)
     {
@@ -81,10 +75,7 @@ class UserModel extends Model
 
         $this->db->query(
             "UPDATE Users
-
-            SET
-                Password = ?
-
+            SET Password = ?
             WHERE
                 Email = ?"
             ,[$hashedPassword, $email]
@@ -129,7 +120,6 @@ class UserModel extends Model
         $maxReviewID = $this->db->query("SELECT MAX(ReviewID) FROM Review")->fetch(PDO::FETCH_ASSOC);
         print_r($maxReviewID);
         $query = "INSERT INTO Review (ReviewID, UserID, Business, Rating, Comment, Response, CreatedAt, BusinessName) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
-        // Use your database query method with parameter binding
         return $this->db->query($query, [$maxReviewID["MAX(ReviewID)"] + 1, $userID, $business, $rating, $comment, "", date("Y-m-d H:i:s"), $businessName]);
     }
 
@@ -150,7 +140,7 @@ class UserModel extends Model
         $query = "INSERT INTO Inquiries (InquiriesID, Sender, Receiver, Message, TimeSent, Pending) VALUES (?, ?, ?, ?, ?, ?)";
         return $this->db->query($query, [$maxInquiryID["maxID"] + 1, $senderID, $receiverID, $message, date("Y-m-d H:i:s"), 1]);
     }
-
+  
     public function getBusinessByTypeAndRating($businessType, $minRating) {
         $query = "SELECT *, IFNULL(Rating, 0) AS effectiveRating 
                   FROM Business 

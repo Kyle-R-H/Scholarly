@@ -31,5 +31,3 @@ class Database {
         return $this->pdo->lastInsertId();
     }
 }
-
-// Based off Dani Krossing Php OOP tutorial
