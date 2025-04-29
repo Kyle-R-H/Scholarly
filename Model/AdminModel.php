@@ -18,8 +18,8 @@ class AdminModel extends Model
         // Add new business to Business table
         $this->db->query(
             "INSERT INTO Business (UserID, BusinessName, BusinessType, Rating, Description, Image) 
-             VALUES (?, ?, ?, ?, ?, ?)"
-            , [$userID, $businessName, $businessType, 0.0, $description, $image]
+             VALUES (?, ?, ?, ?, ?, ?)",
+            [$userID, $businessName, $businessType, 0.0, $description, $image]
         );
 
         $this->db->query(
@@ -33,8 +33,9 @@ class AdminModel extends Model
     public function getSimilarBusinessNames($businessName)
     {
         $existingNames = $this->db->query(
-            "SELECT BusinessName FROM BusinessStats WHERE BusinessName LIKE ?"
-            , [$businessName])->fetchAll(PDO::FETCH_COLUMN);
+            "SELECT BusinessName FROM BusinessStats WHERE BusinessName LIKE ?",
+            [$businessName]
+        )->fetchAll(PDO::FETCH_COLUMN);
 
         if (!empty($existingNames)) {
             return "Business Name already exists";
@@ -47,8 +48,8 @@ class AdminModel extends Model
         // echo "In removeBusiness<br>";
         $this->db->query(
             "DELETE FROM Business
-            WHERE BusinessName = ?"
-            , [$businessName]
+            WHERE BusinessName = ?",
+            [$businessName]
         );
     }
 
@@ -58,8 +59,8 @@ class AdminModel extends Model
         $this->db->query(
             "UPDATE Business
             SET BanStatus = ?
-            WHERE BusinessName = ?"
-            , [$banStatus, $businessName]
+            WHERE BusinessName = ?",
+            [$banStatus, $businessName]
         );
     }
 
@@ -70,8 +71,8 @@ class AdminModel extends Model
         $this->db->query(
             "UPDATE Users
             SET BanStatus = ?
-            WHERE UserID = ?"
-            , [$banStatus, $userId]
+            WHERE UserID = ?",
+            [$banStatus, $userId]
         );
     }
 
@@ -80,8 +81,8 @@ class AdminModel extends Model
     {
         $this->db->query(
             "DELETE FROM Users
-            WHERE UserID = ?"
-            , [$userId]
+            WHERE UserID = ?",
+            [$userId]
         );
     }
 
@@ -228,15 +229,15 @@ class AdminModel extends Model
             $query,
             [$senderID, $receiverID, $timeSent]
         );
-
     }
 
     public function removeReviewByReviewID($createdAt, $businessName, $comment)
-    {   $review = $this->db->query(
-        "SELECT ReviewID FROM Review
-     WHERE CreatedAt = ? AND BusinessName = ? AND Comment = ?",
-        [$createdAt, $businessName, $comment]
-    )->fetch();
+    {
+        $review = $this->db->query(
+            "SELECT ReviewID FROM Review
+            WHERE CreatedAt = ? AND BusinessName = ? AND Comment = ?",
+            [$createdAt, $businessName, $comment]
+        )->fetch();
 
 
         if ($review) {
@@ -249,7 +250,14 @@ class AdminModel extends Model
 
     public function getAllReports()
     {
-        $query = "SELECT * FROM Reports";
+        $query = "SELECT 
+                    Reports.*,
+                    Sender.Email AS SenderEmail,
+                    Receiver.Email AS ReceiverEmail
+                FROM Reports
+                JOIN Users AS Sender ON Reports.Sender = Sender.UserID
+                JOIN Users AS Receiver ON Reports.Receiver = Receiver.UserID
+                ";
         return $this->db->query($query)->fetchAll(PDO::FETCH_ASSOC);
     }
 }
