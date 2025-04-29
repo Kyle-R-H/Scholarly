@@ -63,7 +63,6 @@ class AdminModel extends Model
     // Remove business
     public function removeBusiness($businessName)
     {
-        // echo "In removeBusiness<br>";
         $this->db->query(
             "DELETE FROM Business
             WHERE BusinessName = ?",
@@ -242,7 +241,6 @@ class AdminModel extends Model
 
         $query = "DELETE FROM $table
             WHERE (Sender = ? AND Receiver = ? AND TimeSent = ?)";
-        //print_r($query);
         $this->db->query(
             $query,
             [$senderID, $receiverID, $timeSent]

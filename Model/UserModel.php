@@ -81,10 +81,7 @@ class UserModel extends Model
 
         $this->db->query(
             "UPDATE Users
-
-            SET
-                Password = ?
-
+            SET Password = ?
             WHERE
                 Email = ?"
             ,[$hashedPassword, $email]
@@ -129,7 +126,6 @@ class UserModel extends Model
         $maxReviewID = $this->db->query("SELECT MAX(ReviewID) FROM Review")->fetch(PDO::FETCH_ASSOC);
         print_r($maxReviewID);
         $query = "INSERT INTO Review (ReviewID, UserID, Business, Rating, Comment, Response, CreatedAt, BusinessName) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
-        // Use your database query method with parameter binding
         return $this->db->query($query, [$maxReviewID["MAX(ReviewID)"] + 1, $userID, $business, $rating, $comment, "", date("Y-m-d H:i:s"), $businessName]);
     }
 
@@ -153,8 +149,6 @@ class UserModel extends Model
 
     public function getUserMessages($senderID, $receiverID,)
     {
-      //  echo "sender: " . $senderID;
-     // echo " <br> receiver: " . $receiverID;
         $query = "SELECT * FROM Messages 
                 WHERE (Sender = ? AND Receiver = ?) 
                 ORDER BY TimeSent ASC";

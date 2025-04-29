@@ -101,16 +101,11 @@ WHERE UserID = ? AND OrderStatus = 'Pending';",
     public function updateBusinessDetails($userId, $description, $image, $contactInfo)
     {
         $this->db->query(
-            "UPDATE
-                Business
-            
-            SET
-                Description = ?
+            "UPDATE Business
+            SET Description = ?
                 ,Image = ?
                 ,ContactInfo = ?
-            
-            WHERE
-                UserID = ?"
+            WHERE UserID = ?"
             ,[$description, $image, $contactInfo, $userId]
         );
     }
