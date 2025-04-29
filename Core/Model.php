@@ -74,6 +74,11 @@ class Model
         return $this->db->query("SELECT BusinessName FROM Business", [])->fetchAll(PDO::FETCH_ASSOC);
     }
 
+    public function getBusinessByUserID($userId)
+    {
+        return $this->db->query("SELECT * FROM Business WHERE UserId = ?", [$userId])->fetch(PDO::FETCH_ASSOC);
+    }
+
     public function updateAverageRatingByBusiness()
     {
         $businesses = $this->getBusinesses();

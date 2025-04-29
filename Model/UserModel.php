@@ -18,32 +18,26 @@ class UserModel extends Model
         return $this->db->query("SELECT * FROM Business WHERE BusinessName = ?", [$businessName])->fetchAll(PDO::FETCH_ASSOC);
     }
 
-    public function getBusinessByUserID($userId)
-    {
-        return $this->db->query("SELECT * FROM Business WHERE UserId = ?", [$userId])->fetch(PDO::FETCH_ASSOC);
-
-    }
-
     public function getReviewByReviewID()
-{
-    $query = "SELECT 
-                Review.ReviewID, 
-                Review.UserID, 
-                Users.FirstName, 
-                Users.LastName,
-                Business.BusinessName,
-                Business.Image, 
-                Review.Rating, 
-                Review.Comment, 
-                Review.Response, 
-                Review.CreatedAt
-            FROM Review
-            LEFT JOIN Business 
-                ON Review.Business = Business.UserID
-            LEFT JOIN Users
-                ON Review.UserID = Users.UserID";
-    return $this->db->query($query)->fetchAll(PDO::FETCH_ASSOC);
-}
+    {
+        $query = "SELECT 
+                    Review.ReviewID, 
+                    Review.UserID, 
+                    Users.FirstName, 
+                    Users.LastName,
+                    Business.BusinessName,
+                    Business.Image, 
+                    Review.Rating, 
+                    Review.Comment, 
+                    Review.Response, 
+                    Review.CreatedAt
+                FROM Review
+                LEFT JOIN Business 
+                    ON Review.Business = Business.UserID
+                LEFT JOIN Users
+                    ON Review.UserID = Users.UserID";
+        return $this->db->query($query)->fetchAll(PDO::FETCH_ASSOC);
+    }
 
     public function registerUser($firstName, $lastName, $email, $password)
     {
@@ -146,16 +140,7 @@ class UserModel extends Model
         $query = "INSERT INTO Inquiries (InquiriesID, Sender, Receiver, Message, TimeSent, Pending) VALUES (?, ?, ?, ?, ?, ?)";
         return $this->db->query($query, [$maxInquiryID["maxID"] + 1, $senderID, $receiverID, $message, date("Y-m-d H:i:s"), 1]);
     }
-
-    public function getUserMessages($senderID, $receiverID,)
-    {
-        $query = "SELECT * FROM Messages 
-                WHERE (Sender = ? AND Receiver = ?) 
-                ORDER BY TimeSent ASC";
-
-        return $this->db->query($query, [$senderID, $receiverID])-> fetchAll(PDO::FETCH_ASSOC);
-    }
-
+  
     public function getBusinessByTypeAndRating($businessType, $minRating) {
         $query = "SELECT *, IFNULL(Rating, 0) AS effectiveRating 
                   FROM Business 

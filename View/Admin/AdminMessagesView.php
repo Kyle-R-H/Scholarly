@@ -96,7 +96,15 @@
                     <div class="container my-4 flex-grow-1 d-flex flex-column">
                         <div class="row">
                             <div class="col-12">
-                                <h3 class="mb-3">Messages from User #<?= htmlspecialchars($senderID) ?></h3>
+                                <h3 class="mb-3">Messages from
+                                <?php
+                                    if(empty($this->adminModel->getBusinessByUserID($senderID))) {
+                                        echo $this->adminModel->getUserById($senderID)['FirstName'] . " " . $this->adminModel->getUserById($senderID)['LastName'];
+                                    } else {
+                                        echo $this->adminModel->getBusinessByUserID($senderID)['BusinessName'];
+                                    }
+                                ?>
+                                </h3>
                             </div>
                         </div>
 
@@ -116,8 +124,25 @@
                                 <tbody>
                                     <?php foreach ($previousMessages as $msg): ?>
                                         <tr>
-                                            <td><?= nl2br(htmlspecialchars($msg['Sender'])) ?></td>
-                                            <td><?= nl2br(htmlspecialchars($msg['Receiver'])) ?></td>
+                                            <td>
+                                                <?php
+                                                    if(empty($this->adminModel->getBusinessByUserID($senderID))) {
+                                                        echo $this->adminModel->getUserById($senderID)['FirstName'] . " " . $this->adminModel->getUserById($senderID)['LastName'];
+                                                    } else {
+                                                        echo $this->adminModel->getBusinessByUserID($senderID)['BusinessName'];
+                                                    }
+                                                ?>
+                                            </td>
+                                            <td>
+                                                <?php
+                                                    if(empty($this->adminModel->getBusinessByUserID($msg['Receiver']))) {
+                                                        echo $this->adminModel->getUserById($msg['Receiver'])['FirstName'] . " " . $this->adminModel->getUserById($senderID)['LastName'];
+                                                    } else {
+                                                        echo $this->adminModel->getBusinessByUserID($msg['Receiver'])['BusinessName'];
+                                                    }
+                                                ?>
+                                            </td>
+                                            
                                             <td><?= nl2br(htmlspecialchars($msg['Message'])) ?></td>
                                             <td><?= date('F j, Y', strtotime($msg['TimeSent'])) ?></td>
                                             <td>

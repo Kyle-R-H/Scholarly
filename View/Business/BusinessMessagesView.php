@@ -93,7 +93,7 @@
                     <div class="container my-4 flex-grow-1 d-flex flex-column">
                         <div class="row">
                             <div class="col-12">
-                                <h3 class="mb-3">Conversation with User #<?= htmlspecialchars($receiverID) ?></h3>
+                                <h3 class="mb-3">Conversation with <?= $this->businessModel->getUserById($receiverID)['FirstName'] . " " . $this->businessModel->getUserById($receiverID)['LastName']; ?></h3>
                             </div>
                         </div>
 
@@ -104,8 +104,8 @@
                                     <?php foreach ($previousMessages as $msg): ?>
                                         <?php
 
-                                        $isSender = ($msg['Sender'] == $_COOKIE['Login_Info']);
-                                        $senderLabel = $isSender ? "You" : "User #" . htmlspecialchars($msg['Sender']);
+                                        $isSender = ($msg['Sender'] ==  $this->businessModel->getUserByEmail($_COOKIE['Login_Info'])['UserID']);
+                                        $senderLabel = $isSender ? "You" : $this->businessModel->getUserById($receiverID)['FirstName'] . " " . $this->businessModel->getUserById($receiverID)['LastName'];
                                         ?>
                                         <div class="mb-3">
                                             <div class="<?= $isSender ? 'text-end' : 'text-start' ?>">
@@ -146,7 +146,7 @@
                 <div class="col-12">
                     <h3 class="mb-3">
                         <a class="btn red" data-bs-toggle="collapse" href="#reportSection" role="button" aria-expanded="false" aria-controls="reportSection">
-                            Report User #<?= htmlspecialchars($receiverID) ?>
+                            Report User
                         </a>
                     </h3>
                 </div>
