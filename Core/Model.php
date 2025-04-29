@@ -236,7 +236,7 @@ class Model
         if ($maxID == null) {
             $maxID = 1;
         }
-        $query = "INSERT INTO AdminLogs (NameOfAdmin,LogID ,ActionTaken, TimeStamp, Description) VALUES (?, ?, ?, ?)";
+        $query = "INSERT INTO AdminLogs (NameOfAdmin,LogID ,ActionTaken, TimeStamp, Description) VALUES (?, ?, ?, ?, ?)";
         return $this->db->query($query, [$adminID, $maxID["maxID"]+1, $action, date("Y-m-d H:i:s"), $description]);
     }
 
