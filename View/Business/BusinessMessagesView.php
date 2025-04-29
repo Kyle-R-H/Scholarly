@@ -210,47 +210,6 @@
                         <p class="text-muted text-center">No Users found.</p>
                     <?php endif; ?>
                 </div>
-
-                <!-- 
-                    Business Users
-                    <div class="col-md-6">
-
-                        Search Bar Functionality Business
-                        <form class="py-2 mb-4" method="POST" role="search">
-                            <input type="hidden" name="controller" value="user">
-                            <input type="hidden" name="action" value="reviewView">
-                            <input type="search" class="form-control" name="searchBusiness" placeholder="Search Business"
-                                value="<?= isset($_POST['searchBusiness']) ? htmlspecialchars($_POST['searchBusiness']) : '' ?>">
-                        </form>
-
-                        <h2 class="text-center">Business Users</h2>
-                        <?php if (isset($businessUsers) && count($businessUsers) > 0): ?>
-                            <table class="table table-striped align-middle rounded-3 overflow-hidden">
-                                <thead class="table-dark">
-                                    <tr>
-                                        <th>Business</th>
-                                        <th>Message</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <?php foreach ($businessUsers as $user): ?>
-                                        <?php if ($user['Email'] !== $_COOKIE['Login_Info']): ?>
-
-                                            <tr>
-                                                <td><?= htmlspecialchars($user['BusinessName']) ?></td>
-                                                <td>
-                                                    <a href="?controller=busienss&action=sendMessageView&receiverID=<?= $user['UserID'] ?>" class="btn btn-primary">Message</a>
-
-                                                </td>
-                                            </tr>
-                                        <?php endif; ?>
-                                    <?php endforeach; ?>
-                                </tbody>
-                            </table>
-                        <?php else: ?>
-                            <p class="text-muted text-center">No Business Users found.</p>
-                        <?php endif; ?> -->
-                <!-- </div> -->
             </div>
         </div>
     </main>
