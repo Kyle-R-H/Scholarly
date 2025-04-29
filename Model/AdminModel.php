@@ -241,7 +241,6 @@ class AdminModel extends Model
 
         $query = "DELETE FROM $table
             WHERE (Sender = ? AND Receiver = ? AND TimeSent = ?)";
-        //print_r($query);
         $this->db->query(
             $query,
             [$senderID, $receiverID, $timeSent]

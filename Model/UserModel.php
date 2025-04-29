@@ -81,10 +81,7 @@ class UserModel extends Model
 
         $this->db->query(
             "UPDATE Users
-
-            SET
-                Password = ?
-
+            SET Password = ?
             WHERE
                 Email = ?"
             ,[$hashedPassword, $email]
@@ -152,7 +149,6 @@ class UserModel extends Model
 
     public function getUserMessages($senderID, $receiverID,)
     {
-
         $query = "SELECT * FROM Messages 
                 WHERE (Sender = ? AND Receiver = ?) 
                 ORDER BY TimeSent ASC";
