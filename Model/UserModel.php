@@ -24,12 +24,6 @@ class UserModel extends Model
 
     }
 
-    public function updatePermissionLevel($userID, $permissionLevel)
-    {
-        $query = "UPDATE Users SET PermissionLevel = ? WHERE UserID = ? AND PermissionLevel != 2";
-        return $this->db->query($query, [$permissionLevel, $userID]);
-    }
-
     public function getReviewByReviewID()
 {
     $query = "SELECT 

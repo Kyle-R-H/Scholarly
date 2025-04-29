@@ -36,26 +36,16 @@ class AuthController extends Controller
         return $permissionLevel;
     }
 
-    public function checkIfUserHasBusiness($email): bool
-    {
-        $user = $this->userModel->getUserByEmail($email);
 
-        // Check if user exists
-        if (!$user) {
-            return false; // User does not exist, so they cannot have a business
-        }
-
-        $userID = $user['UserID'];
-        $business = $this->userModel->getBusinessByUserID($userID);
-
-        return $business ? true : false;
-    }
-
-    public function updatePermissionIfNoBusiness($userID)
+    public function updatePermissionIfNoBusiness()
     {
         // Check if the user has a business
-        if (!$this->checkIfUserHasBusiness($this->userModel->getUserByID($userID)['Email'])) {
-            $this->userModel->updatePermissionLevel($userID, 0); // Update permission level to 0
+        $normalUsers=$this->userModel->getAllUserIDsFromTable();
+        if (!empty($normalUsers)) {
+            foreach ($normalUsers as $userID) {
+                // echo "UserID: " . $userID['UserID'] . "<br>";
+                $this->userModel->updatePermissionLevel($userID['UserID'], 0); // Update permission level to 0
+            }
         }
     }
 

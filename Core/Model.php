@@ -240,4 +240,17 @@ class Model
         return $this->db->query($query, [$adminID, $maxID["maxID"]+1, $action, date("Y-m-d H:i:s"), $description]);
     }
 
+    public function updatePermissionLevel($userID, $permissionLevel)
+    {
+        $query = "UPDATE Users SET PermissionLevel = ? WHERE UserID = ? AND PermissionLevel != 2";
+        return $this->db->query($query, [$permissionLevel, $userID]);
+    }
+
+    public function getAllUserIDsFromTable()
+    {
+        return $this->db->query("SELECT UserID
+        FROM Users
+        WHERE UserID NOT IN (SELECT UserID FROM Business)")->fetchAll(PDO::FETCH_ASSOC);
+    }
+
 }
