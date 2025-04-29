@@ -87,7 +87,15 @@
 
         <div class="row">
             <div class="col-12">
-                <h3 class="mb-3">Conversation with User #<?= htmlspecialchars($receiverID) ?></h3>
+                <h3 class="mb-3">Conversation with 
+                    <?php
+                        if(empty($this->userModel->getBusinessByUserID($receiverID))) {
+                            echo $this->userModel->getUserById($receiverID)['FirstName'] . " " . $this->userModel->getUserById($receiverID)['LastName'];
+                        } else {
+                            echo $this->userModel->getBusinessByUserID($receiverID)['BusinessName'];
+                        }
+                    ?>
+                </h3>
             </div>
         </div>
 
@@ -97,8 +105,17 @@
                 <?php if (!empty($previousMessages)): ?>
                     <?php foreach ($previousMessages as $msg): ?>
                         <?php
-                        $isSender = ($msg['Sender'] == $_COOKIE['Login_Info']);
-                        $senderLabel = $isSender ? "You" : "User #" . htmlspecialchars($msg['Sender']);
+                        $isSender = ($msg['Sender'] == $this->userModel->getUserByEmail($_COOKIE['Login_Info'])['UserID']);
+                        // $senderLabel = $isSender ? "You" : "User #" . htmlspecialchars($msg['Sender']);
+                        if($isSender) {
+                            $senderLabel = "You";
+                        } else {
+                            if(empty($this->userModel->getBusinessByUserID($receiverID))) {
+                                $senderLabel = $this->userModel->getUserById($receiverID)['FirstName'] . " " . $this->userModel->getUserById($receiverID)['LastName'];
+                            } else {
+                                $senderLabel = $this->userModel->getBusinessByUserID($receiverID)['BusinessName'];
+                            }
+                        }
                         ?>
                         <div class="mb-3">
                             <div class="<?= $isSender ? 'text-end' : 'text-start' ?>">
@@ -151,7 +168,7 @@
         <div class="col-12 mt-3">
             <h3 class="mb-3">
                 <a class="btn red" data-bs-toggle="collapse" href="#reportSection" role="button" aria-expanded="false" aria-controls="reportSection">
-                    Report User #<?= htmlspecialchars($receiverID) ?>
+                    Report User
                 </a>
             </h3>
         </div>

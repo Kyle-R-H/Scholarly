@@ -18,12 +18,6 @@ class UserModel extends Model
         return $this->db->query("SELECT * FROM Business WHERE BusinessName = ?", [$businessName])->fetchAll(PDO::FETCH_ASSOC);
     }
 
-    public function getBusinessByUserID($userId)
-    {
-        return $this->db->query("SELECT * FROM Business WHERE UserId = ?", [$userId])->fetch(PDO::FETCH_ASSOC);
-
-    }
-
     public function updatePermissionLevel($userID, $permissionLevel)
     {
         $query = "UPDATE Users SET PermissionLevel = ? WHERE UserID = ? AND PermissionLevel != 2";
@@ -155,17 +149,6 @@ class UserModel extends Model
         }
         $query = "INSERT INTO Inquiries (InquiriesID, Sender, Receiver, Message, TimeSent, Pending) VALUES (?, ?, ?, ?, ?, ?)";
         return $this->db->query($query, [$maxInquiryID["maxID"] + 1, $senderID, $receiverID, $message, date("Y-m-d H:i:s"), 1]);
-    }
-
-    public function getUserMessages($senderID, $receiverID,)
-    {
-      //  echo "sender: " . $senderID;
-     // echo " <br> receiver: " . $receiverID;
-        $query = "SELECT * FROM Messages 
-                WHERE (Sender = ? AND Receiver = ?) 
-                ORDER BY TimeSent ASC";
-
-        return $this->db->query($query, [$senderID, $receiverID])-> fetchAll(PDO::FETCH_ASSOC);
     }
 
     public function getBusinessByTypeAndRating($businessType, $minRating) {
