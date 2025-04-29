@@ -131,7 +131,7 @@ class Model
         // echo "sender: " . $senderID;
         // echo " <br> receiver: " . $receiverID;
         $query = "SELECT * FROM Messages 
-                WHERE (Sender = ? AND Receiver = ?) 
+                WHERE (Sender = ? AND Receiver = ?)  
                 OR (Sender = ? AND Receiver = ?) 
                 ORDER BY TimeSent ASC";
 
