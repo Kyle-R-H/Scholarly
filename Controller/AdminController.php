@@ -155,13 +155,18 @@ class AdminController extends Controller
             $_SESSION['error'] = $this->adminModel->getSimilarBusinessNames($name);
 
             if ($_SESSION['error'] == null) {
-                // Successful registration
-                $_SESSION['success'] = "Successful Business Registration";
                 $this->adminModel->registerBusiness($userID, $name, $businessType, $description, $image);
-                $this->adminModel->addToAdminLogs($this->adminModel->getUserByEmail($_COOKIE["Login_Info"])['UserID'], "Business Registered", "Registered business " . $name);
+                
+                if ($_SESSION['error'] == null) {
+                    // Successful registration
+                    $_SESSION['success'] = "Successful Business Registration";
+                    $this->adminModel->addToAdminLogs($this->adminModel->getUserByEmail($_COOKIE["Login_Info"])['UserID'], "Business Registered", "Registered business " . $name);
 
-                header("Location: ?controller=admin&action=adminManager");
-                exit();
+                    header("Location: ?controller=admin&action=adminManager");
+                    exit();
+                }
+
+                $this->view('Admin/RegisterBusinessView', []);
             } else {
                 $this->view('Admin/RegisterBusinessView', []);
             }
