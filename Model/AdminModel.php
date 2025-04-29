@@ -16,25 +16,33 @@ class AdminModel extends Model
     public function registerBusiness($userID, $businessName, $businessType, $description, $image)
     {
         // Add new business to Business table
-        $existingUserIDs = $this->db->query("SELECT UserID from Business");
-
-        foreach($existingUserIDs as $existingID) {
-            $existingUserIDsArr[] = $existingID['UserID'];
+        foreach($this->db->query("SELECT UserID from Business") as $existingID) {
+            $existingUserIDs[] = $existingID['UserID'];
         }
 
-        if(!in_array($userID, $existingUserIDsArr)) {
-            $this->db->query(
-                "INSERT INTO Business (UserID, BusinessName, BusinessType, Rating, Description, Image) 
-                 SELECT ?, ?, ?, ?, ?, ?"
-                , [$userID, $businessName, $businessType, 0.0, $description, $image]
-            );
-    
-            $this->db->query(
-                "UPDATE Users SET PermissionLevel = ? WHERE UserID = ?",
-                [1, $userID]
-            );
-            $this->updateVerifiedCustomer($userID);
-            return $this->db->lastInsertId();
+        foreach($this->db->query("SELECT BusinessName from Business") as $existingName) {
+            $existingNames[] = $existingName['BusinessName'];
+        }
+
+        if(!in_array($userID, $existingUserIDs)) {
+            if(!in_array($businessName, $existingNames)) {
+                $this->db->query(
+                    "INSERT INTO Business (UserID, BusinessName, BusinessType, Rating, Description, Image) 
+                    SELECT ?, ?, ?, ?, ?, ?"
+                    , [$userID, $businessName, $businessType, 0.0, $description, $image]
+                );
+        
+                $this->db->query(
+                    "UPDATE Users SET PermissionLevel = ? WHERE UserID = ?",
+                    [1, $userID]
+                );
+
+                $this->updateVerifiedCustomer($userID);
+                
+                return $this->db->lastInsertId();
+            } else {
+                $_SESSION['error'] = "Business Name Already Exists";
+            }
         } else {
             $_SESSION['error'] = "Email Already Assigned to Existing Business";
         }
