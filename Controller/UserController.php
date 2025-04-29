@@ -247,7 +247,6 @@ class UserController extends Controller
         // Fetch items from db
         $items = $this->userModel->getItemsByBusiness($businessName);
         $business = $this->userModel->getBusinessByBusinessName($businessName);
-
         if ($businessName) {
             $this->view('User/BookingView', ['items' => $items, 'business' => $business]);
         } else {
@@ -363,6 +362,20 @@ class UserController extends Controller
         require_once 'View/User/AddReviewView.php';
     }
 
+    public function addDirectReviewView($businessName)
+    {
+        $businesses = $this->userModel->getBusinessByBusinessName($businessName);
+        // Fetch user details using the logged-in email from cookies
+        $user = $this->userModel->getUserByEmail($_COOKIE["Login_Info"]);
+
+        // Check if user exists
+        if (!$user) {
+            $_SESSION['error'] = "Error: User not found!";
+            die("Error: User not found!");
+        }
+        require_once 'View/User/AddReviewView.php';
+    }
+
     public function addReview()
     {
         // Fetch user details
@@ -389,7 +402,11 @@ class UserController extends Controller
 
     public function userMessagesView()
     {
-        $users = $this->userModel->getUsersByVerifiedCustomer(0); // 0 = normal user
+        $currentUser = $this->userModel->getUserByEmail($_COOKIE["Login_Info"]);
+        $users = $this->userModel->getUsersByVerifiedCustomer(0); // 0 = normal verified user
+        if ($currentUser['VerifiedCustomer'] == 1) {
+            $users = $this->userModel->getAllNormalUsers();
+        }
         $businessUsers = $this->userModel->getUsersByVerifiedCustomer(1); // business user
 
         // Get search query from Form POST

@@ -27,6 +27,20 @@ class Model
         return $userEmail;
     }
 
+    public function getAllUsers()
+    {
+        $query = "SELECT * FROM Users";
+
+        return $this->db->query($query)->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    public function getAllNormalUsers()
+    {
+        $query = "SELECT * FROM Users WHERE PermissionLevel < 2";
+
+        return $this->db->query($query)->fetchAll(PDO::FETCH_ASSOC);
+    }
+
     // Fetch user by ID
     public function getUserById($userId)
     {

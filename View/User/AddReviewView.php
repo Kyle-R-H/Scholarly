@@ -90,19 +90,31 @@
 
                         <div class="mb-3">
                             <label for="business" class="form-label fw-bold">Name of Business</label>
-                            <select
-                                name="business"
-                                id="business"
-                                class="form-select"
-                                required>
-
-                                <option value="" disabled selected>Select Business</option>
-                                <?php foreach ($businesses as $biz): ?>
-                                    <option value="<?= htmlspecialchars($biz['BusinessName']) ?>">
-                                        <?= htmlspecialchars($biz['BusinessName']) ?>
-                                    </option>
-                                <?php endforeach; ?>
-                            </select>
+                            <?php if (count($businesses) == 1): ?>
+                                <input
+                                    type="text"
+                                    class="form-control"
+                                    value="<?= htmlspecialchars($businesses[0]['BusinessName']) ?>"
+                                    disabled
+                                    readonly>
+                                <input
+                                    type="hidden"
+                                    name="business"
+                                    value="<?= htmlspecialchars($businesses[0]['BusinessName']) ?>">
+                            <?php else: ?>
+                                <select
+                                    name="business"
+                                    id="business"
+                                    class="form-select"
+                                    required>
+                                    <option value="" disabled selected>Select Business</option>
+                                    <?php foreach ($businesses as $biz): ?>
+                                        <option value="<?= htmlspecialchars($biz['BusinessName']) ?>">
+                                            <?= htmlspecialchars($biz['BusinessName']) ?>
+                                        </option>
+                                    <?php endforeach; ?>
+                                <?php endif; ?>
+                                </select>
                         </div>
 
                         <!-- Rating -->

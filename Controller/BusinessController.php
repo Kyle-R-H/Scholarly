@@ -137,7 +137,7 @@ class BusinessController extends Controller
     // Messages Funcitonality
     public function businessMessagesView($receiverID)
     {
-        $users = $this->businessModel->getUsersByVerifiedCustomer(0); // 0 = normal user
+        $users = $this->businessModel->getAllNormalUsers(0); // 0 = normal user
 
         // Sender is the logged-in user
         $senderID = $this->businessModel->getUserByEmail($_COOKIE['Login_Info'])['UserID'];

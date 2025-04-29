@@ -79,7 +79,7 @@ class AdminController extends Controller
     // Messages Funcitonality
     public function adminMessagesView($senderID)
     {
-        $users = $this->adminModel->getUsersByVerifiedCustomer(0); // 0 = normal user
+        $users = $this->adminModel->getAllNormalUsers(0); // 0 = normal user
         $businessUsers = $this->adminModel->getUsersByVerifiedCustomer(1); // business user
 
         // Sender is the logged-in user
@@ -235,7 +235,7 @@ class AdminController extends Controller
         } else {
             $this->adminModel->addToAdminLogs($this->adminModel->getUserByEmail($_COOKIE["Login_Info"])['UserID'], "Banned User", "Banned User " . $userId);
         }
-
+        
         header("Location: ?controller=admin&action=adminUserManager");
     }
 

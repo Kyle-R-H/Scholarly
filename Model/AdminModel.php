@@ -135,13 +135,6 @@ class AdminModel extends Model
         return $this->db->query($query)->fetchAll(PDO::FETCH_ASSOC);
     }
 
-    public function getAllUsers()
-    {
-        $query = "SELECT * FROM Users";
-
-        return $this->db->query($query)->fetchAll(PDO::FETCH_ASSOC);
-    }
-
     // Niche funky stats methods
     public function getMostPopularItem()
     {

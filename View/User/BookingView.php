@@ -84,7 +84,7 @@
                 </div>
             </div>
         <?php endif; ?>
-        
+
         <!-- Main Content -->
         <div class="container my-5">
             <?php if (!empty($items)): ?>
@@ -104,9 +104,13 @@
             <form method="POST" class="mb-4 d-flex gap-2">
                 <div class="input-group">
                     <input type="number" step="0.01" class="form-control" name="maxPrice" placeholder="Enter maximum price"
-                           value="<?= isset($_POST['maxPrice']) ? htmlspecialchars($_POST['maxPrice']) : '' ?>">
-                    <button type="submit" class="btn btn-primary">Filter</button>
+                        value="<?= isset($_POST['maxPrice']) ? htmlspecialchars($_POST['maxPrice']) : '' ?>">
+                    <button type="submit" class="btn">Filter</button>
                 </div>
+
+                <a href="?controller=user&action=addDirectReviewView&businessName=<?= $business[0]['BusinessName'] ?>" class="btn">Review</a>
+                <a href="?controller=user&action=sendMessageView&receiverID=<?= $business[0]['UserID'] ?>" class="btn">Message</a>
+
             </form>
 
             <!-- Menu Items Section -->
@@ -130,7 +134,7 @@
                                     <input type="hidden" name="item_name" value="<?= htmlspecialchars($item['ItemName']) ?>">
                                     <input type="hidden" name="item_price" value="<?= htmlspecialchars($item['ItemPrice']) ?>">
                                     <input type="hidden" name="form_token" value="<?= $_SESSION['form_token'] ?>">
-                                    <button type="submit" class="btn btn-primary position-absolute top-0 end-0 m-3">+</button>
+                                    <button type="submit" class="btn position-absolute top-0 end-0 m-3">+</button>
                                 </form>
 
                             </div>
@@ -157,7 +161,7 @@
             <?php endif; ?>
             <div class="sticky-bottom py-3">
                 <div class="container-fluid d-flex justify-content-end">
-                    <a href="?controller=user&action=orderConfirmView" class="btn btn-primary w-100">Confirm Order</a>
+                    <a href="?controller=user&action=orderConfirmView" class="btn w-100">Confirm Order</a>
                 </div>
             </div>
         </div>

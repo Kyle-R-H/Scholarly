@@ -179,7 +179,7 @@
                 <div class="">
 
                     <!-- Search Bar Functionality normal users -->
-                    <h2 class="text-center">Verified Users</h2>
+                    <h2 class="text-center">Users</h2>
                     <form class="py-2 mb-4" method="POST" role="search">
                         <input type="hidden" name="controller" value="user">
                         <input type="hidden" name="action" value="reviewView">
